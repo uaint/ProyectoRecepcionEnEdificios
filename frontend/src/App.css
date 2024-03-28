@@ -60,3 +60,108 @@
   border: 1px solid grey;
   padding-left: 8px;
 }
+
+body {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente el contenido de la página */
+  align-items: center; /* Centra verticalmente el contenido de la página */
+  min-height: 100vh; /* Asegura que el cuerpo ocupe al menos el 100% de la altura de la ventana */
+  margin: 0; /* Elimina el margen predeterminado del cuerpo */
+}
+
+/* Estilos para el formulario de correspondencia */
+.formContainer {
+  max-width: 500px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.correspondenceForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.inputField {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.submitButton {
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}
+
+
+/* Estilos para el formulario de visitas frecuentes */
+.formContainer {
+  max-width: 500px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left; 
+  margin: 20px auto; 
+}
+
+.frequentVisitsForm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+  width: 100%; 
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.inputField {
+  width: calc(100% - 16px); 
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.submitButton {
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  width: fit-content; 
+  margin: 0 auto; 
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}
