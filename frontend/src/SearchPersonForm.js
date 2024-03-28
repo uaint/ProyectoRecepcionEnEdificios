@@ -18,6 +18,8 @@ const SearchPersonForm = () => {
       birthDate: '01/01/1980',
       address: '123 Main St',
       phone: '555-123-4567',
+      apartments_visited: '7A',
+      Quantity_of_visits: 2,
     };
     setPersonData(mockPersonData);
   };
@@ -48,6 +50,8 @@ const SearchPersonForm = () => {
           <p><strong>Birth Date:</strong> {personData.birthDate}</p>
           <p><strong>Address:</strong> {personData.address}</p>
           <p><strong>Phone:</strong> {personData.phone}</p>
+          <p><strong>apartments visited:</strong> {personData.apartments_visited}</p>
+          <p><strong>Quantity:</strong> {personData.Quantity_of_visits}</p>
         </div>
       )}
     </div>
