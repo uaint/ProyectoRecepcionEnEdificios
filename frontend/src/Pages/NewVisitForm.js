@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import './App.css'; 
+import '../App.css'; 
 
-const VisitForm = () => {
+const NewVisitForm = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -103,4 +103,4 @@ const VisitForm = () => {
   );
 };
 
-export default VisitForm;
+export default NewVisitForm;

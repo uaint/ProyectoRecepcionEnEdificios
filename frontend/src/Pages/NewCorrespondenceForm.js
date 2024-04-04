@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import './App.css'; // Importar estilos CSS específicos para este formulario
+import '../App.css'; // Importar estilos CSS específicos para este formulario
 
-const AddCorrespondenceForm = () => {
+const NewCorrespondenceForm = () => {
   const [formData, setFormData] = useState({
     type: '',
     timeArrival: '',
@@ -9,7 +9,7 @@ const AddCorrespondenceForm = () => {
     inhabitantId: '',
   });
 
-  const [language, setLanguage] = useState('es'); // Estado para el idioma actual
+  const [selectedOption, setSelectedOption] = useState('Type');
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -30,28 +30,23 @@ const AddCorrespondenceForm = () => {
     });
   };
 
-  const handleLanguageChange = () => {
-    setLanguage(language === 'es' ? 'en' : 'es'); // Cambiar el idioma al hacer clic en el botón
-  };
-
   return (
     <div className="formContainer">
-      <h2>{language === 'es' ? 'Agregar Nueva Correspondencia' : 'Add New Correspondence'}</h2>
+      <h2>Add New Correspondence</h2>
       <form onSubmit={handleSubmit} className="correspondenceForm">
         <div className="formGroup">
-          <label htmlFor="type">{language === 'es' ? 'Tipo: ' : 'Type: '}</label>
-          <input
-            type="text"
-            id="type"
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-            required
-            className="inputField"
-          />
+          <div className="options-container">
+            <select className="type-select" value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
+              <option value="Type" disabled hidden>Type</option>
+              <option value="Packages">Packages</option>
+              <option value="Letters">Letters</option>
+              <option value="Item">Item</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
         </div>
         <div className="formGroup">
-          <label htmlFor="timeArrival">{language === 'es' ? 'Fecha de Llegada: ' : 'Time of Arrival: '}</label>
+          <label htmlFor="timeArrival">Time of Arrival:</label>
           <input
             type="datetime-local"
             id="timeArrival"
@@ -63,7 +58,7 @@ const AddCorrespondenceForm = () => {
           />
         </div>
         <div className="formGroup">
-          <label htmlFor="inhabitantId">{language === 'es' ? 'ID del Habitante: ' : 'Inhabitant ID: '}</label>
+          <label htmlFor="inhabitantId">Inhabitant ID:</label>
           <input
             type="text"
             id="inhabitantId"
@@ -74,16 +69,10 @@ const AddCorrespondenceForm = () => {
             className="inputField"
           />
         </div>
-        <button type="submit" className="submitButton">
-          {language === 'es' ? 'Agregar Correspondencia' : 'Add Correspondence'}
-        </button>
-       
-
+        <button type="submit" className="submitButton">Add Correspondence</button>
       </form>
     </div>
   );
 };
 
-export default AddCorrespondenceForm;
-
-
+export default NewCorrespondenceForm;

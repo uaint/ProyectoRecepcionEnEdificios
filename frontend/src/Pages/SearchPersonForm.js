@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './App.css'; // Importar estilos CSS específicos para este formulario
+import '../App.css'; 
 
 const SearchPersonForm = () => {
   const [rut, setRut] = useState('');

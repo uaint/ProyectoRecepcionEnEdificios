@@ -1,9 +1,20 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './home';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import Home from './Pages/Home';
 import Login from './login';
-import CorrespondenceForm from './CorrespondenceForm';
-import VisitForm from './VisitForm';
-import SearchPersonForm from './SearchPersonForm';
+import NewCorrespondenceForm from './Pages/NewCorrespondenceForm';
+import NewVisitForm from './Pages/NewVisitForm';
+import Notifications from './Pages/notifications';
+import SearchPersonForm from './Pages/SearchPersonForm';
+import SearchPersonCam from './Pages/SearchPersonCam';
+import AdminFrequentVisits from './Pages/AdminFrequentVisits';
+import Messages from './Pages/Messages';
+import Config from './Pages/config';
+import AdminCorrespondence from './Pages/AdminCorrespondence';
+import AdminMessages from './Pages/AdminMessages';
+import ConfigAdmin from './Pages/ConfigAdmin';
+import NewVehicleForm from './Pages/NewVehicleForm';
+import AdminParking from './Pages/AdminParking';
+
 import './App.css';
 import { useEffect, useState } from 'react';
 
@@ -39,11 +50,22 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home email={email} loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>} />
+          <Route path="/home" element={<Home email={email} loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>} />
           <Route path="/login" element={<Login setLoggedIn={setLoggedIn} setEmail={setEmail} />} />
-          <Route path="/correspondenceform" element={<CorrespondenceForm />} />
-          <Route path="/visitform" element={<VisitForm />} />
+          <Route path="/newcorrespondenceform" element={<NewCorrespondenceForm />} />
+          <Route path="/newvisitform" element={<NewVisitForm />} />
           <Route path="/searchpersonform" element={<SearchPersonForm />} />
+          <Route path="/searchpersoncam" element={<SearchPersonCam />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/messages" element={<Messages />} />
+          <Route path="/newvehicleform" element={<NewVehicleForm />} />
+          <Route path="/config" element={<Config />} />
+          <Route path="/configadmin" element={<ConfigAdmin />} />
+          <Route path="/admincorrespondence" element={<AdminCorrespondence />} />
+          <Route path="/adminmessages" element={<AdminMessages />} />
+          <Route path="/adminfrequentvisits" element={<AdminFrequentVisits />} />
+          <Route path="/adminparking" element={<AdminParking />} />
+          <Route path="*" element={<Navigate to="/home" replace />} /> {/* Redireccionar desde cualquier ruta inválida a /home */}
         </Routes>
       </BrowserRouter>
     </div>

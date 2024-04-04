@@ -63,13 +63,13 @@
 
 body {
   display: flex;
-  justify-content: center; /* Centra horizontalmente el contenido de la página */
-  align-items: center; /* Centra verticalmente el contenido de la página */
-  min-height: 100vh; /* Asegura que el cuerpo ocupe al menos el 100% de la altura de la ventana */
-  margin: 0; /* Elimina el margen predeterminado del cuerpo */
+  justify-content: center; 
+  align-items: center; 
+  min-height: 100vh; 
+  margin: 0; 
 }
 
-/* Estilos para el formulario de correspondencia */
+/* NewCorrespondenceForm */
 .formContainer {
   max-width: 500px;
   padding: 20px;
@@ -114,8 +114,16 @@ label {
   background-color: #0056b3;
 }
 
+.options-container {
+  text-align: center;
+}
 
-/* Estilos para el formulario de visitas frecuentes */
+.type-select {
+  width: 200px; 
+}
+
+
+/* VisitForm */
 .formContainer {
   max-width: 500px;
   padding: 20px;
@@ -164,4 +172,251 @@ label {
 
 .submitButton:hover {
   background-color: #0056b3;
+}
+
+
+/* Notifications */
+.notifications-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100vh; 
+  padding: 20px; 
+}
+
+.notifications-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.notifications-list li {
+  margin-bottom: 10px; 
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid black; 
+  width: 100%; 
+  margin: 10px 0; 
+}
+
+
+/* Admin Frequent Visits */
+
+.admin-frequent-visits {
+  margin-top: 20px; 
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #f0f0f0; 
+}
+
+.trTopPart {
+  border-bottom: 2px solid #333; 
+}
+
+tr:not(:first-child):hover {
+  background-color: #f7f7f7; 
+}
+
+button {
+  background-color: #cb1313; 
+  color: #ffffff; 
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+
+.addFrequentVisitButton {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  margin: 40px auto;
+  display: block;
+}
+
+/* AdminCorrespondence */
+
+.addNewCorrespondenceButton {
+  margin-top: 40px; 
+  display: block; 
+  margin-left: auto; 
+  margin-right: auto; 
+  background-color: #007bff;
+}
+
+
+
+/* Messages */
+.messages-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.message-input {
+  width: 300px; 
+  height: 100px; 
+  resize: none;
+  margin-bottom: 10px;
+}
+
+.type-select {
+  width: 200px; 
+  margin-bottom: 10px;
+}
+
+.send-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+}
+
+
+
+/* Config */
+.config-container {
+  text-align: center;
+}
+
+.buttons-container {
+  margin-top: 20px;
+}
+
+.config-button {
+  margin-right: 20px;
+  background-color: #dddddd;
+  color: #000000;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.config-box {
+  margin-top: 20px;
+  border: 1px solid #cccccc;
+  padding: 20px;
+}
+
+.notification-item {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+.info-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.info-item label {
+  margin-right: 10px;
+}
+
+
+
+.info-item button {
+  margin-left: auto; 
+}
+
+
+.notification-item button {
+  background-color: #cb1313;
+  color: #ffffff;
+  margin-left: 20px;
+}
+
+.update-info-button {
+  background-color: #007bff;
+}
+
+.password-item label,
+.password-item input {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.password-item input {
+  width: 100%;
+  padding: 8px;
+}
+
+
+.password-item label {
+  margin-right: 10px;
+}
+
+
+/* SearchPersonCam */
+.searchButton {
+  text-decoration: none; 
+}
+
+
+/* AdminMessages */
+
+.admin-messages-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.user-container {
+  display: flex;
+  align-items: center;
+  border: 2px solid #000000;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.user-info {
+  margin-right: 20px;
+}
+
+.user-info p {
+  margin: 5px 0;
+  display: inline-block; 
+  margin-right: 10px; 
+}
+
+.user-message {
+  font-size: 16px;
+  line-height: 1.5;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  flex-grow: 1;
+}
+
+.label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+
+/* AdminParking */
+.admin-parking {
+  text-align: center; 
+}
+
+.admin-parking .modifyParkingButton {
+  margin-top: 20px;
 }
