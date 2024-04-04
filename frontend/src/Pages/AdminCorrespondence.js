@@ -23,6 +23,7 @@ const AdminCorrespondence = () => {
 
   return (
     <div className="admin-correspondence">
+      <h1 className="centeredHeading">Admin Correspondence</h1>
       <table>
         <thead>
           <tr className="trTopPart">

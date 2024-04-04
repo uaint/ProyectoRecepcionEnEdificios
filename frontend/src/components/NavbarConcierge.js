@@ -1,10 +1,9 @@
-// ConciergeNav.js
-// to be developed
+// NavbarConcierge.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './App.css';
+import '../App.css';
 
-const ConciergeNav = () => {
+const NavbarConcierge = () => {
   return (
     <nav>
       <ul>
@@ -17,12 +16,9 @@ const ConciergeNav = () => {
         <li><Link to="/adminmessages">Messages</Link></li>
         <li><Link to="/configadmin">Config</Link></li>
         <li><Link to="/home">Sign Out</Link></li>
-
       </ul>
     </nav>
   );
 };
 
-export default ConciergeNav;
-
-/* Packages, Visits, Messages, Vehicles, Parking, Config */
+export default NavbarConcierge;

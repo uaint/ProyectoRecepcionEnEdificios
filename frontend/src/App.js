@@ -1,6 +1,13 @@
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import './App.css';
+import NavbarConcierge from './components/NavbarConcierge';
+import NavbarResident from './components/NavbarResident';
+
+
+// Importacion de las paginas
 import Home from './Pages/Home';
-import Login from './login';
+import Login from './Pages/Login';
 import NewCorrespondenceForm from './Pages/NewCorrespondenceForm';
 import NewVisitForm from './Pages/NewVisitForm';
 import Notifications from './Pages/notifications';
@@ -15,8 +22,6 @@ import ConfigAdmin from './Pages/ConfigAdmin';
 import NewVehicleForm from './Pages/NewVehicleForm';
 import AdminParking from './Pages/AdminParking';
 
-import './App.css';
-import { useEffect, useState } from 'react';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -49,6 +54,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
+      <NavbarConcierge /> {/* Aca alternar navbar entre Concierge y Resident hasta conectar backend */}
         <Routes>
           <Route path="/home" element={<Home email={email} loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>} />
           <Route path="/login" element={<Login setLoggedIn={setLoggedIn} setEmail={setEmail} />} />

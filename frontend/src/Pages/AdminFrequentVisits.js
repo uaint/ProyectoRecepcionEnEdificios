@@ -3,48 +3,48 @@ import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
 const AdminFrequentVisits = () => {
-  // Datos de ejemplo para las filas
+  // Sample data for rows
   const frequentVisitsData = [
-    { id: 1, nombre: 'Juan', apellido: 'Pérez', rut: '12839849-1', depto: '7A', cantidadVisitas: 5 },
-    { id: 2, nombre: 'María', apellido: 'González', rut: '16833339-1', depto: '12C', cantidadVisitas: 3 },
-    { id: 3, nombre: 'Pedro', apellido: 'López', rut: '938549-1', depto: '9B', cantidadVisitas: 7 },
+    { id: 1, name: 'John', lastName: 'Doe', rut: '12839849-1', dept: '7A', visitCount: 5 },
+    { id: 2, name: 'Mary', lastName: 'Gonzalez', rut: '16833339-1', dept: '12C', visitCount: 3 },
+    { id: 3, name: 'Peter', lastName: 'Lopez', rut: '938549-1', dept: '9B', visitCount: 7 },
   ];
 
   const handleDelete = (id) => {
-    // Lógica para eliminar la fila con el ID especificado
-    console.log(`Eliminar fila con ID: ${id}`);
+    // Logic to delete the row with the specified ID
+    console.log(`Delete row with ID: ${id}`);
   };
 
-  // Redireccion boton Nueva Visita
+  // Redirect button for New Visit
   const navigate = useNavigate();
   const handleButtonClick = () => {
     navigate('/newvisitform');
   };
 
-
   return (
     <div className="admin-frequent-visits">
+      <h1 className="centeredHeading">Admin Frequent Visits</h1>
       <table>
         <thead>
           <tr className="trTopPart">
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Rut</th>
-            <th>Depto</th>
-            <th>Cantidad de visitas</th>
-            <th></th> {/* Espacio vacío para el botón "Eliminar" */}
+            <th>Name</th>
+            <th>Last Name</th>
+            <th>RUT</th>
+            <th>Apartment</th>
+            <th>Visit Count</th>
+            <th></th> {/* Empty space for the "Delete" button */}
           </tr>
         </thead>
         <tbody>
           {frequentVisitsData.map((visit) => (
             <tr key={visit.id}>
-              <td>{visit.nombre}</td>
-              <td>{visit.apellido}</td>
+              <td>{visit.name}</td>
+              <td>{visit.lastName}</td>
               <td>{visit.rut}</td>
-              <td>{visit.depto}</td>
-              <td>{visit.cantidadVisitas}</td>
+              <td>{visit.dept}</td>
+              <td>{visit.visitCount}</td>
               <td>
-                <button onClick={() => handleDelete(visit.id)}>Eliminar</button>
+                <button onClick={() => handleDelete(visit.id)}>Delete</button>
               </td>
             </tr>
           ))}

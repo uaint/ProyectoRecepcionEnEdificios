@@ -123,7 +123,7 @@ label {
 }
 
 
-/* VisitForm */
+/* NewVisitForm */
 .formContainer {
   max-width: 500px;
   padding: 20px;
@@ -159,15 +159,9 @@ label {
 }
 
 .submitButton {
-  padding: 10px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  width: fit-content; 
-  margin: 0 auto; 
+  display: block; /* Convertir el botón en bloque para centrarlo */
+  margin: 20px auto 0; /* Margen superior automático para separarlo verticalmente y centrado horizontal */
+  width: fit-content; /* Ancho ajustado al contenido del botón */
 }
 
 .submitButton:hover {
@@ -247,6 +241,11 @@ button {
   display: block;
 }
 
+.centeredHeading {
+  text-align: center;
+}
+
+
 /* AdminCorrespondence */
 
 .addNewCorrespondenceButton {
@@ -256,6 +255,11 @@ button {
   margin-right: auto; 
   background-color: #007bff;
 }
+
+.centeredHeading {
+  text-align: center;
+}
+
 
 
 
@@ -362,6 +366,12 @@ button {
   text-decoration: none; 
 }
 
+.searchButtonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; 
+}
+
 
 /* AdminMessages */
 
@@ -419,4 +429,43 @@ h1 {
 
 .admin-parking .modifyParkingButton {
   margin-top: 20px;
+}
+
+
+
+/* Navbar styles */
+nav {
+  position: fixed; /* Posición fija */
+  top: 0; /* Anclar en la parte superior */
+  left: 0; /* Anclar en el lado izquierdo */
+  width: 100%; /* Ocupar todo el ancho */
+  background-color: #f0f0f0; /* Fondo gris */
+  padding: 10px;
+  z-index: 1000; /* Asegurar que esté en la parte superior */
+  display: flex; /* Mostrar como flexbox */
+  justify-content: center; /* Centrar horizontalmente */
+}
+
+ul {
+  list-style-type: none; /* Sin bullet points */
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+li {
+  margin-right: 10px;
+}
+
+/* Enlaces dentro de la navbar */
+a {
+  text-decoration: none; /* Sin subrayado */
+  color: black; /* Texto negro */
+  padding: 8px 12px;
+  border-radius: 5px;
+  background-color: #f0f0f0; /* Fondo gris */
+}
+
+a:hover {
+  background-color: #ddd; /* Cambiar color al pasar el ratón */
 }

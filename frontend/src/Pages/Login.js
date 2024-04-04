@@ -121,4 +121,4 @@ const Login = (props) => {
     </div>
 }
 
-export default Login
+export default Login;

@@ -1,10 +1,9 @@
-// ResidentNav.js
-// to be developed
+// NavbarResident.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './App.css';
+import '../App.css';
 
-const ResidentNav = () => {
+const NavbarResident = () => {
   return (
     <nav>
       <ul>
@@ -18,4 +17,4 @@ const ResidentNav = () => {
   );
 };
 
-export default ResidentNav;
+export default NavbarResident;
