@@ -15,83 +15,86 @@ CREATE SCHEMA IF NOT EXISTS `roentgenium` DEFAULT CHARACTER SET utf8 ;
 USE `roentgenium` ;
 
 -- -----------------------------------------------------
--- Table `roentgenium`.`Visitors`
+-- Table `roentgenium`.`visitors`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium`.`Visitors` (
-  `visitor_ID` INT NOT NULL AUTO_INCREMENT,
-  `FirstName` VARCHAR(31) NOT NULL,
-  `LastName` VARCHAR(31) NOT NULL,
-  `Run` INT NOT NULL,
-  `RunVd` TINYINT(1) NOT NULL,
-  `BirthDate` DATE NOT NULL,
-  `VisitAmmount` INT NOT NULL,
-  `VisitType` VARCHAR(31) NOT NULL,
-  PRIMARY KEY (`visitor_ID`))
+CREATE TABLE IF NOT EXISTS `roentgenium`.`visitors` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `first_name` VARCHAR(31) NOT NULL,
+  `last_name` VARCHAR(31) NOT NULL,
+  `run` INT NOT NULL,
+  `run_vd` TINYINT(1) NOT NULL,
+  `birth_date` DATE NOT NULL,
+  `last_visit` DATETIME NULL,
+  `visit_type` VARCHAR(31) NOT NULL,
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `roentgenium`.`Vehicle_Registry_Visitors`
+-- Table `roentgenium`.`vehicles_visitors`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium`.`Vehicle_Registry_Visitors` (
-  `visitor_vehicle_ID` INT NOT NULL AUTO_INCREMENT,
-  `Visitors_visitor_ID` INT NOT NULL,
-  `LicensePlate` VARCHAR(8) NOT NULL,
-  `ParkingSpot` SMALLINT NULL,
-  `ParkingDate` DATETIME NULL,
-  PRIMARY KEY (`visitor_vehicle_ID`, `Visitors_visitor_ID`),
-  INDEX `fk_Vehicle_Registry_Visitors_Visitors_idx` (`Visitors_visitor_ID` ASC),
-  CONSTRAINT `fk_Vehicle_Registry_Visitors_Visitors`
-    FOREIGN KEY (`Visitors_visitor_ID`)
-    REFERENCES `roentgenium`.`Visitors` (`visitor_ID`)
+CREATE TABLE IF NOT EXISTS `roentgenium`.`vehicles_visitors` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `visitor_id` INT NOT NULL,
+  `license_plate` VARCHAR(8) NOT NULL,
+  `parking_spot` SMALLINT NULL,
+  `parking_date` DATETIME NULL,
+  PRIMARY KEY (`id`, `visitor_id`),
+  INDEX `fk_vehicle_registry_visitors_visitors1_idx` (`visitor_id` ASC) VISIBLE,
+  UNIQUE INDEX `parking_spot_UNIQUE` (`parking_spot` ASC) VISIBLE,
+  CONSTRAINT `fk_vehicle_registry_visitors_visitors1`
+    FOREIGN KEY (`visitor_id`)
+    REFERENCES `roentgenium`.`visitors` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `roentgenium`.`Inhabitants`
+-- Table `roentgenium`.`inhabitants`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium`.`Inhabitants` (
-  `inhabitant_ID` INT NOT NULL AUTO_INCREMENT,
-  `Tower` TINYINT NOT NULL,
-  `Unit` SMALLINT NOT NULL,
-  `FirstName` VARCHAR(31) NOT NULL,
-  `LastName` VARCHAR(31) NOT NULL,
-  `Run` INT NOT NULL,
-  `RunVd` TINYINT(1) NOT NULL,
-  `ContactNumber` VARCHAR(15) NOT NULL,
-  PRIMARY KEY (`inhabitant_ID`))
+CREATE TABLE IF NOT EXISTS `roentgenium`.`inhabitants` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `apartment` TINYINT NOT NULL,
+  `housing_unit` SMALLINT NULL,
+  `first_name` VARCHAR(31) NOT NULL,
+  `last_name` VARCHAR(31) NOT NULL,
+  `run` INT NOT NULL,
+  `run_vd` TINYINT(1) NOT NULL,
+  `contact_number` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `roentgenium`.`Incoming_Mail`
+-- Table `roentgenium`.`mail`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium`.`Incoming_Mail` (
-  `mail_ID` INT NOT NULL AUTO_INCREMENT,
-  `Inhabitants_inhabitant_ID` INT NOT NULL,
-  `Type` VARCHAR(31) NOT NULL,
-  `TimeArrival` DATETIME NOT NULL,
-  `IsClaimed` TINYINT(1) NOT NULL,
-  PRIMARY KEY (`mail_ID`, `Inhabitants_inhabitant_ID`),
-  INDEX `fk_Incoming_Mail_Inhabitants1_idx` (`Inhabitants_inhabitant_ID` ASC),
-  CONSTRAINT `fk_Incoming_Mail_Inhabitants1`
-    FOREIGN KEY (`Inhabitants_inhabitant_ID`)
-    REFERENCES `roentgenium`.`Inhabitants` (`inhabitant_ID`)
+CREATE TABLE IF NOT EXISTS `roentgenium`.`mail` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `inhabitant_id` INT NOT NULL,
+  `type` VARCHAR(31) NOT NULL,
+  `arrival_time` DATETIME NOT NULL,
+  `is_claimed` TINYINT(1) NOT NULL,
+  PRIMARY KEY (`id`, `inhabitant_id`),
+  INDEX `fk_Incoming_Mail_inhabitants_idx` (`inhabitant_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Incoming_Mail_inhabitants`
+    FOREIGN KEY (`inhabitant_id`)
+    REFERENCES `roentgenium`.`inhabitants` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `roentgenium`.`Login_Sys`
+-- Table `roentgenium`.`login_system`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium`.`Login_Sys` (
-  `login_ID` INT NOT NULL,
-  `Username` VARCHAR(31) NOT NULL,
-  `Password` VARCHAR(31) NOT NULL,
-  PRIMARY KEY (`login_ID`))
+CREATE TABLE IF NOT EXISTS `roentgenium`.`login_system` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(31) NOT NULL,
+  `password` VARCHAR(31) NOT NULL,
+  `user_type` VARCHAR(31) NOT NULL,
+  `last_access` DATETIME NULL,
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 
