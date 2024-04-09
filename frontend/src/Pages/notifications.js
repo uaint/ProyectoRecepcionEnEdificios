@@ -10,12 +10,12 @@ const Notifications = () => {
 
   return (
     <div className="notifications-container">
-      <h1>Notifications</h1>
-      <hr className="divider" /> 
+      <h1 className="centeredHeading">Notifications</h1>
+      <hr className="divider" />
       <ul className="notifications-list">
         {notifications.map((notification, index) => (
           <li key={index}>
-            * {notification}
+            {notification}
           </li>
         ))}
       </ul>

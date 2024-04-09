@@ -171,11 +171,12 @@ label {
 
 /* Notifications */
 .notifications-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  margin-top: 30px;
   height: 100vh; 
-  padding: 20px; 
+  padding: 20px;
+  max-width: 1200px; 
+  margin-left: auto; 
+  margin-right: auto; 
 }
 
 .notifications-list {
@@ -186,6 +187,16 @@ label {
 
 .notifications-list li {
   margin-bottom: 10px; 
+  position: relative;
+  padding-left: 20px;
+  display: block;
+  width: 100%; 
+}
+
+.notifications-list li::before {
+  content: '•'; 
+  position: absolute;
+  left: 0;
 }
 
 .divider {
@@ -194,6 +205,11 @@ label {
   width: 100%; 
   margin: 10px 0; 
 }
+
+
+
+
+
 
 
 /* Admin Frequent Visits */

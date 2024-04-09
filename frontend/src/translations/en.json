@@ -1,0 +1,11 @@
+{
+  "home": {
+    "welcome": "Welcome!",
+    "homePage": "This is the home page.",
+    "logInOut": {
+      "loggedIn": "Log out",
+      "loggedOut": "Log in"
+    },
+    "emailAddress": "Your email address is {{email}}"
+  }
+}

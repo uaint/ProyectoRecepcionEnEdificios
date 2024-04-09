@@ -1,0 +1,11 @@
+{
+  "home": {
+    "welcome": "¡Bienvenido!",
+    "homePage": "Esta es la página de inicio.",
+    "logInOut": {
+      "loggedIn": "Cerrar sesión",
+      "loggedOut": "Iniciar sesión"
+    },
+    "emailAddress": "Tu dirección de correo electrónico es {{email}}"
+  }
+}

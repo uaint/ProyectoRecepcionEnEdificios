@@ -10,11 +10,21 @@ const NewVisitForm = () => {
     birthDate: '',
     visitAmount: '',
     visitType: '',
+    apartmentToVisit: '', // Renombré el campo a "apartmentToVisit"
   });
+
+  const [apartmentOptions, setApartmentOptions] = useState([
+    '101', '202', '303' // Departamentos disponibles, puedes modificar estos valores
+  ]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleApartmentChange = (e) => {
+    const selectedApartment = e.target.value;
+    setFormData({ ...formData, apartmentToVisit: selectedApartment });
   };
 
   const handleSubmit = (e) => {
@@ -30,6 +40,7 @@ const NewVisitForm = () => {
       birthDate: '',
       visitAmount: '',
       visitType: '',
+      apartmentToVisit: '', // También reseteamos el valor del nuevo campo
     });
   };
 
@@ -86,16 +97,22 @@ const NewVisitForm = () => {
           />
         </div>
         <div className="formGroup">
-          <label htmlFor="aptToVisit">Apartment to Visit: </label>
-          <input
-            type="text"
-            id="aptToVisit"
-            name="aptToVisit"
-            value={formData.aptToVisit}
-            onChange={handleChange}
+          <label htmlFor="apartmentToVisit">Apartment to Visit:</label>
+          <select
+            id="apartmentToVisit"
+            name="apartmentToVisit"
+            value={formData.apartmentToVisit}
+            onChange={handleApartmentChange}
             required
             className="inputField"
-          />
+          >
+            <option value="" disabled hidden>Select Apartment</option>
+            {apartmentOptions.map((apartment, index) => (
+              <option key={index} value={apartment}>
+                {apartment}
+              </option>
+            ))}
+          </select>
         </div>
         <button type="submit" className="submitButton">Add Visit</button>
       </form>

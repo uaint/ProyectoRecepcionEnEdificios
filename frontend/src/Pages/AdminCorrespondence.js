@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
+import axios from 'axios';
 
 const AdminCorrespondence = () => {
   // Example data for the rows

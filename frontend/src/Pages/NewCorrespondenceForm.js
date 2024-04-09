@@ -27,10 +27,12 @@ const NewCorrespondenceForm = () => {
     type: '',
     timeArrival: '',
     isClaimed: false,
-    inhabitantId: '',
+    apartment: '',
+    inhabitant: '',
   });
 
   const [selectedOption, setSelectedOption] = useState('Type');
+  const [apartmentOptions, setApartmentOptions] = useState([]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -38,7 +40,7 @@ const NewCorrespondenceForm = () => {
     setFormData({ ...formData, [name]: newValue });
   };
 
-  const fechamsg = obtenerFecha(formData.timeArrival)
+  const fechamsg = obtenerFecha(formData.timeArrival);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -95,8 +97,30 @@ const NewCorrespondenceForm = () => {
       type: '',
       timeArrival: '',
       isClaimed: false,
-      inhabitantId: '',
+      apartment: '',
+      inhabitant: '',
     });
+  };
+
+  // Simulación de datos de apartamentos y habitantes
+  const apartmentData = [
+    { id: 1, name: '101', inhabitants: ['Juan Pérez', 'María González'] },
+    { id: 2, name: '202', inhabitants: ['Pedro López', 'Ana Martínez'] },
+    { id: 3, name: '303', inhabitants: ['Sofía Rodríguez', 'Carlos Ruiz'] },
+  ];
+
+  // Función para manejar el cambio en la selección del apartamento
+  const handleApartmentChange = (e) => {
+    const selectedApartment = e.target.value;
+    const selectedApartmentData = apartmentData.find((apartment) => apartment.name === selectedApartment);
+    setApartmentOptions(selectedApartmentData.inhabitants);
+    setFormData({ ...formData, apartment: selectedApartment });
+  };
+
+  // Función para manejar el cambio en la selección del habitante
+  const handleInhabitantChange = (e) => {
+    const selectedInhabitant = e.target.value;
+    setFormData({ ...formData, inhabitant: selectedInhabitant });
   };
 
   return (
@@ -127,16 +151,40 @@ const NewCorrespondenceForm = () => {
           />
         </div>
         <div className="formGroup">
-          <label htmlFor="inhabitantId">Inhabitant ID:</label>
-          <input
-            type="text"
-            id="inhabitantId"
-            name="inhabitantId"
-            value={formData.inhabitantId}
-            onChange={handleChange}
+          <label htmlFor="apartment">Apartment:</label>
+          <select
+            id="apartment"
+            name="apartment"
+            value={formData.apartment}
+            onChange={handleApartmentChange}
             required
             className="inputField"
-          />
+          >
+            <option value="" disabled hidden>Select Apartment</option>
+            {apartmentData.map((apartment) => (
+              <option key={apartment.id} value={apartment.name}>
+                {apartment.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="formGroup">
+          <label htmlFor="inhabitant">Inhabitant:</label>
+          <select
+            id="inhabitant"
+            name="inhabitant"
+            value={formData.inhabitant}
+            onChange={handleInhabitantChange}
+            required
+            className="inputField"
+          >
+            <option value="" disabled hidden>Select Inhabitant</option>
+            {apartmentOptions.map((inhabitant, index) => (
+              <option key={index} value={inhabitant}>
+                {inhabitant}
+              </option>
+            ))}
+          </select>
         </div>
         <button type="submit" className="submitButton">Add Correspondence</button>
       </form>

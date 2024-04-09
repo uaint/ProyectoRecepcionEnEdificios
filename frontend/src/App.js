@@ -1,11 +1,15 @@
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import './App.css';
+import i18n from './i18n';
+import { I18nextProvider } from 'react-i18next';
+
+// Importa los componentes
 import NavbarConcierge from './components/NavbarConcierge';
 import NavbarResident from './components/NavbarResident';
 
 
-// Importacion de las paginas
+// Importa las páginas
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import NewCorrespondenceForm from './Pages/NewCorrespondenceForm';
@@ -22,39 +26,39 @@ import ConfigAdmin from './Pages/ConfigAdmin';
 import NewVehicleForm from './Pages/NewVehicleForm';
 import AdminParking from './Pages/AdminParking';
 
-
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [email, setEmail] = useState("")
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     // Fetch the user email and token from local storage
-    const user = JSON.parse(localStorage.getItem("user"))
+    const user = JSON.parse(localStorage.getItem("user"));
 
     // If the token/email does not exist, mark the user as logged out
     if (!user || !user.token) {
-      setLoggedIn(false)
-      return
+      setLoggedIn(false);
+      return;
     }
 
     // If the token exists, verify it with the auth server to see if it is valid
     fetch("http://localhost:3080/verify", {
-            method: "POST",
-            headers: {
-                'jwt-token': user.token
-              }
-        })
-        .then(r => r.json())
-        .then(r => {
-            setLoggedIn('success' === r.message)
-            setEmail(user.email || "")
-        })
-  }, [])
+      method: "POST",
+      headers: {
+        'jwt-token': user.token
+      }
+    })
+    .then(r => r.json())
+    .then(r => {
+      setLoggedIn('success' === r.message);
+      setEmail(user.email || "");
+    });
+  }, []);
 
   return (
     <div className="App">
+      <I18nextProvider i18n={i18n}> {/* Usa I18nextProvider para proporcionar las traducciones a toda la aplicación */}
       <BrowserRouter>
-      <NavbarConcierge /> {/* Aca alternar navbar entre Concierge y Resident hasta conectar backend */}
+        <NavbarResident /> {/* Aca alternar navbar entre Concierge y Resident hasta conectar backend */}
         <Routes>
           <Route path="/home" element={<Home email={email} loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>} />
           <Route path="/login" element={<Login setLoggedIn={setLoggedIn} setEmail={setEmail} />} />
@@ -74,6 +78,7 @@ function App() {
           <Route path="*" element={<Navigate to="/home" replace />} /> {/* Redireccionar desde cualquier ruta inválida a /home */}
         </Routes>
       </BrowserRouter>
+      </I18nextProvider>
     </div>
   );
 }
