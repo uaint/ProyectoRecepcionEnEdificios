@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import '../App.css'; 
 
 const NewVisitForm = () => {
+  const { t } = useTranslation();
+  
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     run: '',
-    runVd: '',
     birthDate: '',
-    visitAmount: '',
-    visitType: '',
-    apartmentToVisit: '', // Renombré el campo a "apartmentToVisit"
+    apartmentToVisit: '',
   });
 
   const [apartmentOptions, setApartmentOptions] = useState([
@@ -36,20 +36,17 @@ const NewVisitForm = () => {
       firstName: '',
       lastName: '',
       run: '',
-      runVd: '',
       birthDate: '',
-      visitAmount: '',
-      visitType: '',
-      apartmentToVisit: '', // También reseteamos el valor del nuevo campo
+      apartmentToVisit: '',
     });
   };
 
   return (
     <div className="formContainer">
-      <h2>Add New Visit</h2>
+      <h2>{t('visitForm.addNewVisit')}</h2>
       <form onSubmit={handleSubmit} className="visitForm">
         <div className="formGroup">
-          <label htmlFor="firstName">First Name:</label>
+          <label htmlFor="firstName">{t('visitForm.firstName')}</label>
           <input
             type="text"
             id="firstName"
@@ -61,7 +58,7 @@ const NewVisitForm = () => {
           />
         </div>
         <div className="formGroup">
-          <label htmlFor="lastName">Last Name:</label>
+          <label htmlFor="lastName">{t('visitForm.lastName')}</label>
           <input
             type="text"
             id="lastName"
@@ -73,7 +70,7 @@ const NewVisitForm = () => {
           />
         </div>
         <div className="formGroup">
-          <label htmlFor="run">RUT:</label>
+          <label htmlFor="run">{t('visitForm.run')}</label>
           <input
             type="text"
             id="run"
@@ -85,7 +82,7 @@ const NewVisitForm = () => {
           />
         </div>
         <div className="formGroup">
-          <label htmlFor="birthDate">Birth Date:</label>
+          <label htmlFor="birthDate">{t('visitForm.birthDate')}</label>
           <input
             type="date"
             id="birthDate"
@@ -97,7 +94,7 @@ const NewVisitForm = () => {
           />
         </div>
         <div className="formGroup">
-          <label htmlFor="apartmentToVisit">Apartment to Visit:</label>
+          <label htmlFor="apartmentToVisit">{t('visitForm.apartmentToVisit')}</label>
           <select
             id="apartmentToVisit"
             name="apartmentToVisit"
@@ -106,7 +103,7 @@ const NewVisitForm = () => {
             required
             className="inputField"
           >
-            <option value="" disabled hidden>Select Apartment</option>
+            <option value="" disabled hidden>{t('visitForm.selectApartment')}</option>
             {apartmentOptions.map((apartment, index) => (
               <option key={index} value={apartment}>
                 {apartment}
@@ -114,7 +111,7 @@ const NewVisitForm = () => {
             ))}
           </select>
         </div>
-        <button type="submit" className="submitButton">Add Visit</button>
+        <button type="submit" className="submitButton">{t('visitForm.addVisit')}</button>
       </form>
     </div>
   );

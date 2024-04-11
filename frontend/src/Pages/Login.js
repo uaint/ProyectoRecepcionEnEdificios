@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useTranslation } from 'react-i18next'; // Importa useTranslation desde react-i18next
 import { useNavigate } from "react-router-dom";
 
 const Login = (props) => {
+    const { t } = useTranslation(); // Usa useTranslation para acceder a las traducciones
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [emailError, setEmailError] = useState("")
@@ -17,22 +19,22 @@ const Login = (props) => {
 
         // Check if the user has entered both fields correctly
         if ("" === email) {
-            setEmailError("Please enter your email")
+            setEmailError(t('login.emailError')) // Usa la traducción para el mensaje de error de email
             return
         }
 
         if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-            setEmailError("Please enter a valid email")
+            setEmailError(t('login.invalidEmailError')) // Usa la traducción para el mensaje de error de email inválido
             return
         }
 
         if ("" === password) {
-            setPasswordError("Please enter a password")
+            setPasswordError(t('login.passwordError')) // Usa la traducción para el mensaje de error de contraseña
             return
         }
 
-        if (password.length < 7) {
-            setPasswordError("The password must be 8 characters or longer")
+        if (password.length < 8) {
+            setPasswordError(t('login.shortPasswordError')) // Usa la traducción para el mensaje de error de contraseña corta
             return
         }
 
@@ -43,7 +45,7 @@ const Login = (props) => {
                 logIn()
             else
             // Else, ask user if they want to create a new account and if yes, then log in
-                if (window.confirm("An account does not exist with this email address: " + email + ". Do you want to create a new account?")) {
+                if (window.confirm(t('login.accountNotExistConfirm', { email }))) { // Usa la traducción para el mensaje de confirmación de cuenta inexistente
                     logIn()
                 }
         })        
@@ -83,20 +85,20 @@ const Login = (props) => {
                 props.setEmail(email)
                 navigate("/")
             } else {
-                window.alert("Wrong email or password")
+                window.alert(t('login.wrongCredentialsAlert')) // Usa la traducción para el mensaje de alerta de credenciales incorrectas
             }
         })
     }
 
     return <div className={"mainContainer"}>
         <div className={"titleContainer"}>
-            <div>Login</div>
+            <div>{t('login.title')}</div> {/* Usa la traducción para el título */}
         </div>
         <br />
         <div className={"inputContainer"}>
             <input
                 value={email}
-                placeholder="Enter your email here"
+                placeholder={t('login.emailPlaceholder')} // Usa la traducción para el placeholder del email
                 onChange={ev => setEmail(ev.target.value)}
                 className={"inputBox"} />
             <label className="errorLabel">{emailError}</label>
@@ -105,7 +107,7 @@ const Login = (props) => {
         <div className={"inputContainer"}>
             <input
                 value={password}
-                placeholder="Enter your password here"
+                placeholder={t('login.passwordPlaceholder')} // Usa la traducción para el placeholder de la contraseña
                 onChange={ev => setPassword(ev.target.value)}
                 className={"inputBox"} />
             <label className="errorLabel">{passwordError}</label>
@@ -116,7 +118,7 @@ const Login = (props) => {
                 className={"inputButton"}
                 type="button"
                 onClick={onButtonClick}
-                value={"Log in"} />
+                value={t('login.loginButton')} /> {/* Usa la traducción para el texto del botón de iniciar sesión */}
         </div>
     </div>
 }

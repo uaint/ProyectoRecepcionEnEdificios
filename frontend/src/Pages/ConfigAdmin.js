@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import '../App.css';
 
 const ConfigAdmin = () => {
+  const { t } = useTranslation();
   const [showCreateNewUser, setShowCreateNewUser] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showAdminUsersRoles, setShowAdminUsersRoles] = useState(false);
@@ -26,17 +28,17 @@ const ConfigAdmin = () => {
 
   return (
     <div className="config-container">
-      <h1>Configuration</h1>
+      <h1>{t('configAdmin.configuration')}</h1>
       <div className="buttons-container">
-        <button className="config-button" onClick={handleToggleAdminUsersRoles}>Admin Users & Roles</button>
-        <button className="config-button" onClick={handleCreateNewUser}>New User</button>
-        <button className="config-button" onClick={handleToggleNotifications}>Notifications</button>
+        <button className="config-button" onClick={handleToggleAdminUsersRoles}>{t('configAdmin.adminUsersRoles')}</button>
+        <button className="config-button" onClick={handleCreateNewUser}>{t('configAdmin.newUser')}</button>
+        <button className="config-button" onClick={handleToggleNotifications}>{t('configAdmin.notifications')}</button>
       </div>
 
       {/* Mostrar cuadro de crear nuevo usuario */}
       {showCreateNewUser && (
         <div className="config-box">
-          <h2>Create New User</h2>
+          <h2>{t('configAdmin.createNewUserTitle')}</h2>
           {/* Campos de info nuevo usuario , tbd */}
         </div>
       )}
@@ -44,7 +46,7 @@ const ConfigAdmin = () => {
       {/* Mostrar cuadro de Notifications */}
       {showNotifications && (
         <div className="config-box">
-          <h2>Notifications</h2>
+          <h2>{t('configAdmin.notificationsTitle')}</h2>
           {/* Campos de notificaciones, tbd */}
         </div>
       )}
@@ -52,7 +54,7 @@ const ConfigAdmin = () => {
       {/* Mostrar cuadro de Admin Users & Roles */}
       {showAdminUsersRoles && (
         <div className="config-box">
-          <h2>Admin Users & Roles</h2>
+          <h2>{t('configAdmin.adminUsersRolesTitle')}</h2>
           {/* Campos de administración de usuarios y roles aquí, tbd */}
         </div>
       )}

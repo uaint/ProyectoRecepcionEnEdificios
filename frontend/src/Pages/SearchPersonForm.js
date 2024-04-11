@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import '../App.css'; 
 
 const SearchPersonForm = () => {
+  const { t } = useTranslation();
   const [rut, setRut] = useState('');
   const [personData, setPersonData] = useState(null);
 
   const handleSearch = () => {
-    // Aquí puedes agregar la lógica para buscar la persona en la base de datos o en algún servicio
-    // Por simplicidad, este ejemplo solo muestra un mensaje en la consola
-    console.log('Search person with RUT:', rut);
-
     // Simulando una respuesta con datos de la persona encontrada
     const mockPersonData = {
       rut: rut,
@@ -26,9 +24,9 @@ const SearchPersonForm = () => {
 
   return (
     <div className="formContainer">
-      <h2>Search Person by RUT</h2>
+      <h2>{t('searchPersonForm.searchByRut')}</h2>
       <div className="formGroup">
-        <label htmlFor="rut">RUT:</label>
+        <label htmlFor="rut">{t('searchPersonForm.rutLabel')}</label>
         <input
           type="text"
           id="rut"
@@ -40,18 +38,18 @@ const SearchPersonForm = () => {
         />
       </div>
       <button type="button" onClick={handleSearch} className="submitButton">
-        Search
+        {t('searchPersonForm.searchButton')}
       </button>
       {personData && (
         <div className="personInfo">
-          <h3>Person Found</h3>
-          <p><strong>RUT:</strong> {personData.rut}</p>
-          <p><strong>Name:</strong> {personData.firstName} {personData.lastName}</p>
-          <p><strong>Birth Date:</strong> {personData.birthDate}</p>
-          <p><strong>Address:</strong> {personData.address}</p>
-          <p><strong>Phone:</strong> {personData.phone}</p>
-          <p><strong>apartments visited:</strong> {personData.apartments_visited}</p>
-          <p><strong>Quantity:</strong> {personData.Quantity_of_visits}</p>
+          <h3>{t('searchPersonForm.personFound')}</h3>
+          <p><strong>{t('searchPersonForm.rut')}:</strong> {personData.rut}</p>
+          <p><strong>{t('searchPersonForm.name')}:</strong> {personData.firstName} {personData.lastName}</p>
+          <p><strong>{t('searchPersonForm.birthDate')}:</strong> {personData.birthDate}</p>
+          <p><strong>{t('searchPersonForm.address')}:</strong> {personData.address}</p>
+          <p><strong>{t('searchPersonForm.phone')}:</strong> {personData.phone}</p>
+          <p><strong>{t('searchPersonForm.apartmentsVisited')}:</strong> {personData.apartments_visited}</p>
+          <p><strong>{t('searchPersonForm.quantity')}:</strong> {personData.Quantity_of_visits}</p>
         </div>
       )}
     </div>

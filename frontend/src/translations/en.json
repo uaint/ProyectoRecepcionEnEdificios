@@ -1,4 +1,103 @@
 {
+  "navbarConcierge": {
+    "adminCorrespondence": "Admin Correspondence",
+    "adminFrequentVisits": "Admin Frequent Visits",
+    "searchPerson": "Search Person",
+    "newVisit": "New Visit",
+    "newVehicle": "New Vehicle",
+    "adminParking": "Admin Parking",
+    "messages": "Messages",
+    "config": "Config",
+    "signOut": "Sign Out"
+  },
+  "navbarResident": {
+    "notifications": "Notifications",
+    "adminFrequentVisits": "Admin Frequent Visits",
+    "messages": "Messages",
+    "config": "Config",
+    "signOut": "Sign Out"
+  },
+  "adminCorrespondence": {
+    "adminCorrespondence": "Admin Correspondence",
+    "id": "Id",
+    "building": "Building",
+    "apartment": "Apartment",
+    "type": "Type",
+    "notified": "Notified",
+    "contact": "Contact",
+    "delete": "Delete",
+    "addNewCorrespondence": "Add New Correspondence"
+  },
+  "adminFrequentVisits": {
+    "adminFrequentVisits": "Admin Frequent Visits",
+    "name": "Name",
+    "lastName": "Last Name",
+    "rut": "RUT",
+    "apartment": "Apartment",
+    "visitCount": "Visit Count",
+    "delete": "Delete",
+    "addFrequentVisit": "Add Frequent Visit"
+  },
+  "adminMessages": {
+    "adminMessages": "Admin Messages",
+    "name": "Name",
+    "lastName": "Last Name",
+    "rut": "RUT",
+    "building": "Building",
+    "apartment": "Apartment",
+    "contact": "Contact",
+    "labelName": "Name:",
+    "labelLastName": "Last Name:",
+    "labelRut": "RUT:",
+    "labelBuilding": "Building:",
+    "labelApartment": "Apartment:",
+    "labelContact": "Contact:",
+    "message1": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat efficitur urna id placerat...",
+    "message2": "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas..."
+  },
+  "adminParking": {
+    "adminParking": "Admin Parking",
+    "parking": "Parking",
+    "status": "Status",
+    "licensePlate": "License Plate",
+    "apartment": "Apartment",
+    "arrivingTime": "Arriving Time",
+    "modifyParkingSpot": "Modify Parking Spot",
+    "occupied": "Occupied",
+    "available": "Available"
+  },
+  "config": {
+    "configuration": "Configuration",
+    "personalInfo": "Personal Information",
+    "changePassword": "Change Password",
+    "notifications": "Notifications",
+    "personalInfoTitle": "Personal Information",
+    "changePasswordTitle": "Change Password",
+    "notificationsTitle": "Notifications",
+    "name": "Name:",
+    "lastName": "Last Name:",
+    "rut": "RUT:",
+    "apartment": "Apartment:",
+    "building": "Building:",
+    "edit": "Edit",
+    "oldPassword": "Old Password:",
+    "newPassword": "New Password:",
+    "confirmPassword": "Confirm Password:",
+    "updateInfo": "Update Information",
+    "receiveEmail": "Receive notifications through email:",
+    "unsubscribe": "Unsubscribe",
+    "receiveSMS": "Receive notifications through SMS:"
+  },
+  "configAdmin": {
+    "configuration": "Configuration",
+    "adminUsersRoles": "Admin Users & Roles",
+    "newUser": "New User",
+    "notifications": "Notifications",
+    "createNewUser": "Create New User",
+    "createNewUserTitle": "Create New User",
+    "notificationsTitle": "Notifications",
+    "adminUsersRolesTitle": "Admin Users & Roles"
+  },
   "home": {
     "welcome": "Welcome!",
     "homePage": "This is the home page.",
@@ -7,5 +106,84 @@
       "loggedOut": "Log in"
     },
     "emailAddress": "Your email address is {{email}}"
-  }
+  },
+    "login": {
+      "title": "Login",
+      "emailPlaceholder": "Enter your email here",
+      "passwordPlaceholder": "Enter your password here",
+      "loginButton": "Log in",
+      "emailError": "Please enter your email",
+      "invalidEmailError": "Please enter a valid email",
+      "passwordError": "Please enter a password",
+      "shortPasswordError": "The password must be 8 characters or longer",
+      "accountNotExistConfirm": "An account does not exist with this email address: {{email}}. Do you want to create a new account?",
+      "wrongCredentialsAlert": "Wrong email or password"
+    },
+    "messages": {
+      "contactConcierge": "Contact Concierge",
+      "writeMessage": "Write your message here...",
+      "selectType": "Select Type",
+      "packages": "Packages",
+      "visits": "Visits",
+      "cars": "Cars",
+      "parking": "Parking",
+      "others": "Others",
+      "sendMessage": "Send Message"
+    },
+    "correspondenceForm": {
+      "addNewCorrespondence": "Add New Correspondence",
+      "type": "Type",
+      "packages": "Packages",
+      "letters": "Letters",
+      "item": "Item",
+      "others": "Others",
+      "timeOfArrival": "Time of Arrival:",
+      "selectApartment": "Select Apartment",
+      "selectInhabitant": "Select Inhabitant",
+      "addCorrespondence": "Add Correspondence"
+    },
+    "vehicleForm": {
+      "addNewVehicle": "Add New Vehicle",
+      "name": "Name:",
+      "lastName": "Last Name:",
+      "building": "Building:",
+      "apartment": "Apartment:",
+      "licensePlate": "License Plate:",
+      "car": "Car:",
+      "parking": "Parking:",
+      "addVehicle": "Add Vehicle"
+    },
+    "visitForm": {
+      "addNewVisit": "Add New Visit",
+      "firstName": "First Name:",
+      "lastName": "Last Name:",
+      "run": "RUT:",
+      "birthDate": "Birth Date:",
+      "apartmentToVisit": "Apartment to Visit:",
+      "addVisit": "Add Visit",
+      "selectApartment": "Select Apartment"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "packageArrival": "The package 'TYPE' has arrived at the concierge since 'DATE'.",
+      "personArrival": "The person 'PERSON' arrived at 'DATE'.",
+      "parkingOccupied": "The parking spot 'PARKING' is occupied by 'VISITOR_NAME'. It must be vacated in 'REMAINING_TIME'."
+    },
+    "searchPersonCam": {
+      "toDevelop": "To be developed...",
+      "searchByRut": "Search by ID Number"
+    },
+    "searchPersonForm": {
+      "searchByRut": "Search Person by ID Number",
+      "rutLabel": "ID Number:",
+      "searchButton": "Search",
+      "personFound": "Person Found",
+      "rut": "ID Number",
+      "name": "Name",
+      "birthDate": "Birth Date",
+      "address": "Address",
+      "phone": "Phone",
+      "apartmentsVisited": "Apartments Visited",
+      "quantity": "Quantity"
+    }
 }

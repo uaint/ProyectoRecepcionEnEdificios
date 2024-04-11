@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import '../App.css'; 
 
 const NewVehicleForm = () => {
+  const { t } = useTranslation();
+  
   const [formData, setFormData] = useState({
     name: '',
     lastName: '',
@@ -35,10 +38,10 @@ const NewVehicleForm = () => {
 
   return (
     <div className="formContainer">
-      <h2>Add New Vehicle</h2>
+      <h2>{t('vehicleForm.addNewVehicle')}</h2>
       <form onSubmit={handleSubmit} className="vehicleForm">
         <div className="formGroup">
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name">{t('vehicleForm.name')}</label>
           <input
             type="text"
             id="name"
@@ -50,7 +53,7 @@ const NewVehicleForm = () => {
           />
         </div>
         <div className="formGroup">
-          <label htmlFor="lastName">Last Name:</label>
+          <label htmlFor="lastName">{t('vehicleForm.lastName')}</label>
           <input
             type="text"
             id="lastName"
@@ -62,7 +65,7 @@ const NewVehicleForm = () => {
           />
         </div>
         <div className="formGroup">
-          <label htmlFor="building">Building:</label>
+          <label htmlFor="building">{t('vehicleForm.building')}</label>
           <input
             type="text"
             id="building"
@@ -74,7 +77,7 @@ const NewVehicleForm = () => {
           />
         </div>
         <div className="formGroup">
-          <label htmlFor="apartment">Apartment:</label>
+          <label htmlFor="apartment">{t('vehicleForm.apartment')}</label>
           <input
             type="text"
             id="apartment"
@@ -86,7 +89,7 @@ const NewVehicleForm = () => {
           />
         </div>
         <div className="formGroup">
-          <label htmlFor="licensePlate">License Plate:</label>
+          <label htmlFor="licensePlate">{t('vehicleForm.licensePlate')}</label>
           <input
             type="text"
             id="licensePlate"
@@ -98,7 +101,7 @@ const NewVehicleForm = () => {
           />
         </div>
         <div className="formGroup">
-          <label htmlFor="car">Car:</label>
+          <label htmlFor="car">{t('vehicleForm.car')}</label>
           <input
             type="text"
             id="car"
@@ -110,7 +113,7 @@ const NewVehicleForm = () => {
           />
         </div>
         <div className="formGroup">
-          <label htmlFor="parking">Parking:</label>
+          <label htmlFor="parking">{t('vehicleForm.parking')}</label>
           <input
             type="text"
             id="parking"
@@ -121,7 +124,7 @@ const NewVehicleForm = () => {
             className="inputField"
           />
         </div>
-        <button type="submit" className="submitButton">Add Vehicle</button>
+        <button type="submit" className="submitButton">{t('vehicleForm.addVehicle')}</button>
       </form>
     </div>
   );

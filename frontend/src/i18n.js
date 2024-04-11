@@ -18,10 +18,10 @@ i18n
         translation: esTranslation,
       },
     },
-    fallbackLng: 'es', // Idioma por defecto
+    fallbackLng: 'en', // Idioma por defecto del sistema - TBD (No funciona siempre por algun motivo)
     detection: {
-      order: ['localStorage', 'navigator'], // Intenta detectar el idioma primero en el almacenamiento local y luego en el navegador
-      lookupLocalStorage: 'i18nextLng', // Clave para buscar el idioma en localStorage
+      order: ['localStorage', 'navigator'], 
+      lookupLocalStorage: 'i18nextLng', 
       caches: ['localStorage']
     },
     interpolation: {

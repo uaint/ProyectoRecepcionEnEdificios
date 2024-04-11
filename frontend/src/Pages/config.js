@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import '../App.css';
 
 const Config = () => {
+  const { t } = useTranslation();
   const [showPersonalInfo, setShowPersonalInfo] = useState(false);
   const [showChangePassword, setShowChangePassword] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -26,77 +28,77 @@ const Config = () => {
 
   return (
     <div className="config-container">
-      <h1>Configuration</h1>
+      <h1>{t('config.configuration')}</h1>
       <div className="buttons-container">
-        <button className="config-button" onClick={handleTogglePersonalInfo}>Personal Information</button>
-        <button className="config-button" onClick={handleToggleChangePassword}>Change Password</button>
-        <button className="config-button" onClick={handleToggleNotifications}>Notifications</button>
+        <button className="config-button" onClick={handleTogglePersonalInfo}>{t('config.personalInfo')}</button>
+        <button className="config-button" onClick={handleToggleChangePassword}>{t('config.changePassword')}</button>
+        <button className="config-button" onClick={handleToggleNotifications}>{t('config.notifications')}</button>
       </div>
 
-      {/* Mostrar cuadro de Personal Information */}
+      {/* Mostrar cuadro de Información Personal */}
       {showPersonalInfo && (
         <div className="config-box">
-          <h2>Personal Information</h2>
+          <h2>{t('config.personalInfoTitle')}</h2>
           <div className="info-item">
-            <label>Name:</label>
+            <label>{t('config.name')}</label>
             <span>John</span>
-            <button>Edit</button>
+            <button>{t('config.edit')}</button>
           </div>
           <div className="info-item">
-            <label>Last Name:</label>
+            <label>{t('config.lastName')}</label>
             <span>Doe</span>
-            <button>Edit</button>
+            <button>{t('config.edit')}</button>
           </div>
           <div className="info-item">
-            <label>RUT:</label>
+            <label>{t('config.rut')}</label>
             <span>20903849-1</span>
-            <button>Edit</button>
+            <button>{t('config.edit')}</button>
           </div>
           <div className="info-item">
-            <label>Apartment:</label>
+            <label>{t('config.apartment')}</label>
             <span>7A</span>
-            <button>Edit</button>
+            <button>{t('config.edit')}</button>
           </div>
           <div className="info-item">
-            <label>Building:</label>
+            <label>{t('config.building')}</label>
             <span>A</span>
-            <button>Edit</button>
+            <button>{t('config.edit')}</button>
           </div>
           {/* Agregar más campos de información aquí */}
         </div>
       )}
 
-      {/* Mostrar cuadro de Change Password */}
+      {/* Mostrar cuadro de Cambiar Contraseña */}
       {showChangePassword && (
         <div className="config-box">
-          <h2>Change Password</h2>
+          <h2>{t('config.changePasswordTitle')}</h2>
           <div className="password-item">
-            <label>Old Password: </label>
+            <label>{t('config.oldPassword')}</label>
             <input type="password" />
           </div>
           <div className="password-item">
-            <label>New Password: </label>
+            <label>{t('config.newPassword')}</label>
             <input type="password" />
           </div>
           <div className="password-item">
-            <label>Confirm Password: </label>
+            <label>{t('config.confirmPassword')}</label>
             <input type="password" />
           </div>
-          <button className="update-info-button">Update Information</button>
+          <button className="update-info-button">{t('config.updateInfo')}</button>
         </div>
       )}
 
-      {/* Mostrar cuadro de Notifications */}
+      {/* Mostrar cuadro de Notificaciones */}
       {showNotifications && (
         <div className="config-box">
-          <h2>Notifications</h2>
+          <h2>{t('config.notificationsTitle')}</h2>
           <div className="notification-item">
-            <label>Receive notifications through email:</label>
-            <button>Unsubscribe</button>
+            <label>{t('config.receiveEmail')}</label>
+            <button>{t('config.unsubscribe')}</button>
           </div>
           <div className="notification-item">
-            <label>Receive notifications through SMS:</label>
-            <button>Unsubscribe</button>
+            <label>{t('config.receiveSMS')}</label>
+            <button>{t('config.unsubscribe')}</button>
           </div>
         </div>
       )}

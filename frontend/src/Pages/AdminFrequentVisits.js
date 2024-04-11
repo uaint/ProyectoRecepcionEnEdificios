@@ -1,8 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import '../App.css';
 
 const AdminFrequentVisits = () => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
   // Sample data for rows
   const frequentVisitsData = [
     { id: 1, name: 'John', lastName: 'Doe', rut: '12839849-1', dept: '7A', visitCount: 5 },
@@ -16,22 +20,21 @@ const AdminFrequentVisits = () => {
   };
 
   // Redirect button for New Visit
-  const navigate = useNavigate();
   const handleButtonClick = () => {
     navigate('/newvisitform');
   };
 
   return (
     <div className="admin-frequent-visits">
-      <h1 className="centeredHeading">Admin Frequent Visits</h1>
+      <h1 className="centeredHeading">{t('adminFrequentVisits.adminFrequentVisits')}</h1>
       <table>
         <thead>
           <tr className="trTopPart">
-            <th>Name</th>
-            <th>Last Name</th>
-            <th>RUT</th>
-            <th>Apartment</th>
-            <th>Visit Count</th>
+            <th>{t('adminFrequentVisits.name')}</th>
+            <th>{t('adminFrequentVisits.lastName')}</th>
+            <th>{t('adminFrequentVisits.rut')}</th>
+            <th>{t('adminFrequentVisits.apartment')}</th>
+            <th>{t('adminFrequentVisits.visitCount')}</th>
             <th></th> {/* Empty space for the "Delete" button */}
           </tr>
         </thead>
@@ -44,14 +47,14 @@ const AdminFrequentVisits = () => {
               <td>{visit.dept}</td>
               <td>{visit.visitCount}</td>
               <td>
-                <button onClick={() => handleDelete(visit.id)}>Delete</button>
+                <button onClick={() => handleDelete(visit.id)}>{t('adminFrequentVisits.delete')}</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
       <div>
-        <button className="addFrequentVisitButton" onClick={handleButtonClick}>Add Frequent Visit</button>
+        <button className="addFrequentVisitButton" onClick={handleButtonClick}>{t('adminFrequentVisits.addFrequentVisit')}</button>
       </div>
     </div>
   );

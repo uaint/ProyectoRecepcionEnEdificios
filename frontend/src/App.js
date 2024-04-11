@@ -26,6 +26,8 @@ import ConfigAdmin from './Pages/ConfigAdmin';
 import NewVehicleForm from './Pages/NewVehicleForm';
 import AdminParking from './Pages/AdminParking';
 
+
+
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
@@ -56,7 +58,7 @@ function App() {
 
   return (
     <div className="App">
-      <I18nextProvider i18n={i18n}> {/* Usa I18nextProvider para proporcionar las traducciones a toda la aplicación */}
+      <I18nextProvider i18n={i18n}> {/* Usa I18nextProvider para traducir todo el sistema */}
       <BrowserRouter>
         <NavbarResident /> {/* Aca alternar navbar entre Concierge y Resident hasta conectar backend */}
         <Routes>

@@ -1,4 +1,103 @@
 {
+  "navbarConcierge": {
+    "adminCorrespondence": "Correspondencia de Administración",
+    "adminFrequentVisits": "Visitas Frecuentes de Administración",
+    "searchPerson": "Buscar Persona",
+    "newVisit": "Nueva Visita",
+    "newVehicle": "Nuevo Vehículo",
+    "adminParking": "Estacionamiento de Administración",
+    "messages": "Mensajes",
+    "config": "Configuración",
+    "signOut": "Cerrar Sesión"
+  },
+  "navbarResident": {
+    "notifications": "Notificaciones",
+    "adminFrequentVisits": "Visitas Frecuentes de Administración",
+    "messages": "Mensajes",
+    "config": "Configuración",
+    "signOut": "Cerrar Sesión"
+  },
+  "adminCorrespondence": {
+    "adminCorrespondence": "Correspondencia de Administración",
+    "id": "Id",
+    "building": "Edificio",
+    "apartment": "Departamento",
+    "type": "Tipo",
+    "notified": "Notificado",
+    "contact": "Contacto",
+    "delete": "Eliminar",
+    "addNewCorrespondence": "Agregar Nueva Correspondencia"
+  },
+  "adminFrequentVisits": {
+    "adminFrequentVisits": "Visitas Frecuentes de Administración",
+    "name": "Nombre",
+    "lastName": "Apellido",
+    "rut": "RUT",
+    "apartment": "Departamento",
+    "visitCount": "Cantidad de Visitas",
+    "delete": "Eliminar",
+    "addFrequentVisit": "Agregar Visita Frecuente"
+  },
+  "adminMessages": {
+    "adminMessages": "Mensajes de Administración",
+    "name": "Nombre",
+    "lastName": "Apellido",
+    "rut": "RUT",
+    "building": "Edificio",
+    "apartment": "Departamento",
+    "contact": "Contacto",
+    "labelName": "Nombre:",
+    "labelLastName": "Apellido:",
+    "labelRut": "RUT:",
+    "labelBuilding": "Edificio:",
+    "labelApartment": "Departamento:",
+    "labelContact": "Contacto:",
+    "message1": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat efficitur urna id placerat...",
+    "message2": "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas..."
+  },
+  "adminParking": {
+    "adminParking": "Administración de Estacionamiento",
+    "parking": "Estacionamiento",
+    "status": "Estado",
+    "licensePlate": "Patente",
+    "apartment": "Departamento",
+    "arrivingTime": "Hora de Llegada",
+    "modifyParkingSpot": "Modificar Lugar de Estacionamiento",
+    "occupied": "Ocupado",
+    "available": "Disponible"
+  },
+  "config": {
+    "configuration": "Configuración",
+    "personalInfo": "Información Personal",
+    "changePassword": "Cambiar Contraseña",
+    "notifications": "Notificaciones",
+    "personalInfoTitle": "Información Personal",
+    "changePasswordTitle": "Cambiar Contraseña",
+    "notificationsTitle": "Notificaciones",
+    "name": "Nombre:",
+    "lastName": "Apellido:",
+    "rut": "RUT:",
+    "apartment": "Departamento:",
+    "building": "Edificio:",
+    "edit": "Editar",
+    "oldPassword": "Contraseña Antigua:",
+    "newPassword": "Contraseña Nueva:",
+    "confirmPassword": "Confirmar Contraseña:",
+    "updateInfo": "Actualizar Información",
+    "receiveEmail": "Recibir notificaciones por correo electrónico:",
+    "unsubscribe": "Cancelar suscripción",
+    "receiveSMS": "Recibir notificaciones por SMS:"
+  },
+  "configAdmin": {
+    "configuration": "Configuración",
+    "adminUsersRoles": "Usuarios y Roles de Administración",
+    "newUser": "Nuevo Usuario",
+    "notifications": "Notificaciones",
+    "createNewUser": "Crear Nuevo Usuario",
+    "createNewUserTitle": "Crear Nuevo Usuario",
+    "notificationsTitle": "Notificaciones",
+    "adminUsersRolesTitle": "Usuarios y Roles de Administración"
+  },
   "home": {
     "welcome": "¡Bienvenido!",
     "homePage": "Esta es la página de inicio.",
@@ -7,5 +106,84 @@
       "loggedOut": "Iniciar sesión"
     },
     "emailAddress": "Tu dirección de correo electrónico es {{email}}"
+  },
+  "login": {
+    "title": "Inicio de sesión",
+    "emailPlaceholder": "Ingresa tu correo electrónico aquí",
+    "passwordPlaceholder": "Ingresa tu contraseña aquí",
+    "loginButton": "Iniciar sesión",
+    "emailError": "Por favor ingresa tu correo electrónico",
+    "invalidEmailError": "Por favor ingresa un correo electrónico válido",
+    "passwordError": "Por favor ingresa una contraseña",
+    "shortPasswordError": "La contraseña debe tener al menos 8 caracteres",
+    "accountNotExistConfirm": "No existe una cuenta asociada a este correo electrónico: {{email}}. ¿Deseas crear una nueva cuenta?",
+    "wrongCredentialsAlert": "Correo electrónico o contraseña incorrectos"
+  },
+  "messages": {
+    "contactConcierge": "Contactar con el conserje",
+    "writeMessage": "Escribe tu mensaje aquí...",
+    "selectType": "Seleccionar tipo",
+    "packages": "Paquetes",
+    "visits": "Visitas",
+    "cars": "Autos",
+    "parking": "Estacionamiento",
+    "others": "Otros",
+    "sendMessage": "Enviar mensaje"
+  },
+  "correspondenceForm": {
+    "addNewCorrespondence": "Agregar Nueva Correspondencia",
+    "type": "Tipo",
+    "packages": "Paquetes",
+    "letters": "Cartas",
+    "item": "Ítem",
+    "others": "Otros",
+    "timeOfArrival": "Hora de Llegada:",
+    "selectApartment": "Seleccionar Apartamento",
+    "selectInhabitant": "Seleccionar Habitante",
+    "addCorrespondence": "Agregar Correspondencia"
+  },
+  "vehicleForm": {
+    "addNewVehicle": "Agregar Nuevo Vehículo",
+    "name": "Nombre:",
+    "lastName": "Apellido:",
+    "building": "Edificio:",
+    "apartment": "Apartamento:",
+    "licensePlate": "Placa de Vehículo:",
+    "car": "Vehículo:",
+    "parking": "Estacionamiento:",
+    "addVehicle": "Agregar Vehículo"
+  },
+  "visitForm": {
+    "addNewVisit": "Agregar Nueva Visita",
+    "firstName": "Nombre:",
+    "lastName": "Apellido:",
+    "run": "RUT:",
+    "birthDate": "Fecha de Nacimiento:",
+    "apartmentToVisit": "Apartamento a Visitar:",
+    "addVisit": "Agregar Visita",
+    "selectApartment": "Seleccionar Apartamento"
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "packageArrival": "El paquete 'TIPO_PAQUETE' llegó a conserjería desde 'FECHA'.",
+    "personArrival": "La persona 'PERSONA' llegó a las 'FECHA'.",
+    "parkingOccupied": "El estacionamiento 'ESTACIONAMIENTO está ocupado por 'NOMBRE_VISITA'. Debe ser desocupado en 'REMAINING_TIME'."
+  },
+  "searchPersonCam": {
+    "toDevelop": "En desarrollo...",
+    "searchByRut": "Buscar por RUT"
+  },
+  "searchPersonForm": {
+    "searchByRut": "Buscar Persona por RUT",
+    "rutLabel": "RUT:",
+    "searchButton": "Buscar",
+    "personFound": "Persona Encontrada",
+    "rut": "RUT",
+    "name": "Nombre",
+    "birthDate": "Fecha de Nacimiento",
+    "address": "Dirección",
+    "phone": "Teléfono",
+    "apartmentsVisited": "Apartamentos Visitados",
+    "quantity": "Cantidad"
   }
 }

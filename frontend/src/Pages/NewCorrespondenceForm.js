@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import '../App.css'; // Importar estilos CSS específicos para este formulario
 import axios from 'axios';
 
@@ -23,6 +24,8 @@ function obtenerFecha(fecha) {
 }
 
 const NewCorrespondenceForm = () => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     type: '',
     timeArrival: '',
@@ -31,7 +34,7 @@ const NewCorrespondenceForm = () => {
     inhabitant: '',
   });
 
-  const [selectedOption, setSelectedOption] = useState('Type');
+  const [selectedOption, setSelectedOption] = useState(t('correspondenceForm.type'));
   const [apartmentOptions, setApartmentOptions] = useState([]);
 
   const handleChange = (e) => {
@@ -125,21 +128,21 @@ const NewCorrespondenceForm = () => {
 
   return (
     <div className="formContainer">
-      <h2>Add New Correspondence</h2>
+      <h2>{t('correspondenceForm.addNewCorrespondence')}</h2>
       <form onSubmit={handleSubmit} className="correspondenceForm">
         <div className="formGroup">
           <div className="options-container">
             <select className="type-select" value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
-              <option value="Type" disabled hidden>Type</option>
-              <option value="Packages">Packages</option>
-              <option value="Letters">Letters</option>
-              <option value="Item">Item</option>
-              <option value="Others">Others</option>
+              <option value="" disabled hidden>{t('correspondenceForm.type')}</option>
+              <option value="Packages">{t('correspondenceForm.packages')}</option>
+              <option value="Letters">{t('correspondenceForm.letters')}</option>
+              <option value="Item">{t('correspondenceForm.item')}</option>
+              <option value="Others">{t('correspondenceForm.others')}</option>
             </select>
           </div>
         </div>
         <div className="formGroup">
-          <label htmlFor="timeArrival">Time of Arrival:</label>
+          <label htmlFor="timeArrival">{t('correspondenceForm.timeOfArrival')}</label>
           <input
             type="datetime-local"
             id="timeArrival"
@@ -151,7 +154,7 @@ const NewCorrespondenceForm = () => {
           />
         </div>
         <div className="formGroup">
-          <label htmlFor="apartment">Apartment:</label>
+          <label htmlFor="apartment">{t('correspondenceForm.selectApartment')}</label>
           <select
             id="apartment"
             name="apartment"
@@ -160,7 +163,7 @@ const NewCorrespondenceForm = () => {
             required
             className="inputField"
           >
-            <option value="" disabled hidden>Select Apartment</option>
+            <option value="" disabled hidden>{t('correspondenceForm.selectApartment')}</option>
             {apartmentData.map((apartment) => (
               <option key={apartment.id} value={apartment.name}>
                 {apartment.name}
@@ -169,7 +172,7 @@ const NewCorrespondenceForm = () => {
           </select>
         </div>
         <div className="formGroup">
-          <label htmlFor="inhabitant">Inhabitant:</label>
+          <label htmlFor="inhabitant">{t('correspondenceForm.selectInhabitant')}</label>
           <select
             id="inhabitant"
             name="inhabitant"
@@ -178,7 +181,7 @@ const NewCorrespondenceForm = () => {
             required
             className="inputField"
           >
-            <option value="" disabled hidden>Select Inhabitant</option>
+            <option value="" disabled hidden>{t('correspondenceForm.selectInhabitant')}</option>
             {apartmentOptions.map((inhabitant, index) => (
               <option key={index} value={inhabitant}>
                 {inhabitant}
@@ -186,7 +189,7 @@ const NewCorrespondenceForm = () => {
             ))}
           </select>
         </div>
-        <button type="submit" className="submitButton">Add Correspondence</button>
+        <button type="submit" className="submitButton">{t('correspondenceForm.addCorrespondence')}</button>
       </form>
     </div>
   );

@@ -1,15 +1,16 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import '../App.css';
 
 const SearchPersonCam = () => {
+  const { t } = useTranslation();
+
   return (
     <div>
-      <h1>Aqui va la busqueda de datos por camara automatico</h1>
-      <h2>Nombre, Apellido, Rut, Fecha de nacimiento, etc.</h2>
-      <h3>To be developed...</h3>
+      <h3>{t('searchPersonCam.toDevelop')}</h3>
       <div className="searchButtonContainer">
-        <Link to="/searchpersonform" className="submitButton searchButton">Buscar por RUT</Link>
+        <Link to="/searchpersonform" className="submitButton searchButton">{t('searchPersonCam.searchByRut')}</Link>
       </div>
     </div>
   );

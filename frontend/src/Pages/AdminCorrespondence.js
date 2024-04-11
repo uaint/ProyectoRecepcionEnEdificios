@@ -1,9 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import '../App.css';
 import axios from 'axios';
 
 const AdminCorrespondence = () => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
   // Example data for the rows
   const packagesData = [
     { id: 1, building: 'A', apt: '7A', type: 'letter', notified: 'Yes', contact: 973647522 },
@@ -16,24 +20,23 @@ const AdminCorrespondence = () => {
     console.log(`Delete row with ID: ${id}`);
   };
 
-  // Redireccion boton Nuevo Paquete
-  const navigate = useNavigate();
+  // Redirect button for New Correspondence
   const handleButtonClick = () => {
     navigate('/newcorrespondenceform');
   };
 
   return (
     <div className="admin-correspondence">
-      <h1 className="centeredHeading">Admin Correspondence</h1>
+      <h1 className="centeredHeading">{t('adminCorrespondence.adminCorrespondence')}</h1>
       <table>
         <thead>
           <tr className="trTopPart">
-            <th>Id</th>
-            <th>Building</th>
-            <th>Apartment</th>
-            <th>Type</th>
-            <th>Notified</th>
-            <th>Contact</th>
+            <th>{t('adminCorrespondence.id')}</th>
+            <th>{t('adminCorrespondence.building')}</th>
+            <th>{t('adminCorrespondence.apartment')}</th>
+            <th>{t('adminCorrespondence.type')}</th>
+            <th>{t('adminCorrespondence.notified')}</th>
+            <th>{t('adminCorrespondence.contact')}</th>
             <th></th> {/* Empty space for the "Delete" button */}
           </tr>
         </thead>
@@ -47,14 +50,14 @@ const AdminCorrespondence = () => {
               <td>{pkg.notified}</td>
               <td>{pkg.contact}</td>
               <td>
-                <button onClick={() => handleDelete(pkg.id)}>Delete</button>
+                <button onClick={() => handleDelete(pkg.id)}>{t('adminCorrespondence.delete')}</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
       <div>
-        <button className="addNewCorrespondenceButton" onClick={handleButtonClick}>Add New Correspondence</button>
+        <button className="addNewCorrespondenceButton" onClick={handleButtonClick}>{t('adminCorrespondence.addNewCorrespondence')}</button>
       </div>
     </div>
   );
