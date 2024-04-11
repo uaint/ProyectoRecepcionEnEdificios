@@ -6,9 +6,9 @@ const port = 3001;
 
 // Configuración de la conexión a la base de datos
 const connection = mysql.createConnection({
-  host: 'rg-mysql-server-2024-1.mysql.database.azure.com',
+  host: 'rg-mysql-azure.mysql.database.azure.com',
   user: 'rgAzAdmin',
-  password: 'CnRq5sceEL1jbpfmqwEV2vzeKZzcmCm8',
+  password: 'password',
   database: 'roentgenium',
   port: 3306
 });

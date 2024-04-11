@@ -3,8 +3,8 @@ import mysql.connector
 # Configuración de la conexión
 config = {
     'user': 'rgAzAdmin',
-    'password': 'CnRq5sceEL1jbpfmqwEV2vzeKZzcmCm8',
-    'host': 'rg-mysql-server-2024-1.mysql.database.azure.com',
+    'password': 'password',
+    'host': 'rg-mysql-azure.mysql.database.azure.com',
     'database': 'roentgenium',
     'port': 3306
 }
