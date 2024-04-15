@@ -15,7 +15,7 @@ const Notifications = () => {
     <div className="notifications-container">
       <h1 className="centeredHeading">{t('notifications.title')}</h1>
       <hr className="divider" />
-      <ul className="notifications-list">
+      <ul className="notifications-list" style={{ display: 'block' }}>
         {notifications.map((notification, index) => (
           <li key={index}>
             {notification}
