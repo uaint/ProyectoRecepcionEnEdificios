@@ -8,6 +8,9 @@ import { I18nextProvider } from 'react-i18next';
 import NavbarConcierge from './components/NavbarConcierge';
 import NavbarResident from './components/NavbarResident';
 
+// Bootstrap
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 // Importa las páginas
 import Home from './Pages/Home';
