@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import '../App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AdminFrequentVisits = () => {
   const { t } = useTranslation();
@@ -26,10 +27,9 @@ const AdminFrequentVisits = () => {
 
   return (
     <div class="container">
-      <div class="row m-0">
-        <div class="col-md-12">
           <h1 class="text-center mb-4">{t('adminFrequentVisits.adminFrequentVisits')}</h1>  
-          <hr class="mb-4" />  
+          <hr class="mb-4"/> 
+          <div class="table-responsive">
           <table class="table table-striped">
           <thead>
             <tr>
@@ -50,18 +50,17 @@ const AdminFrequentVisits = () => {
               <td>{visit.dept}</td>
               <td>{visit.visitCount}</td>
               <td>
-                <button class="btn btn-danger addFrequentVisitButton" onClick={() => handleDelete(visit.id)}>{t('adminFrequentVisits.delete')}</button>
+                <button class="btn btn-danger btn-sm" onClick={() => handleDelete(visit.id)}>{t('adminFrequentVisits.delete')}</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <div class="text-center mt-4">
-        <button class="btn btn-primary addFrequentVisitButton" onClick={handleButtonClick}>{t('adminFrequentVisits.addFrequentVisit')}</button>
       </div>
-    </div>
-    </div>
-    </div>
+      <div class="text-center mt-4">
+        <button class="btn btn-primary" onClick={handleButtonClick}>{t('adminFrequentVisits.addFrequentVisit')}</button>
+      </div>
+      </div>
   );
 };
 
