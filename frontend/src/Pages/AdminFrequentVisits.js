@@ -25,17 +25,20 @@ const AdminFrequentVisits = () => {
   };
 
   return (
-    <div className="admin-frequent-visits">
-      <h1 className="centeredHeading">{t('adminFrequentVisits.adminFrequentVisits')}</h1>
-      <table>
-        <thead>
-          <tr className="trTopPart">
-            <th>{t('adminFrequentVisits.name')}</th>
-            <th>{t('adminFrequentVisits.lastName')}</th>
-            <th>{t('adminFrequentVisits.rut')}</th>
-            <th>{t('adminFrequentVisits.apartment')}</th>
-            <th>{t('adminFrequentVisits.visitCount')}</th>
-            <th></th> {/* Empty space for the "Delete" button */}
+    <div class="container">
+      <div class="row m-0">
+        <div class="col-md-12">
+          <h1 class="text-center mb-4">{t('adminFrequentVisits.adminFrequentVisits')}</h1>  
+          <hr class="mb-4" />  
+          <table class="table table-striped">
+          <thead>
+            <tr>
+            <th scope="col">{t('adminFrequentVisits.name')}</th>
+            <th scope="col">{t('adminFrequentVisits.lastName')}</th>
+            <th scope="col">{t('adminFrequentVisits.rut')}</th>
+            <th scope="col">{t('adminFrequentVisits.apartment')}</th>
+            <th scope="col">{t('adminFrequentVisits.visitCount')}</th>
+            <th scope="col">Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -47,15 +50,17 @@ const AdminFrequentVisits = () => {
               <td>{visit.dept}</td>
               <td>{visit.visitCount}</td>
               <td>
-                <button onClick={() => handleDelete(visit.id)}>{t('adminFrequentVisits.delete')}</button>
+                <button class="btn btn-danger addFrequentVisitButton" onClick={() => handleDelete(visit.id)}>{t('adminFrequentVisits.delete')}</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <div>
-        <button className="addFrequentVisitButton" onClick={handleButtonClick}>{t('adminFrequentVisits.addFrequentVisit')}</button>
+      <div class="text-center mt-4">
+        <button class="btn btn-primary addFrequentVisitButton" onClick={handleButtonClick}>{t('adminFrequentVisits.addFrequentVisit')}</button>
       </div>
+    </div>
+    </div>
     </div>
   );
 };

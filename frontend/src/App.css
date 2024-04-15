@@ -160,7 +160,7 @@ label {
 }
 
 .submitButton {
-  display: block; /* Convertir el botón en bloque para centrarlo */
+  display: block; /* Convertir el botón Fen bloque para centrarlo */
   margin: 20px auto 0; /* Margen superior automático para separarlo verticalmente y centrado horizontal */
   width: fit-content; /* Ancho ajustado al contenido del botón */
 }
@@ -171,7 +171,7 @@ label {
 
 
 /* Notifications */
-.notifications-container {
+/* .notifications-container {
   margin-top: 30px;
   height: 100vh; 
   padding: 20px;
@@ -210,7 +210,7 @@ label {
   width: 100%; 
   margin: 10px 0; 
 }
-
+*/
 
 
 
@@ -218,7 +218,7 @@ label {
 
 
 /* Admin Frequent Visits */
-
+/*
 .admin-frequent-visits {
   margin-top: 20px; 
 }
@@ -264,7 +264,7 @@ button {
 
 .centeredHeading {
   text-align: center;
-}
+} */
 
 
 /* AdminCorrespondence */
@@ -310,6 +310,7 @@ button {
 
 
 /* Config */
+/*
 .config-container {
   text-align: center;
 }
@@ -380,7 +381,7 @@ button {
 .password-item label {
   margin-right: 10px;
 }
-
+*/
 
 /* SearchPersonCam */
 .searchButton {
