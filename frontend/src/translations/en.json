@@ -171,15 +171,16 @@
       "parkingOccupied": "The parking spot 'PARKING' is occupied by 'VISITOR_NAME'. It must be vacated in 'REMAINING_TIME'."
     },
     "searchPersonCam": {
-      "toDevelop": "To be developed...",
-      "searchByRut": "Search by ID Number"
+      "title": "Search Person",
+      "searchByRut": "Search by RUT",
+      "scanID": "Scan ID"
     },
     "searchPersonForm": {
-      "searchByRut": "Search Person by ID Number",
-      "rutLabel": "ID Number:",
+      "searchByRut": "Search Person by RUT",
+      "rutLabel": "RUT:",
       "searchButton": "Search",
       "personFound": "Person Found",
-      "rut": "ID Number",
+      "rut": "RUT",
       "name": "Name",
       "birthDate": "Birth Date",
       "address": "Address",

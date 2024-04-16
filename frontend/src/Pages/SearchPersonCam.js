@@ -7,10 +7,11 @@ const SearchPersonCam = () => {
   const { t } = useTranslation();
 
   return (
-    <div>
-      <h3>{t('searchPersonCam.toDevelop')}</h3>
-      <div className="searchButtonContainer">
+    <div className="container">
+      <div className="centerContainer">
+        <h2 className="pageTitle">{t('searchPersonCam.title')}</h2>
         <Link to="/searchpersonform" className="submitButton searchButton">{t('searchPersonCam.searchByRut')}</Link>
+        <button className="submitButton scanButton">{t('searchPersonCam.scanID')}</button>
       </div>
     </div>
   );

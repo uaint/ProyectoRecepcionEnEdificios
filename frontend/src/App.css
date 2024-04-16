@@ -379,14 +379,27 @@ button {
 
 
 /* SearchPersonCam */
-.searchButton {
-  text-decoration: none; 
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.searchButtonContainer {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px; 
+.centerContainer {
+  text-align: center;
+}
+
+.pageTitle {
+  font-size: 65px;
+}
+
+.searchButton,
+.scanButton {
+  text-decoration: none;
+  margin-right: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 

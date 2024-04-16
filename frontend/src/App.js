@@ -60,7 +60,7 @@ function App() {
     <div className="App">
       <I18nextProvider i18n={i18n}> {/* Usa I18nextProvider para traducir todo el sistema */}
       <BrowserRouter>
-        <NavbarResident /> {/* Aca alternar navbar entre Concierge y Resident hasta conectar backend */}
+        <NavbarConcierge /> {/* Aca alternar navbar entre Concierge y Resident hasta conectar backend */}
         <Routes>
           <Route path="/home" element={<Home email={email} loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>} />
           <Route path="/login" element={<Login setLoggedIn={setLoggedIn} setEmail={setEmail} />} />

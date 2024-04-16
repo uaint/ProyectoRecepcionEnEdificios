@@ -171,8 +171,9 @@
     "parkingOccupied": "El estacionamiento 'ESTACIONAMIENTO está ocupado por 'NOMBRE_VISITA'. Debe ser desocupado en 'REMAINING_TIME'."
   },
   "searchPersonCam": {
-    "toDevelop": "En desarrollo...",
-    "searchByRut": "Buscar por RUT"
+    "title": "Buscar Persona",
+    "searchByRut": "Buscar por RUT",
+    "scanID": "Escanear Carnet"
   },
   "searchPersonForm": {
     "searchByRut": "Buscar Persona por RUT",
