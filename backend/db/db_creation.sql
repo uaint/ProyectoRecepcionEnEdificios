@@ -130,6 +130,295 @@ CREATE TABLE IF NOT EXISTS `roentgenium`.`inhabitants_information` (`inhabitant_
 CREATE TABLE IF NOT EXISTS `roentgenium`.`users_by_last_access` (`user_id` INT, `username` INT, `last_access` INT);
 
 -- -----------------------------------------------------
+-- procedure add_inhabitant
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `add_inhabitant`(IN aptmnt TINYINT, IN h_unit SMALLINT, IN f_name VARCHAR(31), IN l_name VARCHAR(31), IN rolun INT, IN rolun_vd TINYINT(1), IN c_number VARCHAR(15))
+BEGIN
+	INSERT INTO inhabitants (apartment, housing_unit, first_name, last_name, run, run_vd, contact_number) VALUES (aptmnt, h_unit, f_name, l_name, rolun, rolun_vd, c_number);
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure add_visitor
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `add_visitor`(IN f_name VARCHAR(31), IN l_name VARCHAR(31), IN rolun INT, IN rolun_vd TINYINT(1), IN b_date DATE, IN l_visit DATETIME, IN v_type VARCHAR(31))
+BEGIN
+	INSERT INTO visitors (first_name, last_name, run, run_vd, birth_date, last_visit, visit_type) VALUES (f_name, l_name, rolun, rolun_vd, b_date, l_visit, v_type);
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure add_visitor_vehicle
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `add_visitor_vehicle`(IN v_id INT, IN l_plate VARCHAR(8), IN p_spot SMALLINT, IN p_date DATETIME)
+BEGIN
+	INSERT INTO vehicles_visitors (visitor_id, license_plate, parking_spot, parking_date) VALUES (v_id, l_plate, p_spot, p_date);
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure search_visitor_name
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `search_visitor_name`(IN search_name VARCHAR(63))
+BEGIN
+    SELECT * FROM visitors WHERE CONCAT(first_name, ' ', last_name) LIKE CONCAT('%', search_name, '%');
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure add_mail
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `add_mail`(IN i_id INT, IN m_type VARCHAR(31), IN a_time DATETIME, IN i_claimed TINYINT(1))
+BEGIN
+	INSERT INTO mail (inhabitant_id, mail_type, arrival_time, is_claimed) VALUES (i_id, m_type, a_time, i_claimed);
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure delete_visitor
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `delete_visitor`(IN v_id INT)
+BEGIN
+	DELETE FROM visitors WHERE visitors.id = v_id;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure delete_inhabitant
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `delete_inhabitant` (IN i_id INT)
+BEGIN
+	DELETE FROM inhabitants WHERE inhabitants.id = i_id;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure delete_vehicle
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `delete_vehicle` (IN l_plate VARCHAR(8))
+BEGIN
+	DELETE FROM vehicles_visitors WHERE license_plate = l_plate;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure delete_user
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `delete_user` (IN u_id INT)
+BEGIN
+	DELETE FROM login_system WHERE id = u_id;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure search_visitor
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `search_visitor`(IN search_name VARCHAR(63))
+BEGIN
+    SELECT * FROM visitors WHERE CONCAT(first_name, ' ', last_name) LIKE CONCAT('%', search_name, '%');
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure search_inhabitant
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `search_inhabitant` (IN search_name VARCHAR(63))
+BEGIN
+	SELECT * FROM inhabitants WHERE CONCAT(first_name, ' ', last_name) LIKE CONCAT('%', search_name, '%');
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure change_claimed_status_mail
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `change_claimed_status_mail` (IN m_id INT, IN new_claimed_status TINYINT)
+BEGIN
+	UPDATE mail SET is_claimed = new_claimed_status WHERE id = m_id;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure update_claimed_mail
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `update_claimed_mail` (IN m_id INT, IN new_claimed_status TINYINT)
+BEGIN
+	IF new_claimed_status = 0 OR new_claimed_status = 1 THEN
+		UPDATE mail SET is_claimed = new_claimed_status WHERE id = m_id;
+	ELSE
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: The claimed status value must be 0 (not claimed) or 1 (claimed).';
+	END IF;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure update_claimed_stat_mail
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `update_claimed_stat_mail` (IN m_id INT, IN new_claimed_status TINYINT)
+BEGIN
+	UPDATE mail SET is_claimed = new_claimed_status WHERE id = m_id;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure update_status_mail
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `update_status_mail` (IN m_id INT, IN new_claimed_status TINYINT)
+BEGIN
+	UPDATE mail SET is_claimed = new_claimed_status WHERE id = m_id;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure delete_user_login
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `delete_user_login` (IN u_id INT)
+BEGIN
+	DELETE FROM login_system WHERE id = u_id;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure delete_user_login_sys
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `delete_user_login_sys` (IN u_id INT)
+BEGIN
+	DELETE FROM login_system WHERE id = u_id;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure update_inhabitant_phone_number
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `update_inhabitant_phone_number` (IN new_phone_number VARCHAR(15))
+BEGIN
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure update_phone_number
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `update_phone_number` (IN i_id INT, IN new_phone_number VARCHAR(15))
+BEGIN
+	UPDATE inhabitants SET contact_number = new_phone_number WHERE id = i_id;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure free_parking_spot
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `free_parking_spot` (IN v_id INT)
+BEGIN
+	UPDATE vehicles_visitors SET parking_spot = NULL, parking_date = NULL WHERE id = v_id;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure assign_parking_spot
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `assign_parking_spot` (IN v_id INT, IN p_spot SMALLINT)
+BEGIN
+	UPDATE vehicles_visitors SET parking_spot = p_spot WHERE id = v_id;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure update_visitor_last_visit
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `update_visitor_last_visit` (IN v_id INT, IN l_visit VARCHAR(31))
+BEGIN
+	UPDATE visitors SET last_visit = l_visit WHERE id = v_id;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
 -- View `roentgenium`.`visitors_information`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `roentgenium`.`visitors_information`;
