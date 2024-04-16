@@ -18,8 +18,8 @@ import Login from './Pages/Login';
 import NewCorrespondenceForm from './Pages/NewCorrespondenceForm';
 import NewVisitForm from './Pages/NewVisitForm';
 import Notifications from './Pages/notifications';
-import SearchPersonForm from './Pages/SearchPersonForm';
-import SearchPersonCam from './Pages/SearchPersonCam';
+import SearchPersonByRut from './Pages/SearchPersonByRut';
+import ScanID from './Pages/ScanID';
 import AdminFrequentVisits from './Pages/AdminFrequentVisits';
 import Messages from './Pages/Messages';
 import Config from './Pages/config';
@@ -63,14 +63,14 @@ function App() {
     <div className="App">
       <I18nextProvider i18n={i18n}> {/* Usa I18nextProvider para traducir todo el sistema */}
       <BrowserRouter>
-        <NavbarResident /> {/* Aca alternar navbar entre Concierge y Resident hasta conectar backend */}
+        <NavbarConcierge /> {/* NavbarResident tambien es una opcion, la cual no usaremos */}
         <Routes>
           <Route path="/home" element={<Home email={email} loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>} />
           <Route path="/login" element={<Login setLoggedIn={setLoggedIn} setEmail={setEmail} />} />
           <Route path="/newcorrespondenceform" element={<NewCorrespondenceForm />} />
           <Route path="/newvisitform" element={<NewVisitForm />} />
-          <Route path="/searchpersonform" element={<SearchPersonForm />} />
-          <Route path="/searchpersoncam" element={<SearchPersonCam />} />
+          <Route path="/searchpersonbyrut" element={<SearchPersonByRut />} />
+          <Route path="/scanid" element={<ScanID />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/newvehicleform" element={<NewVehicleForm />} />

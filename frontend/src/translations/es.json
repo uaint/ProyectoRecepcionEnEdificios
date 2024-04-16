@@ -8,7 +8,9 @@
     "adminParking": "Estacionamiento de Administración",
     "messages": "Mensajes",
     "config": "Configuración",
-    "signOut": "Cerrar Sesión"
+    "signOut": "Cerrar Sesión",
+    "SearchPersonByRut": "Buscar Persona por RUT",
+    "scanID": "Escanear Cédula de Identidad"
   },
   "navbarResident": {
     "notifications": "Notificaciones",
@@ -169,11 +171,12 @@
     "personArrival": "La persona 'PERSONA' llegó a las 'FECHA'.",
     "parkingOccupied": "El estacionamiento 'ESTACIONAMIENTO está ocupado por 'NOMBRE_VISITA'. Debe ser desocupado en 'REMAINING_TIME'."
   },
-  "searchPersonCam": {
-    "toDevelop": "En desarrollo...",
-    "searchByRut": "Buscar por RUT"
+  "ScanID": {
+    "title": "Escanear Carnet de Identidad",
+    "noFileChosen": "No haz seleccionado un archivo",
+    "uploadbutton": "Subir"
   },
-  "searchPersonForm": {
+  "SearchPersonByRut": {
     "searchByRut": "Buscar Persona por RUT",
     "rutLabel": "RUT:",
     "searchButton": "Buscar",

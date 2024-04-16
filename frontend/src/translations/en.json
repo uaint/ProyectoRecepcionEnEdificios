@@ -8,7 +8,9 @@
     "adminParking": "Admin Parking",
     "messages": "Messages",
     "config": "Config",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "searchByRut":"Search Person by RUT",
+    "scanID": "Scan ID"
   },
   "navbarResident": {
     "notifications": "Notifications",
@@ -169,16 +171,17 @@
       "personArrival": "The person 'PERSON' arrived at 'DATE'.",
       "parkingOccupied": "The parking spot 'PARKING' is occupied by 'VISITOR_NAME'. It must be vacated in 'REMAINING_TIME'."
     },
-    "searchPersonCam": {
-      "toDevelop": "To be developed...",
-      "searchByRut": "Search by ID Number"
+    "ScanID": {
+      "title": "Scan ID",
+      "noFileChosen": "No file chosen",
+      "uploadbutton": "Upload"
     },
-    "searchPersonForm": {
-      "searchByRut": "Search Person by ID Number",
-      "rutLabel": "ID Number:",
+    "SearchPersonByRut": {
+      "searchByRut": "Search Person by RUT",
+      "rutLabel": "RUT:",
       "searchButton": "Search",
       "personFound": "Person Found",
-      "rut": "ID Number",
+      "rut": "RUT",
       "name": "Name",
       "birthDate": "Birth Date",
       "address": "Address",
