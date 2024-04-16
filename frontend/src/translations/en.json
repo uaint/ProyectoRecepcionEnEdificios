@@ -140,7 +140,8 @@
       "timeOfArrival": "Time of Arrival:",
       "selectApartment": "Select Apartment",
       "selectInhabitant": "Select Inhabitant",
-      "addCorrespondence": "Add Correspondence"
+      "addCorrespondence": "Add Correspondence",
+      "checkboxSendToAll": "Send to all residents"
     },
     "vehicleForm": {
       "addNewVehicle": "Add New Vehicle",

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import '../App.css'; // Importar estilos CSS específicos para este formulario
+import '../App.css';
 import axios from 'axios';
 
 function obtenerFecha(fecha) {
@@ -10,16 +10,18 @@ function obtenerFecha(fecha) {
   const hora = String(fechaDada.getHours()).padStart(2, '0');
   const minutos = String(fechaDada.getMinutes()).padStart(2, '0');
 
-  if (fechaActual.getFullYear() === fechaDada.getFullYear() &&
-      fechaActual.getMonth() === fechaDada.getMonth() &&
-      fechaActual.getDate() === fechaDada.getDate()) {
-      return `hoy a las ${hora}:${minutos}`;
+  if (
+    fechaActual.getFullYear() === fechaDada.getFullYear() &&
+    fechaActual.getMonth() === fechaDada.getMonth() &&
+    fechaActual.getDate() === fechaDada.getDate()
+  ) {
+    return `hoy a las ${hora}:${minutos}`;
   } else {
-      // Formatear la fecha en formato "dd/mm/yyyy"
-      const dia = String(fechaDada.getDate()).padStart(2, '0');
-      const mes = String(fechaDada.getMonth() + 1).padStart(2, '0');
-      const año = fechaDada.getFullYear();
-      return `el día ${dia}/${mes}/${año} a las ${hora}:${minutos}`;
+    // Formatear la fecha en formato "dd/mm/yyyy"
+    const dia = String(fechaDada.getDate()).padStart(2, '0');
+    const mes = String(fechaDada.getMonth() + 1).padStart(2, '0');
+    const año = fechaDada.getFullYear();
+    return `el día ${dia}/${mes}/${año} a las ${hora}:${minutos}`;
   }
 }
 
@@ -36,6 +38,7 @@ const NewCorrespondenceForm = () => {
 
   const [selectedOption, setSelectedOption] = useState(t('correspondenceForm.type'));
   const [apartmentOptions, setApartmentOptions] = useState([]);
+  const [sendToAllResidents, setSendToAllResidents] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -44,66 +47,6 @@ const NewCorrespondenceForm = () => {
   };
 
   const fechamsg = obtenerFecha(formData.timeArrival);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Aquí puedes agregar la lógica para enviar los datos del formulario a la base de datos
-    // Conseguir el o los numeros a quienes enviar el mensaje conectando con BBDD
-    const number_to_text = "+56975672372";
-    // Variables del .env
-    const token = process.env.TOKEN;
-    const version = process.env.VERSION;
-    const id_number = process.env.ID_NUMBER;
-    console.log(token)
-    // Se envia WhatsApp por la correspondencia
-
-    const message = `*Atención* \nHay un paquete esperando por ti en conserjería, llego ${fechamsg}, por favor ven a recogerlo a la brevedad.`;
-
-    const data_msg = {
-        "messaging_product": "whatsapp",
-        "recipient_type": "individual",
-        "to": number_to_text,
-        "type": "text",
-        "text": {"preview_url": false, "body": message},
-    }
-
-    const header = {
-        headers: {
-              Authorization: "Bearer " + token,
-              Accept: "application/json",
-        }
-        }
-
-    /*const body = {
-              "messaging_product": "whatsapp",
-              "to": "+56975672372",
-              "type": "template",
-              "template": {
-                  "name": "saludo",
-                  "language": {
-                  "code": "es"
-                },
-        }
-    }*/
-    const url = `https://graph.facebook.com/${version}/${id_number}/messages`
-    console.log(url)
-    axios.post(url, data_msg, header)
-    .then((res)=>(
-        console.log("Msg send success", res)
-    ))
-    .catch((res)=>(
-        console.log("Error sending msg", res)
-    ))
-    console.log('Form submitted:', formData);
-    // Resetear el formulario después de enviar los datos
-    setFormData({
-      type: '',
-      timeArrival: '',
-      isClaimed: false,
-      apartment: '',
-      inhabitant: '',
-    });
-  };
 
   // Simulación de datos de apartamentos y habitantes
   const apartmentData = [
@@ -126,10 +69,15 @@ const NewCorrespondenceForm = () => {
     setFormData({ ...formData, inhabitant: selectedInhabitant });
   };
 
+  // Función para manejar el cambio en el checkbox "Send to all residents"
+  const handleSendToAllResidentsChange = (e) => {
+    setSendToAllResidents(e.target.checked);
+  };
+
   return (
     <div className="formContainer">
       <h2>{t('correspondenceForm.addNewCorrespondence')}</h2>
-      <form onSubmit={handleSubmit} className="correspondenceForm">
+      <form className="correspondenceForm">
         <div className="formGroup">
           <div className="options-container">
             <select className="type-select" value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
@@ -188,6 +136,16 @@ const NewCorrespondenceForm = () => {
               </option>
             ))}
           </select>
+        </div>
+        <div className="formGroup">
+          <input
+            type="checkbox"
+            id="sendToAllResidents"
+            name="sendToAllResidents"
+            checked={sendToAllResidents}
+            onChange={handleSendToAllResidentsChange}
+          />
+          <label htmlFor="sendToAllResidents">{t('correspondenceForm.checkboxSendToAll')}</label>
         </div>
         <button type="submit" className="submitButton">{t('correspondenceForm.addCorrespondence')}</button>
       </form>

@@ -140,7 +140,8 @@
     "timeOfArrival": "Hora de Llegada:",
     "selectApartment": "Seleccionar Apartamento",
     "selectInhabitant": "Seleccionar Habitante",
-    "addCorrespondence": "Agregar Correspondencia"
+    "addCorrespondence": "Agregar Correspondencia",
+    "checkboxSendToAll": "Enviar a todos los residentes"
   },
   "vehicleForm": {
     "addNewVehicle": "Agregar Nuevo Vehículo",
