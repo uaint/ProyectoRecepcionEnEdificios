@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../App.css';
-import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function obtenerFecha(fecha) {
   const fechaActual = new Date();

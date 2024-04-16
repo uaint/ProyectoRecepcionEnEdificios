@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { useTranslation } from 'react-i18next'; // Importa useTranslation desde react-i18next
+import { useTranslation } from 'react-i18next'; 
 import { useNavigate } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const Login = (props) => {
     const { t } = useTranslation(); // Usa useTranslation para acceder a las traducciones

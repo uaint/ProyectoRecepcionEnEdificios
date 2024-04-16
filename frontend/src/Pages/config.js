@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const Config = () => {
   const { t } = useTranslation();

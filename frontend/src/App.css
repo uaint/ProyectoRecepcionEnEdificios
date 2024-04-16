@@ -70,7 +70,7 @@ body {
   margin: 0; 
 }
 
-/* NewCorrespondenceForm */
+/* NewCorrespondenceForm*/
 .formContainer {
   max-width: 500px;
   padding: 20px;
@@ -124,7 +124,7 @@ label {
 }
 
 
-/* NewVisitForm */
+/* NewVisitForm y NewVehicleForm*/
 .formContainer {
   max-width: 500px;
   padding: 20px;
@@ -132,7 +132,7 @@ label {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: left; 
-  margin: 20px auto; 
+  margin-top: 20px; 
 }
 
 .frequentVisitsForm {
@@ -378,31 +378,6 @@ button {
 }
 
 
-/* SearchPersonCam */
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.centerContainer {
-  text-align: center;
-}
-
-.pageTitle {
-  font-size: 65px;
-}
-
-.searchButton,
-.scanButton {
-  text-decoration: none;
-  margin-right: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-
-
 /* AdminMessages */
 
 .admin-messages-container {
@@ -465,37 +440,67 @@ h1 {
 
 /* Navbar styles */
 nav {
-  position: fixed; /* Posición fija */
-  top: 0; /* Anclar en la parte superior */
-  left: 0; /* Anclar en el lado izquierdo */
-  width: 100%; /* Ocupar todo el ancho */
-  background-color: #f0f0f0; /* Fondo gris */
+  position: fixed;
+  width: 100%; 
+  background-color: #f0f0f0; 
   padding: 10px;
-  z-index: 1000; /* Asegurar que esté en la parte superior */
-  display: flex; /* Mostrar como flexbox */
-  justify-content: center; /* Centrar horizontalmente */
+  z-index: 1000; 
+  display: flex; 
+  justify-content: center;
+  align-items: center; 
+  margin-bottom: 20px;
 }
 
 ul {
-  list-style-type: none; /* Sin bullet points */
+  list-style-type: none; 
   margin: 0;
   padding: 0;
   display: flex;
+  align-items: center; 
 }
 
 li {
   margin-right: 10px;
+  position: relative;
 }
 
 /* Enlaces dentro de la navbar */
 a {
-  text-decoration: none; /* Sin subrayado */
-  color: black; /* Texto negro */
+  text-decoration: none; 
+  color: black; 
   padding: 8px 12px;
   border-radius: 5px;
-  background-color: #f0f0f0; /* Fondo gris */
+  background-color: #f0f0f0; 
 }
 
 a:hover {
-  background-color: #ddd; /* Cambiar color al pasar el ratón */
+  background-color: #ddd; 
+}
+
+/* Dropdown styles */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: none;
+  min-width: 160px;
+  z-index: 1000;
+  background-color: #fff;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-item {
+  display: block;
+  padding: 10px 15px;
+  color: #333;
+  text-decoration: none;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* Mostrar el menú desplegable al pasar el ratón por encima del enlace */
+li:hover .dropdown-menu {
+  display: block;
 }
