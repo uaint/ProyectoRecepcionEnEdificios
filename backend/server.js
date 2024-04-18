@@ -1,5 +1,5 @@
-const express = require('express');
-const mysql = require('mysql');
+import express from 'express';
+import mysql from 'mysql';
 
 const app = express();
 const port = 3001;
@@ -8,7 +8,7 @@ const port = 3001;
 const connection = mysql.createConnection({
   host: 'rg-mysql-azure.mysql.database.azure.com',
   user: 'rgAzAdmin',
-  password: 'password',
+  password: 'CnRq5sceEL1jbpfmqwEV2vzeKZzcmCm8',
   database: 'roentgenium',
   port: 3306
 });
@@ -23,10 +23,18 @@ connection.connect((err) => {
 });
 
 // Ruta para obtener datos desde la base de datos
-app.get('/data', (req, res) => {
-  const query = 'SELECT * FROM inhabitants';
+app.get('/inhabitants/:apartment/:housing_unit', (req, res) => {
+  const apartment = req.params.apartment;
+  const housing_unit = req.params.housing_unit;
+  const query = 'SELECT * FROM inhabitants WHERE apartment = ? AND housing_unit = ?;';
 
-  connection.query(query, (err, rows) => {
+  // Agregar encabezados CORS en la respuesta
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000'); // Reemplaza con el origen de tu aplicación React
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  connection.query(query, [apartment, housing_unit], (err, rows) => {
     if (err) {
       console.error('Error al ejecutar la consulta:', err);
       res.status(500).send('Error al obtener datos desde la base de datos');
