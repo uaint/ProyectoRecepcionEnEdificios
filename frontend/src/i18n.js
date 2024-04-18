@@ -2,6 +2,7 @@ import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 
+
 // Importa las traducciones
 import enTranslation from './translations/en.json';
 import esTranslation from './translations/es.json';
@@ -18,7 +19,7 @@ i18n
         translation: esTranslation,
       },
     },
-    fallbackLng: 'en', // Idioma por defecto del sistema - TBD (No funciona siempre por algun motivo)
+    fallbackLng: 'en',
     detection: {
       order: ['localStorage', 'navigator'], 
       lookupLocalStorage: 'i18nextLng', 

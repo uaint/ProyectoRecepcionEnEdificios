@@ -9,7 +9,7 @@
     "messages": "Mensajes",
     "config": "Configuración",
     "signOut": "Cerrar Sesión",
-    "SearchPersonByRut": "Buscar Persona por RUT",
+    "searchByRut": "Buscar Persona por RUT",
     "scanID": "Escanear Cédula de Identidad"
   },
   "navbarResident": {

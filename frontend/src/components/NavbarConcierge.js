@@ -1,14 +1,38 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import i18n from '../i18n';
 import '../App.css';
 
 const NavbarConcierge = () => {
   const { t } = useTranslation();
 
+  const handleLanguageChange = (e) => {
+    const selectedLanguage = e.target.checked ? 'en' : 'es';
+    i18n.changeLanguage(selectedLanguage);
+  };
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top justify-content-center">
-      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top justify-content-start">
+      <div className="d-flex align-items-center ml-auto">
+        <label className="form-check-label" htmlFor="languageSwitch">
+          <span className="toggle-text">ESP</span>
+        </label>
+        <div className="form-check form-switch">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            id="languageSwitch"
+            onChange={handleLanguageChange}
+            defaultChecked={i18n.language === 'en'}
+          />
+          <label className="form-check-label" htmlFor="languageSwitch">
+            <span className="toggle-text">EN</span>
+          </label>
+        </div>
+      </div>
+      <button className="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
 
