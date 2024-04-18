@@ -9,8 +9,8 @@
     "messages": "Mensajes",
     "config": "Configuración",
     "signOut": "Cerrar Sesión",
-    "searchByRut": "Buscar Persona por RUT",
-    "scanID": "Escanear Cédula de Identidad"
+    "searchByRut":"Buscar por RUT",
+    "scanID":"Escanear Carnet"
   },
   "navbarResident": {
     "notifications": "Notificaciones",
@@ -142,7 +142,8 @@
     "timeOfArrival": "Hora de Llegada:",
     "selectApartment": "Seleccionar Apartamento",
     "selectInhabitant": "Seleccionar Habitante",
-    "addCorrespondence": "Agregar Correspondencia"
+    "addCorrespondence": "Agregar Correspondencia",
+    "checkboxSendToAll": "Enviar a todos los residentes"
   },
   "vehicleForm": {
     "addNewVehicle": "Agregar Nuevo Vehículo",
@@ -170,11 +171,6 @@
     "packageArrival": "El paquete 'TIPO_PAQUETE' llegó a conserjería desde 'FECHA'.",
     "personArrival": "La persona 'PERSONA' llegó a las 'FECHA'.",
     "parkingOccupied": "El estacionamiento 'ESTACIONAMIENTO está ocupado por 'NOMBRE_VISITA'. Debe ser desocupado en 'REMAINING_TIME'."
-  },
-  "ScanID": {
-    "title": "Escanear Carnet de Identidad",
-    "noFileChosen": "No haz seleccionado un archivo",
-    "uploadbutton": "Subir"
   },
   "SearchPersonByRut": {
     "searchByRut": "Buscar Persona por RUT",

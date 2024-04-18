@@ -9,8 +9,8 @@
     "messages": "Messages",
     "config": "Config",
     "signOut": "Sign Out",
-    "searchByRut":"Search Person by RUT",
-    "scanID": "Scan ID"
+    "searchByRut":"Search by RUT",
+    "scanID":"Scan ID"
   },
   "navbarResident": {
     "notifications": "Notifications",
@@ -142,7 +142,8 @@
       "timeOfArrival": "Time of Arrival:",
       "selectApartment": "Select Apartment",
       "selectInhabitant": "Select Inhabitant",
-      "addCorrespondence": "Add Correspondence"
+      "addCorrespondence": "Add Correspondence",
+      "checkboxSendToAll": "Send to all residents"
     },
     "vehicleForm": {
       "addNewVehicle": "Add New Vehicle",
@@ -170,11 +171,6 @@
       "packageArrival": "The package 'TYPE' has arrived at the concierge since 'DATE'.",
       "personArrival": "The person 'PERSON' arrived at 'DATE'.",
       "parkingOccupied": "The parking spot 'PARKING' is occupied by 'VISITOR_NAME'. It must be vacated in 'REMAINING_TIME'."
-    },
-    "ScanID": {
-      "title": "Scan ID",
-      "noFileChosen": "No file chosen",
-      "uploadbutton": "Upload"
     },
     "SearchPersonByRut": {
       "searchByRut": "Search Person by RUT",

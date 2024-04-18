@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import '../App.css'; // Importar estilos CSS específicos para este formulario
-import axios from 'axios';
+import '../App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function obtenerFecha(fecha) {
   const fechaActual = new Date();
@@ -10,16 +11,18 @@ function obtenerFecha(fecha) {
   const hora = String(fechaDada.getHours()).padStart(2, '0');
   const minutos = String(fechaDada.getMinutes()).padStart(2, '0');
 
-  if (fechaActual.getFullYear() === fechaDada.getFullYear() &&
-      fechaActual.getMonth() === fechaDada.getMonth() &&
-      fechaActual.getDate() === fechaDada.getDate()) {
-      return `hoy a las ${hora}:${minutos}`;
+  if (
+    fechaActual.getFullYear() === fechaDada.getFullYear() &&
+    fechaActual.getMonth() === fechaDada.getMonth() &&
+    fechaActual.getDate() === fechaDada.getDate()
+  ) {
+    return `hoy a las ${hora}:${minutos}`;
   } else {
-      // Formatear la fecha en formato "dd/mm/yyyy"
-      const dia = String(fechaDada.getDate()).padStart(2, '0');
-      const mes = String(fechaDada.getMonth() + 1).padStart(2, '0');
-      const año = fechaDada.getFullYear();
-      return `el día ${dia}/${mes}/${año} a las ${hora}:${minutos}`;
+    // Formatear la fecha en formato "dd/mm/yyyy"
+    const dia = String(fechaDada.getDate()).padStart(2, '0');
+    const mes = String(fechaDada.getMonth() + 1).padStart(2, '0');
+    const año = fechaDada.getFullYear();
+    return `el día ${dia}/${mes}/${año} a las ${hora}:${minutos}`;
   }
 }
 
@@ -36,6 +39,7 @@ const NewCorrespondenceForm = () => {
 
   const [selectedOption, setSelectedOption] = useState(t('correspondenceForm.type'));
   const [apartmentOptions, setApartmentOptions] = useState([]);
+  const [sendToAllResidents, setSendToAllResidents] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -47,7 +51,7 @@ const NewCorrespondenceForm = () => {
   const [showCorrespondenceForm, setShowCorrespondenceForm] = useState(false);
 
   const fechamsg = obtenerFecha(formData.timeArrival);
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData.timeArrival);
@@ -155,6 +159,11 @@ const NewCorrespondenceForm = () => {
     } else { // Si no está seleccionado, lo agregamos a la lista de seleccionados
       setSelectedInhabitants([...selectedInhabitants, inhabitantId]);
     }
+  };
+
+  // Función para manejar el cambio en el checkbox "Send to all residents"
+  const handleSendToAllResidentsChange = (e) => {
+    setSendToAllResidents(e.target.checked);
   };
 
   return (

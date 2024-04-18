@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import i18n from './i18n';
 import { I18nextProvider } from 'react-i18next';
 
@@ -63,7 +64,7 @@ function App() {
     <div className="App">
       <I18nextProvider i18n={i18n}> {/* Usa I18nextProvider para traducir todo el sistema */}
       <BrowserRouter>
-        <NavbarConcierge /> {/* NavbarResident tambien es una opcion, la cual no usaremos */}
+        <NavbarConcierge /> {/* Tambien esta NavbarResident, pero tal vez no la usemos */}
         <Routes>
           <Route path="/home" element={<Home email={email} loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>} />
           <Route path="/login" element={<Login setLoggedIn={setLoggedIn} setEmail={setEmail} />} />

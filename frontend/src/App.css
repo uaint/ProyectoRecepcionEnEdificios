@@ -70,7 +70,7 @@ body {
   margin: 0; 
 }
 
-/* NewCorrespondenceForm */
+/* NewCorrespondenceForm*/
 .formContainer {
   max-width: 500px;
   padding: 20px;
@@ -426,8 +426,6 @@ button {
 }
 */
 
-
-
 /* AdminMessages */
 
 .admin-messages-container {
@@ -511,6 +509,7 @@ ul {
 
 li {
   margin-right: 10px;
+  position: relative;
 }
 
 /* Enlaces dentro de la navbar */
