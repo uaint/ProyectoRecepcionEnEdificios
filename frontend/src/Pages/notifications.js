@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 const Notifications = () => {
   const { t } = useTranslation();
 
@@ -14,16 +13,20 @@ const Notifications = () => {
   ];
 
   return (
-    <div className="notifications-container">
-      <h1 className="centeredHeading">{t('notifications.title')}</h1>
-      <hr className="divider" />
-      <ul className="notifications-list">
-        {notifications.map((notification, index) => (
-          <li key={index}>
-            {notification}
-          </li>
-        ))}
-      </ul>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <h1 class="text-center mb-4">{t('notifications.title')}</h1>  
+          <hr class="mb-4" />  
+          <ul class="list-group notifications-list">
+            { notifications.map((notification, index) => (
+              <li key={index} class="list-group-item">
+                {notification}
+              </li>
+            )) }
+          </ul>
+        </div>
+      </div>
     </div>
   );
 };

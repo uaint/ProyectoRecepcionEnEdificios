@@ -9,6 +9,9 @@ import { I18nextProvider } from 'react-i18next';
 import NavbarConcierge from './components/NavbarConcierge';
 import NavbarResident from './components/NavbarResident';
 
+// Bootstrap
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 // Importa las páginas
 import Home from './Pages/Home';
@@ -17,6 +20,7 @@ import NewCorrespondenceForm from './Pages/NewCorrespondenceForm';
 import NewVisitForm from './Pages/NewVisitForm';
 import Notifications from './Pages/notifications';
 import SearchPersonByRut from './Pages/SearchPersonByRut';
+import ScanID from './Pages/ScanID';
 import AdminFrequentVisits from './Pages/AdminFrequentVisits';
 import Messages from './Pages/Messages';
 import Config from './Pages/config';
@@ -67,6 +71,7 @@ function App() {
           <Route path="/newcorrespondenceform" element={<NewCorrespondenceForm />} />
           <Route path="/newvisitform" element={<NewVisitForm />} />
           <Route path="/searchpersonbyrut" element={<SearchPersonByRut />} />
+          <Route path="/scanid" element={<ScanID />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/newvehicleform" element={<NewVehicleForm />} />

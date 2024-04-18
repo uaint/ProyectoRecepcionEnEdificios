@@ -3,10 +3,9 @@ import { useTranslation } from 'react-i18next';
 import '../App.css'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 const NewVisitForm = () => {
   const { t } = useTranslation();
-  
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -19,6 +18,8 @@ const NewVisitForm = () => {
     '101', '202', '303' // Departamentos disponibles, puedes modificar estos valores
   ]);
 
+  const [selectAll, setSelectAll] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -27,6 +28,10 @@ const NewVisitForm = () => {
   const handleApartmentChange = (e) => {
     const selectedApartment = e.target.value;
     setFormData({ ...formData, apartmentToVisit: selectedApartment });
+  };
+
+  const handleSelectAllChange = (e) => {
+    setSelectAll(e.target.checked);
   };
 
   const handleSubmit = (e) => {
