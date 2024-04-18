@@ -169,19 +169,6 @@ END$$
 DELIMITER ;
 
 -- -----------------------------------------------------
--- procedure search_visitor_name
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium`$$
-CREATE PROCEDURE `search_visitor_name`(IN search_name VARCHAR(63))
-BEGIN
-    SELECT * FROM visitors WHERE CONCAT(first_name, ' ', last_name) LIKE CONCAT('%', search_name, '%');
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
 -- procedure add_mail
 -- -----------------------------------------------------
 
@@ -195,32 +182,6 @@ END$$
 DELIMITER ;
 
 -- -----------------------------------------------------
--- procedure delete_visitor
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium`$$
-CREATE PROCEDURE `delete_visitor`(IN v_id INT)
-BEGIN
-	DELETE FROM visitors WHERE visitors.id = v_id;
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- procedure delete_inhabitant
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium`$$
-CREATE PROCEDURE `delete_inhabitant` (IN i_id INT)
-BEGIN
-	DELETE FROM inhabitants WHERE inhabitants.id = i_id;
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
 -- procedure delete_vehicle
 -- -----------------------------------------------------
 
@@ -229,19 +190,6 @@ USE `roentgenium`$$
 CREATE PROCEDURE `delete_vehicle` (IN l_plate VARCHAR(8))
 BEGIN
 	DELETE FROM vehicles_visitors WHERE license_plate = l_plate;
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- procedure delete_user
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium`$$
-CREATE PROCEDURE `delete_user` (IN u_id INT)
-BEGIN
-	DELETE FROM login_system WHERE id = u_id;
 END$$
 
 DELIMITER ;
@@ -273,19 +221,6 @@ END$$
 DELIMITER ;
 
 -- -----------------------------------------------------
--- procedure change_claimed_status_mail
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium`$$
-CREATE PROCEDURE `change_claimed_status_mail` (IN m_id INT, IN new_claimed_status TINYINT)
-BEGIN
-	UPDATE mail SET is_claimed = new_claimed_status WHERE id = m_id;
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
 -- procedure update_claimed_mail
 -- -----------------------------------------------------
 
@@ -298,70 +233,6 @@ BEGIN
 	ELSE
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: The claimed status value must be 0 (not claimed) or 1 (claimed).';
 	END IF;
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- procedure update_claimed_stat_mail
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium`$$
-CREATE PROCEDURE `update_claimed_stat_mail` (IN m_id INT, IN new_claimed_status TINYINT)
-BEGIN
-	UPDATE mail SET is_claimed = new_claimed_status WHERE id = m_id;
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- procedure update_status_mail
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium`$$
-CREATE PROCEDURE `update_status_mail` (IN m_id INT, IN new_claimed_status TINYINT)
-BEGIN
-	UPDATE mail SET is_claimed = new_claimed_status WHERE id = m_id;
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- procedure delete_user_login
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium`$$
-CREATE PROCEDURE `delete_user_login` (IN u_id INT)
-BEGIN
-	DELETE FROM login_system WHERE id = u_id;
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- procedure delete_user_login_sys
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium`$$
-CREATE PROCEDURE `delete_user_login_sys` (IN u_id INT)
-BEGIN
-	DELETE FROM login_system WHERE id = u_id;
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- procedure update_inhabitant_phone_number
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium`$$
-CREATE PROCEDURE `update_inhabitant_phone_number` (IN new_phone_number VARCHAR(15))
-BEGIN
 END$$
 
 DELIMITER ;
