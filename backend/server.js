@@ -1,16 +1,25 @@
 import express from 'express';
 import mysql from 'mysql';
+import env from 'dotenv';
 
 const app = express();
-const port = 3001;
+const port = 3001;S
+
+env.config()
+
+const passwordbd = process.env.DB_PASSWORD;
+const hostdb = process.env.DB_HOST;
+const userdb = process.env.DB_USER;
+const namedb = process.env.DB_NAME;
+const portdb = process.env.DB_PORT;
 
 // Configuración de la conexión a la base de datos
 const connection = mysql.createConnection({
-  host: 'rg-mysql-azure.mysql.database.azure.com',
-  user: 'rgAzAdmin',
-  password: 'CnRq5sceEL1jbpfmqwEV2vzeKZzcmCm8',
-  database: 'roentgenium',
-  port: 3306
+  host: hostdb,
+  user: userdb,
+  password: passwordbd,
+  database: namedb,
+  port: portdb
 });
 
 // Establecer conexión a la base de datos
