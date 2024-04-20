@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import env from 'dotenv';
-
-env.config()
+import axios from 'axios';
 
 function obtenerFecha(fecha) {
   const fechaActual = new Date();
@@ -56,16 +54,14 @@ const NewCorrespondenceForm = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData.timeArrival);
-    console.log(selectedInhabitants); // ids de gente seleccionada para que le llegue el mensaje
-    console.log(inhabitants); // todos los que viven en el departamento seleccionado
+
+    // array filtrado con los que queremos que les llegue el mensaje
     const filteredArray = inhabitants.filter(obj => selectedInhabitants.includes(obj.id));
-    console.log(filteredArray); // array filtrado con los que queremos que les llegue el mensaje
 
     // Se importan credenciales de .env
-    const token = process.env.TOKEN;
-    const version = process.env.VERSION;
-    const id_number = process.env.ID_NUMBER;
+    const token = process.env.REACT_APP_TOKEN;
+    const version = process.env.REACT_APP_VERSION;
+    const id_number = process.env.REACT_APP_ID_NUMBER;
 
     for (let i = 0; i < filteredArray.length; i++) { // Iterar a los que queremos enviarle el mensaje
       const obj = filteredArray[i];
@@ -73,7 +69,7 @@ const NewCorrespondenceForm = () => {
       const number = obj.contact_number;
 
       // Se envia WhatsApp por la correspondencia
-      const message = `*Atención ${name}* \nHay un paquete esperando por ti en conserjería, llego ${fechamsg}, por favor ven a recogerlo a la brevedad.`;
+      const message = `*Atención ${name}* \nHay un paquete esperando por ti en conserjería, llego *${fechamsg}*, por favor ven a recogerlo a la brevedad.`;
 
       const data_msg = {
         "messaging_product": "whatsapp",
