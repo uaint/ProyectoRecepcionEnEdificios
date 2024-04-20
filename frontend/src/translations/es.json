@@ -33,10 +33,11 @@
   "adminFrequentVisits": {
     "adminFrequentVisits": "Visitas Frecuentes de Administración",
     "name": "Nombre",
-    "lastName": "Apellido",
+    "birthDate": "Fecha Nacimiento",
     "rut": "RUT",
     "apartment": "Departamento",
-    "visitCount": "Cantidad de Visitas",
+    "visitType": "Tipo Visita",
+    "lastVisit": "Fecha Visita",
     "delete": "Eliminar",
     "addFrequentVisit": "Agregar Visita Frecuente"
   },

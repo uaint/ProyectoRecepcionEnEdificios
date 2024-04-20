@@ -1,23 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// Funcion para formatear la fecha
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+  return date.toLocaleDateString('es-ES', options);
+}
+
 const AdminFrequentVisits = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [visitors, setVisitors] = useState([]);
 
-  // Sample data for rows
-  const frequentVisitsData = [
-    { id: 1, name: 'John', lastName: 'Doe', rut: '12839849-1', dept: '7A', visitCount: 5 },
-    { id: 2, name: 'Mary', lastName: 'Gonzalez', rut: '16833339-1', dept: '12C', visitCount: 3 },
-    { id: 3, name: 'Peter', lastName: 'Lopez', rut: '938549-1', dept: '9B', visitCount: 7 },
-  ];
+  // Conseguir datos de visitas con la API
+  useEffect(() => {
+    fetch('https://dduhalde.online/.netlify/functions/api/visitors')
+      .then(response => response.json())
+      .then(data => setVisitors(data))
+      .catch(error => console.error('Error fetching visitors:', error));
+  }, []);
 
   const handleDelete = (id) => {
-    // Logic to delete the row with the specified ID
-    console.log(`Delete row with ID: ${id}`);
+    // Realizar la solicitud DELETE al servidor
+    fetch(`https://dduhalde.online/.netlify/functions/api/delete_visitor/${id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error al eliminar el visitante');
+      }
+      console.log(`Visitante con ID ${id} eliminado correctamente`);
+      // Aquí puedes realizar otras acciones después de eliminar el visitante, como actualizar la interfaz de usuario
+    })
+    .catch(error => {
+      console.error('Error al eliminar el visitante:', error);
+      // Aquí puedes manejar el error y mostrar un mensaje de error al usuario si es necesario
+    });
   };
 
   // Redirect button for New Visit
@@ -34,23 +59,25 @@ const AdminFrequentVisits = () => {
           <thead>
             <tr>
             <th scope="col">{t('adminFrequentVisits.name')}</th>
-            <th scope="col">{t('adminFrequentVisits.lastName')}</th>
             <th scope="col">{t('adminFrequentVisits.rut')}</th>
+            <th scope="col">{t('adminFrequentVisits.birthDate')}</th>
             <th scope="col">{t('adminFrequentVisits.apartment')}</th>
-            <th scope="col">{t('adminFrequentVisits.visitCount')}</th>
-            <th scope="col">Delete</th>
+            <th scope="col">{t('adminFrequentVisits.visitType')}</th>
+            <th scope="col">{t('adminFrequentVisits.lastVisit')}</th>
+            <th scope="col">{t('adminFrequentVisits.delete')}</th>
           </tr>
         </thead>
         <tbody>
-          {frequentVisitsData.map((visit) => (
-            <tr key={visit.id}>
-              <td>{visit.name}</td>
-              <td>{visit.lastName}</td>
-              <td>{visit.rut}</td>
-              <td>{visit.dept}</td>
-              <td>{visit.visitCount}</td>
+          {visitors.map((visitor) => (
+            <tr key={visitor.visitor_id}>
+              <td>{visitor.full_name}</td>
+              <td>{visitor.run}</td>
+              <td>{formatDate(visitor.birth_date)}</td>
+              <td>{visitor.unit_apartment_visited}</td>
+              <td>{visitor.visit_type}</td>
+              <td>{formatDate(visitor.last_visit)}</td>
               <td>
-                <button class="btn btn-danger btn-sm" onClick={() => handleDelete(visit.id)}>{t('adminFrequentVisits.delete')}</button>
+                <button class="btn btn-danger btn-sm" onClick={() => handleDelete(visitor.visitor_id)}>{t('adminFrequentVisits.delete')}</button>
               </td>
             </tr>
           ))}

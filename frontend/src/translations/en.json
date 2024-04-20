@@ -33,10 +33,11 @@
   "adminFrequentVisits": {
     "adminFrequentVisits": "Admin Frequent Visits",
     "name": "Name",
-    "lastName": "Last Name",
+    "birthDate": "Birth Date",
     "rut": "RUT",
     "apartment": "Apartment",
-    "visitCount": "Visit Count",
+    "visitType": "Visit Type",
+    "lastVisit": "Visit Date",
     "delete": "Delete",
     "addFrequentVisit": "Add Frequent Visit"
   },

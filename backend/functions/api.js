@@ -2,10 +2,14 @@ import express from 'express';
 import mysql from 'mysql';
 import env from 'dotenv';
 import serverless from 'serverless-http';
+import cors from 'cors';
 
 // Iniciar App y Router
 const app = express();
 const router = express.Router();
+
+// Habilitar completamente las consultas
+app.options('*', cors());
 
 // Llamar las variables del .env
 env.config()
@@ -131,6 +135,31 @@ router.get('/visitors', (req, res) => {
       return;
     }
     res.json(rows); // Enviar los datos como JSON al cliente
+  });
+});
+
+// Ruta para eliminar visitante
+router.get('/delete_visitor/:id', (req, res) => {
+
+  // ID visitante a eliminar
+  const visitorId = req.params.id;
+
+  // Realizar Query
+  const query = `DELETE FROM visitors WHERE visitors.id = ?;`;
+
+  // Encabezados CORS
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Hacer llamado a la BBDD
+  connection.query(query, [visitorId], (err, rows) => {
+    if (err) {
+      console.error('Error al ejecutar la consulta:', err);
+      res.status(500).send('Error al obtener datos desde la base de datos');
+      return;
+    }
   });
 });
 
