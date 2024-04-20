@@ -7,7 +7,7 @@ import serverless from 'serverless-http';
 const app = express();
 const router = express.Router();
 
-// Llamar las variables seguras
+// Llamar las variables del .env
 env.config()
 const passwordbd = process.env.DB_PASSWORD;
 const hostdb = process.env.DB_HOST;

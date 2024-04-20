@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import env from 'dotenv';
 
+env.config()
 
 function obtenerFecha(fecha) {
   const fechaActual = new Date();
@@ -60,12 +62,10 @@ const NewCorrespondenceForm = () => {
     const filteredArray = inhabitants.filter(obj => selectedInhabitants.includes(obj.id));
     console.log(filteredArray); // array filtrado con los que queremos que les llegue el mensaje
 
-    //const token = process.env.TOKEN;
-    const token = "EAAUvkPP1XacBOwT2opqZCGx90oKCJI8vB13l9KtCNFt3TFk2AbVdjeKJul09roeeGZCLRgjQSOxhHrXAt2YrYsKLKE6SwdUToeYm0jrY3VKQ8GofkwXyB0MkFgRKWa1bY3M9O5E6U3rXyP5f2SgSa3PFPwl5iYvXtVJ8NEcV3n1Sg7FFzfVRXF9YPdmbzrJj1HJB4XgZBah586ZC1HE7";
-    //const version = process.env.VERSION;
-    const version = "v18.0"
-    //const id_number = process.env.ID_NUMBER;
-    const id_number = "232684529936100"
+    // Se importan credenciales de .env
+    const token = process.env.TOKEN;
+    const version = process.env.VERSION;
+    const id_number = process.env.ID_NUMBER;
 
     for (let i = 0; i < filteredArray.length; i++) { // Iterar a los que queremos enviarle el mensaje
       const obj = filteredArray[i];
@@ -135,7 +135,7 @@ const NewCorrespondenceForm = () => {
   const handleSearch = () => {
     console.log(formData.build);
     console.log(formData.apartment);
-    const url_api = `http://localhost:3001/inhabitants/${formData.build}/${formData.apartment}`;
+    const url_api = `https://dduhalde.online/.netlify/functions/api/inhabitants/${formData.build}/${formData.apartment}`;
     fetch(url_api)
       .then(response => response.json())
       .then(data => {
