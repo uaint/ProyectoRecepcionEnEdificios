@@ -21,11 +21,13 @@
   },
   "adminCorrespondence": {
     "adminCorrespondence": "Correspondencia de Administración",
-    "id": "Id",
+    "id": "ID",
     "building": "Edificio",
     "apartment": "Departamento",
     "type": "Tipo",
     "notified": "Notificado",
+    "claimed": "Reclamado",
+    "date": "Fecha",
     "contact": "Contacto",
     "delete": "Eliminar",
     "addNewCorrespondence": "Agregar Nueva Correspondencia"

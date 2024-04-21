@@ -1,20 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// Funcion para formatear la fecha
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const options = { 
+    year: 'numeric', 
+    month: 'numeric', 
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric'
+  };
+  return date.toLocaleDateString('es-ES', options);
+}
 
 const AdminCorrespondence = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [correspondence, setCorrespondence] = useState([]);
 
-  // Example data for the rows
-  const packagesData = [
-    { id: 1, building: 'A', apt: '7A', type: 'letter', notified: 'Yes', contact: 973647522 },
-    { id: 2, building: 'B', apt: '2B', type: 'package', notified: 'Yes', contact: 988394895 },
-    { id: 3, building: 'D', apt: '19D', type: 'box', notified: 'No', contact: 988322172 },
-  ];
+  // Conseguir datos de correspondencia con la API
+  useEffect(() => {
+    fetch('https://dduhalde.online/.netlify/functions/api/unclaimed_correspondence')
+      .then(response => response.json())
+      .then(data => setCorrespondence(data))
+      .catch(error => console.error('Error fetching correspondence:', error));
+  }, []);
 
   const handleDelete = (id) => {
     // Logic to delete the row with the specified ID
@@ -36,25 +50,23 @@ const AdminCorrespondence = () => {
             <thead>
               <tr>
                 <th scope="col">{t('adminCorrespondence.id')}</th>
-                <th scope="col">{t('adminCorrespondence.building')}</th>
                 <th scope="col">{t('adminCorrespondence.apartment')}</th>
                 <th scope="col">{t('adminCorrespondence.type')}</th>
+                <th scope="col">{t('adminCorrespondence.date')}</th>
                 <th scope="col">{t('adminCorrespondence.notified')}</th>
-                <th scope="col">{t('adminCorrespondence.contact')}</th>
-                <th scope="col">Delete</th>
+                <th scope="col">{t('adminCorrespondence.claimed')}</th>
               </tr>
             </thead>
             <tbody>
-              {packagesData.map((pkg) => (
-              <tr key={pkg.id}>
-                <td>{pkg.id}</td>
-                <td>{pkg.building}</td>
-                <td >{pkg.apt}</td>
-                <td>{pkg.type}</td>
-                <td>{pkg.notified}</td>
-                <td>{pkg.contact}</td>
+              {correspondence.map((pkg, index) => (
+              <tr key={index + 1}>
+                <td>{index + 1}</td>
+                <td>{pkg.housing_unit_apartment}</td>
+                <td>{pkg.mail_type}</td>
+                <td >{formatDate(pkg.arrival_time)}</td>
+                <td>{pkg.is_notified}</td>
                 <td>
-                  <button className="btn btn-danger btn-sm" onClick={() => handleDelete(pkg.id)}>{t('adminCorrespondence.delete')}</button>
+                  <button className="btn btn-success btn-sm" onClick={() => handleDelete(pkg.id)}>{t('adminCorrespondence.claimed')}</button>
                 </td>
               </tr>
               ))}

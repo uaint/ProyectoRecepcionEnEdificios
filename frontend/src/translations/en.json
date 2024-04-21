@@ -21,11 +21,13 @@
   },
   "adminCorrespondence": {
     "adminCorrespondence": "Admin Correspondence",
-    "id": "Id",
+    "id": "ID",
     "building": "Building",
     "apartment": "Apartment",
     "type": "Type",
     "notified": "Notified",
+    "claimed": "Claimed",
+    "date": "Date",
     "contact": "Contact",
     "delete": "Delete",
     "addNewCorrespondence": "Add New Correspondence"
