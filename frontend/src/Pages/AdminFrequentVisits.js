@@ -26,22 +26,15 @@ const AdminFrequentVisits = () => {
 
   const handleDelete = (id) => {
     // Realizar la solicitud DELETE al servidor
-    fetch(`https://dduhalde.online/.netlify/functions/api/delete_visitor/${id}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    fetch(`https://dduhalde.online/.netlify/functions/api/delete_visitor/${id}`)
     .then(response => {
       if (!response.ok) {
         throw new Error('Error al eliminar el visitante');
       }
       console.log(`Visitante con ID ${id} eliminado correctamente`);
-      // Aquí puedes realizar otras acciones después de eliminar el visitante, como actualizar la interfaz de usuario
     })
     .catch(error => {
       console.error('Error al eliminar el visitante:', error);
-      // Aquí puedes manejar el error y mostrar un mensaje de error al usuario si es necesario
     });
   };
 
@@ -55,7 +48,7 @@ const AdminFrequentVisits = () => {
           <h1 class="text-center mb-4">{t('adminFrequentVisits.adminFrequentVisits')}</h1>  
           <hr class="mb-4"/> 
           <div class="table-responsive">
-          <table class="table table-striped">
+          <table class="table table-striped table-bordered text-center">
           <thead>
             <tr>
             <th scope="col">{t('adminFrequentVisits.name')}</th>

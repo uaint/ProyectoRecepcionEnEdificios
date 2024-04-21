@@ -312,6 +312,7 @@ button {
 
 /* AdminCorrespondence */
 
+/*
 .addNewCorrespondenceButton {
   margin-top: 40px; 
   display: block; 
@@ -349,7 +350,6 @@ button {
   padding: 10px 20px;
   background-color: #007bff;
 }
-
 
 
 /* Config */

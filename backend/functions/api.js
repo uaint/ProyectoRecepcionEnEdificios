@@ -38,6 +38,7 @@ connection.connect((err) => {
 });
 
 // Ruta para obtener datos de personas con su apartment y housing_unit
+// Link de ejemplo /inhabitants/1/101
 router.get('/inhabitants/:apartment/:housing_unit', (req, res) => {
 
   // Conseguir parametros desde el link
@@ -139,13 +140,14 @@ router.get('/visitors', (req, res) => {
 });
 
 // Ruta para eliminar visitante
+// Link de ejemplo /add_vehicle/1
 router.get('/delete_visitor/:id', (req, res) => {
 
   // ID visitante a eliminar
   const visitorId = req.params.id;
 
   // Realizar Query
-  const query = `DELETE FROM visitors WHERE visitors.id = ?;`;
+  const query = `DELETE FROM vehicles_visitors WHERE visitor_id = ?;`;
 
   // Encabezados CORS
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -153,12 +155,29 @@ router.get('/delete_visitor/:id', (req, res) => {
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
 
-  // Hacer llamado a la BBDD
+  // Hacer llamado a la BBDD para eliminar vehiculos asociados
   connection.query(query, [visitorId], (err, rows) => {
     if (err) {
       console.error('Error al ejecutar la consulta:', err);
+      console.log(err);
       res.status(500).send('Error al obtener datos desde la base de datos');
       return;
+    }
+    else {
+      res.status(200).json({ message: 'Se elimino el vehículo correctamente.'});
+      // Hacer llamado a la BBDD para eliminar finalmente el visitante
+      const query = `DELETE FROM visitors WHERE id = ?;`;
+      connection.query(query, [visitorId], (err, rows) => {
+        if (err) {
+          console.error('Error al ejecutar la consulta:', err);
+          console.log(err);
+          res.status(500).send('Error al obtener datos desde la base de datos');
+          return;
+        }
+        else {
+          res.status(200).json({ message: 'Se elimino el visitante correctamente.'});
+        }
+      });
     }
   });
 });

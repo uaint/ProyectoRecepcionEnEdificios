@@ -27,43 +27,45 @@ const AdminCorrespondence = () => {
   };
 
   return (
-      <div class="container">
-      <h1 class="text-center mb-4">{t('adminCorrespondence.adminCorrespondence')}</h1>  
-      <hr class="mb-4"/> 
-      <div class="table-responsive">
-      <table class="table table-striped">
-      <thead>
-        <tr>
-        <th scope="col">{t('adminCorrespondence.id')}</th>
-        <th scope="col">{t('adminCorrespondence.building')}</th>
-        <th scope="col">{t('adminCorrespondence.apartment')}</th>
-        <th scope="col">{t('adminCorrespondence.type')}</th>
-        <th scope="col">{t('adminCorrespondence.notified')}</th>
-        <th scope="col">{t('adminCorrespondence.contact')}</th>
-        <th scope="col">Delete</th>
-      </tr>
-    </thead>
-    <tbody>
-      {packagesData.map((pkg) => (
-        <tr key={pkg.id}>
-          <td>{pkg.id}</td>
-          <td>{pkg.building}</td>
-          <td>{pkg.apt}</td>
-          <td>{pkg.type}</td>
-          <td>{pkg.notified}</td>
-          <td>{pkg.contact}</td>
-          <td>
-            <button class="btn btn-danger btn-sm" onClick={() => handleDelete(pkg.id)}>{t('adminCorrespondence.delete')}</button>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-  </div>
-  <div class="text-center mt-4">
-    <button class="btn btn-primary" onClick={handleButtonClick}>{t('adminCorrespondence.addNewCorrespondence')}</button>
-  </div>
-  </div>
+    <div className="container">
+      <h1 className="text-center mb-4">{t('adminCorrespondence.adminCorrespondence')}</h1>
+      <hr className="mb-4"/>
+      <div>
+        <div className="table-responsive">
+          <table className="table table-striped table-bordered text-center">
+            <thead>
+              <tr>
+                <th scope="col">{t('adminCorrespondence.id')}</th>
+                <th scope="col">{t('adminCorrespondence.building')}</th>
+                <th scope="col">{t('adminCorrespondence.apartment')}</th>
+                <th scope="col">{t('adminCorrespondence.type')}</th>
+                <th scope="col">{t('adminCorrespondence.notified')}</th>
+                <th scope="col">{t('adminCorrespondence.contact')}</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {packagesData.map((pkg) => (
+              <tr key={pkg.id}>
+                <td>{pkg.id}</td>
+                <td>{pkg.building}</td>
+                <td >{pkg.apt}</td>
+                <td>{pkg.type}</td>
+                <td>{pkg.notified}</td>
+                <td>{pkg.contact}</td>
+                <td>
+                  <button className="btn btn-danger btn-sm" onClick={() => handleDelete(pkg.id)}>{t('adminCorrespondence.delete')}</button>
+                </td>
+              </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="text-center mt-4">
+        <button className="btn btn-primary" onClick={handleButtonClick}>{t('adminCorrespondence.addNewCorrespondence')}</button>
+      </div>
+    </div>
   );
 };
 

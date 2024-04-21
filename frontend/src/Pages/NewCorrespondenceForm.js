@@ -167,7 +167,7 @@ const NewCorrespondenceForm = () => {
       <h2>{t('correspondenceForm.addNewCorrespondence')}</h2>
       {showSearchForm && (
         <div>
-        <div className="formGroup">
+        <div className="formGroup mt-5">
             <label htmlFor="apartment">{t('correspondenceForm.selectApartment')}</label>
             <input
               id="apartment"
@@ -180,7 +180,7 @@ const NewCorrespondenceForm = () => {
             />
           </div>
           <div className="formGroup">
-            <label htmlFor="build">{t('correspondenceForm.selectInhabitant')}</label>
+            <label htmlFor="build">{t('correspondenceForm.selectTower')}</label>
             <input
               id="build"
               name="build"
@@ -188,15 +188,15 @@ const NewCorrespondenceForm = () => {
               onChange={handleBuildChange}
               required
               className="inputField"
-              placeholder={t('correspondenceForm.selectInhabitant')}
+              placeholder={t('correspondenceForm.selectTower')}
             />
             </div>
-      <button type="submit" className="submitButton mb-4" onClick={handleSearch}>Buscar Habitantes</button>
+      <button type="submit" className="submitButton mt-5" onClick={handleSearch}>Buscar Habitantes</button>
       </div>
       )}
       {showCorrespondenceForm && (
       <div>
-      <h4>Selecciona para enviar mensaje:</h4>
+      <h4>{t('correspondenceForm.selectMsg')}</h4>
       <ul className="list-group">
         {inhabitants.map(inhabitant => (
           <li key={inhabitant.id}>
@@ -212,12 +212,13 @@ const NewCorrespondenceForm = () => {
         ))}
       </ul>
       <div className="formGroup">
+        <label htmlFor="timeArrival">{t('correspondenceForm.type')}</label>
           <div className="options-container">
             <select className="form-select" value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
-              <option value="" disabled hidden>{t('correspondenceForm.type')}</option>
               <option value="Packages">{t('correspondenceForm.packages')}</option>
               <option value="Letters">{t('correspondenceForm.letters')}</option>
               <option value="Item">{t('correspondenceForm.item')}</option>
+              <option value="Food">{t('correspondenceForm.food')}</option>
               <option value="Others">{t('correspondenceForm.others')}</option>
             </select>
           </div>

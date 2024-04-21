@@ -135,16 +135,18 @@
     },
     "correspondenceForm": {
       "addNewCorrespondence": "Add New Correspondence",
-      "type": "Type",
+      "type": "Type:",
       "packages": "Packages",
       "letters": "Letters",
       "item": "Item",
+      "food": "Food",
       "others": "Others",
       "timeOfArrival": "Time of Arrival:",
       "selectApartment": "Select Apartment",
-      "selectInhabitant": "Select Inhabitant",
+      "selectTower": "Select Tower",
       "addCorrespondence": "Add Correspondence",
-      "checkboxSendToAll": "Send to all residents"
+      "checkboxSendToAll": "Send to all residents",
+      "selectMsg": "Select to send message:"
     },
     "vehicleForm": {
       "addNewVehicle": "Add New Vehicle",
