@@ -91,14 +91,14 @@ router.get('/inhabitants', (req, res) => {
 });
 
 // Ruta para agregar visitantes
-// Link de ejemplo /add_visitor/Anuel/Brr/21123456/7/1999-09-09/null/Frequent
-router.get('/add_visitor/:name/:last_name/:rut/:dv/:birthdate/:last_visit/:visit_type', (req, res) => {
+// Link de ejemplo /add_visitor/Anuel/Brr/21123456/7/1999-09-09/null/1/101/Frequent
+router.get('/add_visitor/:name/:last_name/:rut/:dv/:birthdate/:apartment/:housing_unit/:visit_type', (req, res) => {
 
   // Conseguir parametros desde el link
-  const { name, last_name, rut, dv, birthdate, last_visit, visit_type } = req.params;
+  const { name, last_name, rut, dv, birthdate, apartment, housing_unit, visit_type } = req.params;
 
   // Realizar Query
-  const query = `CALL add_visitor("${name}", "${last_name}", ${rut}, ${dv}, "${birthdate}", ${last_visit}, "${visit_type}")`;
+  const query = `CALL add_visitor("${name}", "${last_name}", ${rut}, ${dv}, "${birthdate}", NOW(), "${apartment}", "${housing_unit}", "${visit_type}")`;
 
   // Encabezados CORS
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');

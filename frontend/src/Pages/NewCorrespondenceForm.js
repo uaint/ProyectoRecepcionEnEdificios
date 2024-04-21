@@ -203,7 +203,7 @@ const NewCorrespondenceForm = () => {
               placeholder={t('correspondenceForm.selectTower')}
             />
             </div>
-      <button type="submit" className="submitButton mt-5" onClick={handleSearch}>Buscar Habitantes</button>
+      <button type="submit" className="submitButton mt-5" onClick={handleSearch}>{t('correspondenceForm.searchresident')}</button>
       </div>
       )}
       {showCorrespondenceForm && (
@@ -224,7 +224,7 @@ const NewCorrespondenceForm = () => {
         ))}
       </ul>
       <div className="formGroup">
-        <label htmlFor="timeArrival">{t('correspondenceForm.type')}</label>
+        <label htmlFor="type">{t('correspondenceForm.type')}</label>
           <div className="options-container">
             <select className="form-select" value={selectedOption} onChange={handleOptionChange}>
               <option value="Packages">{t('correspondenceForm.packages')}</option>

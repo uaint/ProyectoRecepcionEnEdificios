@@ -148,7 +148,8 @@
     "selectTower": "Seleccionar Torre",
     "addCorrespondence": "Agregar Correspondencia",
     "checkboxSendToAll": "Enviar a todos los residentes",
-    "selectMsg": "Selecciona para enviar mensaje:"
+    "selectMsg": "Selecciona para enviar mensaje:",
+    "searchresident": "Buscar Habitantes"
   },
   "vehicleForm": {
     "addNewVehicle": "Agregar Nuevo Vehículo",
@@ -166,6 +167,18 @@
     "firstName": "Nombre:",
     "lastName": "Apellido:",
     "run": "RUT:",
+    "dv": "Digito Verificador:",
+    "rutPlaceholder": "Sin puntos ni digito verificador",
+    "dvPlaceholder": "Si termina con K, remplazar con 0",
+    "buildToVisit": "Torre a Visitar:",
+    "type": "Tipo de Visita:",
+    "frequent": "Frecuente",
+    "regular": "Regular",
+    "social": "Social",
+    "delivery": "Delivery",
+    "medical": "Medica",
+    "business": "Negocio",
+    "others": "Otra",
     "birthDate": "Fecha de Nacimiento:",
     "apartmentToVisit": "Apartamento a Visitar:",
     "addVisit": "Agregar Visita",
