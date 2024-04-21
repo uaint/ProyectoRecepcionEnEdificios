@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `roentgenium`.`inhabitants_information` (`visitor_id`
 -- -----------------------------------------------------
 -- Placeholder table for view `roentgenium`.`unclaimed_correspondence`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium`.`unclaimed_correspondence` (`housing_unit_apartment` INT, `mail_type` INT, `arrival_time` INT, `is_notified` INT, `is_claimed` INT);
+CREATE TABLE IF NOT EXISTS `roentgenium`.`unclaimed_correspondence` (`id` INT, `housing_unit_apartment` INT, `mail_type` INT, `arrival_time` INT, `is_notified` INT, `is_claimed` INT);
 
 -- -----------------------------------------------------
 -- procedure add_inhabitant
@@ -155,9 +155,9 @@ DELIMITER ;
 
 DELIMITER $$
 USE `roentgenium`$$
-CREATE PROCEDURE `add_mail`(IN apt_recipient TINYINT, IN hu_recipient SMALLINT, IN m_type VARCHAR(31), IN a_time DATETIME)
+CREATE PROCEDURE `add_mail`(IN apt_recipient TINYINT, IN hu_recipient SMALLINT, IN m_type VARCHAR(31), IN a_time DATETIME, IN i_notified TINYINT)
 BEGIN
-	INSERT INTO mail (mail_type, arrival_time, apartment_recipient, housing_unit_recipient, is_notified, is_claimed) VALUES (m_type, a_time, apt_recipient, hu_recipient, 0, 0);
+	INSERT INTO mail (mail_type, arrival_time, apartment_recipient, housing_unit_recipient, is_notified, is_claimed) VALUES (m_type, a_time, apt_recipient, hu_recipient, i_notified, 0);
 END$$
 
 DELIMITER ;
@@ -241,6 +241,19 @@ END$$
 DELIMITER ;
 
 -- -----------------------------------------------------
+-- procedure update_mail_to_claimed
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `update_mail_to_claimed` (IN m_id INT)
+BEGIN
+	UPDATE mail SET is_claimed = 1 WHERE id = m_id;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
 -- View `roentgenium`.`vehicle_owners`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `roentgenium`.`vehicle_owners`;
@@ -310,11 +323,12 @@ DROP TABLE IF EXISTS `roentgenium`.`unclaimed_correspondence`;
 USE `roentgenium`;
 CREATE  OR REPLACE VIEW `unclaimed_correspondence` AS
     SELECT 
-        CONCAT(mail.housing_unit_recipient, '-', mail.apartment_recipient) AS housing_unit_apartment,
-        mail.mail_type,
-        mail.arrival_time,
-        mail.is_notified,
-        mail.is_claimed
+		id,
+        CONCAT(housing_unit_recipient, '-', apartment_recipient) AS housing_unit_apartment,
+        mail_type,
+        arrival_time,
+        is_notified,
+        is_claimed
     FROM
         mail
     WHERE
