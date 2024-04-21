@@ -11,8 +11,41 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema roentgenium
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `roentgenium` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `roentgenium` DEFAULT CHARACTER SET utf8mb3 ;
 USE `roentgenium` ;
+
+-- -----------------------------------------------------
+-- Table `roentgenium`.`inhabitants`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `roentgenium`.`inhabitants` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `apartment` TINYINT NOT NULL,
+  `housing_unit` SMALLINT NOT NULL,
+  `first_name` VARCHAR(31) NOT NULL,
+  `last_name` VARCHAR(31) NOT NULL,
+  `run` INT NOT NULL,
+  `run_vd` TINYINT(1) NOT NULL,
+  `contact_number` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `run_UNIQUE` (`run` ASC) VISIBLE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 4
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `roentgenium`.`login_system`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `roentgenium`.`login_system` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(31) NOT NULL,
+  `password` VARCHAR(256) NOT NULL,
+  `user_type` TINYINT NOT NULL,
+  `last_access` DATETIME NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
 
 -- -----------------------------------------------------
 -- Table `roentgenium`.`visitors`
@@ -24,10 +57,15 @@ CREATE TABLE IF NOT EXISTS `roentgenium`.`visitors` (
   `run` INT NOT NULL,
   `run_vd` TINYINT(1) NOT NULL,
   `birth_date` DATE NOT NULL,
-  `last_visit` DATETIME NULL,
+  `last_visit` DATETIME NOT NULL,
+  `apartment_visited` TINYINT NOT NULL,
+  `housing_unit_visited` SMALLINT NOT NULL,
   `visit_type` VARCHAR(31) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `run_UNIQUE` (`run` ASC) VISIBLE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 36
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -37,33 +75,17 @@ CREATE TABLE IF NOT EXISTS `roentgenium`.`vehicles_visitors` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `visitor_id` INT NOT NULL,
   `license_plate` VARCHAR(8) NOT NULL,
-  `parking_spot` SMALLINT NULL,
-  `parking_date` DATETIME NULL,
+  `parking_spot` SMALLINT NULL DEFAULT NULL,
+  `parking_date` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`id`, `visitor_id`),
-  INDEX `fk_vehicle_registry_visitors_visitors1_idx` (`visitor_id` ASC) VISIBLE,
   UNIQUE INDEX `parking_spot_UNIQUE` (`parking_spot` ASC) VISIBLE,
+  INDEX `fk_vehicle_registry_visitors_visitors1_idx` (`visitor_id` ASC) VISIBLE,
   CONSTRAINT `fk_vehicle_registry_visitors_visitors1`
     FOREIGN KEY (`visitor_id`)
-    REFERENCES `roentgenium`.`visitors` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `roentgenium`.`inhabitants`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium`.`inhabitants` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `apartment` TINYINT NOT NULL,
-  `housing_unit` SMALLINT NULL,
-  `first_name` VARCHAR(31) NOT NULL,
-  `last_name` VARCHAR(31) NOT NULL,
-  `run` INT NOT NULL,
-  `run_vd` TINYINT(1) NOT NULL,
-  `contact_number` VARCHAR(15) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+    REFERENCES `roentgenium`.`visitors` (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 4
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -71,43 +93,28 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `roentgenium`.`mail` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `inhabitant_id` INT NOT NULL,
   `mail_type` VARCHAR(31) NOT NULL,
   `arrival_time` DATETIME NOT NULL,
+  `apartment_recipient` TINYINT NOT NULL,
+  `housing_unit_recipient` SMALLINT NOT NULL,
+  `is_notified` TINYINT(1) NOT NULL,
   `is_claimed` TINYINT(1) NOT NULL,
-  PRIMARY KEY (`id`, `inhabitant_id`),
-  INDEX `fk_Incoming_Mail_inhabitants_idx` (`inhabitant_id` ASC) VISIBLE,
-  CONSTRAINT `fk_Incoming_Mail_inhabitants`
-    FOREIGN KEY (`inhabitant_id`)
-    REFERENCES `roentgenium`.`inhabitants` (`id`)
+  PRIMARY KEY (`id`),
+  INDEX `fk_mail_inhabitants1_idx` (`housing_unit_recipient` ASC) VISIBLE,
+  INDEX `fk_mail_inhabitants2_idx` (`apartment_recipient` ASC) VISIBLE,
+  CONSTRAINT `fk_mail_inhabitants1`
+    FOREIGN KEY (`housing_unit_recipient`)
+    REFERENCES `roentgenium`.`inhabitants` (`housing_unit`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_mail_inhabitants2`
+    FOREIGN KEY (`apartment_recipient`)
+    REFERENCES `roentgenium`.`inhabitants` (`apartment`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
--- -----------------------------------------------------
--- Table `roentgenium`.`login_system`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium`.`login_system` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(31) NOT NULL,
-  `password` VARCHAR(31) NOT NULL,
-  `user_type` TINYINT NOT NULL,
-  `last_access` DATETIME NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
 USE `roentgenium` ;
-
--- -----------------------------------------------------
--- Placeholder table for view `roentgenium`.`visitors_information`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium`.`visitors_information` (`visitor_id` INT, `full_name` INT, `run` INT, `birth_date` INT, `last_visit` INT, `visit_type` INT);
-
--- -----------------------------------------------------
--- Placeholder table for view `roentgenium`.`currently_parked_vehicles`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium`.`currently_parked_vehicles` (`visitor_id` INT, `full_name` INT, `license_plate` INT, `parked_at` INT, `parked_since` INT);
 
 -- -----------------------------------------------------
 -- Placeholder table for view `roentgenium`.`vehicle_owners`
@@ -115,19 +122,19 @@ CREATE TABLE IF NOT EXISTS `roentgenium`.`currently_parked_vehicles` (`visitor_i
 CREATE TABLE IF NOT EXISTS `roentgenium`.`vehicle_owners` (`visitor_id` INT, `full_name` INT, `registered_vehicles` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `roentgenium`.`unclaimed_correspondence`
+-- Placeholder table for view `roentgenium`.`visitors_information`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium`.`unclaimed_correspondence` (`inhabitant_id` INT, `full_name` INT, `mail_type` INT, `arrival_time` INT, `is_claimed` INT);
+CREATE TABLE IF NOT EXISTS `roentgenium`.`visitors_information` (`visitor_id` INT, `full_name` INT, `run` INT, `birth_date` INT, `last_visit` INT, `unit_apartment_visited` INT, `visit_type` INT);
 
 -- -----------------------------------------------------
 -- Placeholder table for view `roentgenium`.`inhabitants_information`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium`.`inhabitants_information` (`inhabitant_id` INT, `full_name` INT, `run` INT, `apartment` INT, `housing_unit` INT, `contact_number` INT);
+CREATE TABLE IF NOT EXISTS `roentgenium`.`inhabitants_information` (`visitor_id` INT, `full_name` INT, `run` INT, `unit_apartment` INT, `cellphone_number` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `roentgenium`.`users_by_last_access`
+-- Placeholder table for view `roentgenium`.`unclaimed_correspondence`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium`.`users_by_last_access` (`user_id` INT, `username` INT, `last_access` INT);
+CREATE TABLE IF NOT EXISTS `roentgenium`.`unclaimed_correspondence` (`housing_unit_apartment` INT, `mail_type` INT, `arrival_time` INT, `is_notified` INT, `is_claimed` INT);
 
 -- -----------------------------------------------------
 -- procedure add_inhabitant
@@ -135,35 +142,9 @@ CREATE TABLE IF NOT EXISTS `roentgenium`.`users_by_last_access` (`user_id` INT, 
 
 DELIMITER $$
 USE `roentgenium`$$
-CREATE PROCEDURE `add_inhabitant`(IN aptmnt TINYINT, IN h_unit SMALLINT, IN f_name VARCHAR(31), IN l_name VARCHAR(31), IN rolun INT, IN rolun_vd TINYINT(1), IN c_number VARCHAR(15))
+CREATE PROCEDURE `add_inhabitant`(IN f_name VARCHAR(31), IN l_name VARCHAR(31), IN aptmnt TINYINT, IN h_unit SMALLINT, IN rolun INT, IN rolun_vd TINYINT(1), IN c_number VARCHAR(15))
 BEGIN
 	INSERT INTO inhabitants (apartment, housing_unit, first_name, last_name, run, run_vd, contact_number) VALUES (aptmnt, h_unit, f_name, l_name, rolun, rolun_vd, c_number);
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- procedure add_visitor
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium`$$
-CREATE PROCEDURE `add_visitor`(IN f_name VARCHAR(31), IN l_name VARCHAR(31), IN rolun INT, IN rolun_vd TINYINT(1), IN b_date DATE, IN l_visit DATETIME, IN v_type VARCHAR(31))
-BEGIN
-	INSERT INTO visitors (first_name, last_name, run, run_vd, birth_date, last_visit, visit_type) VALUES (f_name, l_name, rolun, rolun_vd, b_date, l_visit, v_type);
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- procedure add_visitor_vehicle
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium`$$
-CREATE PROCEDURE `add_visitor_vehicle`(IN v_id INT, IN l_plate VARCHAR(8), IN p_spot SMALLINT, IN p_date DATETIME)
-BEGIN
-	INSERT INTO vehicles_visitors (visitor_id, license_plate, parking_spot, parking_date) VALUES (v_id, l_plate, p_spot, p_date);
 END$$
 
 DELIMITER ;
@@ -174,9 +155,61 @@ DELIMITER ;
 
 DELIMITER $$
 USE `roentgenium`$$
-CREATE PROCEDURE `add_mail`(IN i_id INT, IN m_type VARCHAR(31), IN a_time DATETIME, IN i_claimed TINYINT(1))
+CREATE PROCEDURE `add_mail`(IN apt_recipient TINYINT, IN hu_recipient SMALLINT, IN m_type VARCHAR(31), IN a_time DATETIME)
 BEGIN
-	INSERT INTO mail (inhabitant_id, mail_type, arrival_time, is_claimed) VALUES (i_id, m_type, a_time, i_claimed);
+	INSERT INTO mail (mail_type, arrival_time, apartment_recipient, housing_unit_recipient, is_notified, is_claimed) VALUES (m_type, a_time, apt_recipient, hu_recipient, 0, 0);
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure add_visitor
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `add_visitor`(IN f_name VARCHAR(31), IN l_name VARCHAR(31), IN rolun INT, IN rolun_vd TINYINT(1), IN b_date DATE, IN l_visit DATETIME, IN apt_visited TINYINT, IN hu_visited SMALLINT, IN v_type VARCHAR(31))
+BEGIN
+	INSERT INTO visitors (first_name, last_name, run, run_vd, birth_date, last_visit, apartment_visited, housing_unit_visited, visit_type) VALUES (f_name, l_name, rolun, rolun_vd, b_date, l_visit, apt_visited, hu_visited, v_type);
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure add_visitor_vehicle
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `add_visitor_vehicle` (IN v_id INT, IN l_plate VARCHAR(8), IN p_spot SMALLINT, IN p_date DATETIME)
+BEGIN
+	INSERT INTO vehicles_visitors (visitor_id, license_plate, parking_spot, parking_date) VALUES (v_id, l_plate, p_spot, p_date);
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure add_user_login
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `add_user_login` (IN usrnm VARCHAR(31), IN psswrd VARCHAR(256), IN u_type TINYINT)
+BEGIN
+	INSERT INTO login_system (username, password, user_type, last_access) VALUES (usrnm, psswrd, u_type, NOW());
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure assign_parking_spot
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `assign_parking_spot` (IN l_plate VARCHAR(8), IN p_spot SMALLINT)
+BEGIN
+	UPDATE vehicles_visitors SET parking_spot = p_spot WHERE license_plate = l_plate;
 END$$
 
 DELIMITER ;
@@ -195,138 +228,17 @@ END$$
 DELIMITER ;
 
 -- -----------------------------------------------------
--- procedure search_visitor
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium`$$
-CREATE PROCEDURE `search_visitor`(IN search_name VARCHAR(63))
-BEGIN
-    SELECT * FROM visitors WHERE CONCAT(first_name, ' ', last_name) LIKE CONCAT('%', search_name, '%');
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- procedure search_inhabitant
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium`$$
-CREATE PROCEDURE `search_inhabitant` (IN search_name VARCHAR(63))
-BEGIN
-	SELECT * FROM inhabitants WHERE CONCAT(first_name, ' ', last_name) LIKE CONCAT('%', search_name, '%');
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- procedure update_claimed_mail
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium`$$
-CREATE PROCEDURE `update_claimed_mail` (IN m_id INT, IN new_claimed_status TINYINT)
-BEGIN
-	IF new_claimed_status = 0 OR new_claimed_status = 1 THEN
-		UPDATE mail SET is_claimed = new_claimed_status WHERE id = m_id;
-	ELSE
-		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: The claimed status value must be 0 (not claimed) or 1 (claimed).';
-	END IF;
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- procedure update_phone_number
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium`$$
-CREATE PROCEDURE `update_phone_number` (IN i_id INT, IN new_phone_number VARCHAR(15))
-BEGIN
-	UPDATE inhabitants SET contact_number = new_phone_number WHERE id = i_id;
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
 -- procedure free_parking_spot
 -- -----------------------------------------------------
 
 DELIMITER $$
 USE `roentgenium`$$
-CREATE PROCEDURE `free_parking_spot` (IN v_id INT)
+CREATE PROCEDURE `free_parking_spot` (IN l_plate VARCHAR(8))
 BEGIN
-	UPDATE vehicles_visitors SET parking_spot = NULL, parking_date = NULL WHERE id = v_id;
+	UPDATE vehicles_visitors SET parking_spot = NULL, parking_date = NULL WHERE license_plate = l_plate;
 END$$
 
 DELIMITER ;
-
--- -----------------------------------------------------
--- procedure assign_parking_spot
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium`$$
-CREATE PROCEDURE `assign_parking_spot` (IN v_id INT, IN p_spot SMALLINT)
-BEGIN
-	UPDATE vehicles_visitors SET parking_spot = p_spot WHERE id = v_id;
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- procedure update_visitor_last_visit
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium`$$
-CREATE PROCEDURE `update_visitor_last_visit` (IN v_id INT, IN l_visit VARCHAR(31))
-BEGIN
-	UPDATE visitors SET last_visit = l_visit WHERE id = v_id;
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- View `roentgenium`.`visitors_information`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `roentgenium`.`visitors_information`;
-USE `roentgenium`;
-CREATE  OR REPLACE VIEW `visitors_information` AS
-    SELECT 
-        visitors.id AS visitor_id,
-        CONCAT(visitors.first_name,
-                ' ',
-                visitors.last_name) AS full_name,
-        CONCAT(visitors.run, '-', visitors.run_vd) AS run,
-        visitors.birth_date,
-        visitors.last_visit,
-        visitors.visit_type
-    FROM
-        visitors;
-
--- -----------------------------------------------------
--- View `roentgenium`.`currently_parked_vehicles`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `roentgenium`.`currently_parked_vehicles`;
-USE `roentgenium`;
-CREATE  OR REPLACE VIEW `currently_parked_vehicles` AS
-    SELECT 
-        visitors.id AS visitor_id,
-        CONCAT(visitors.first_name,
-                ' ',
-                visitors.last_name) AS full_name,
-        vehicles_visitors.license_plate,
-        vehicles_visitors.parking_spot AS parked_at,
-        vehicles_visitors.parking_date AS parked_since
-    FROM
-        visitors
-            JOIN
-        vehicles_visitors ON visitors.id = vehicles_visitors.visitor_ID
-    WHERE
-        vehicles_visitors.parking_spot IS NOT NULL;
 
 -- -----------------------------------------------------
 -- View `roentgenium`.`vehicle_owners`
@@ -340,32 +252,35 @@ CREATE  OR REPLACE VIEW `vehicle_owners` AS
                 ' ',
                 visitors.last_name) AS full_name,
         GROUP_CONCAT(vehicles_visitors.license_plate
-            ORDER BY vehicles_visitors.id
+            ORDER BY vehicles_visitors.id ASC
             SEPARATOR ', ') AS registered_vehicles
     FROM
-        visitors
-            JOIN
-        vehicles_visitors ON visitors.id = vehicles_visitors.visitor_ID
+        (visitors
+        JOIN vehicles_visitors ON (visitors.id = vehicles_visitors.visitor_id))
     GROUP BY visitors.id;
 
 -- -----------------------------------------------------
--- View `roentgenium`.`unclaimed_correspondence`
+-- View `roentgenium`.`visitors_information`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `roentgenium`.`unclaimed_correspondence`;
+DROP TABLE IF EXISTS `roentgenium`.`visitors_information`;
 USE `roentgenium`;
-CREATE  OR REPLACE VIEW `unclaimed_correspondence` AS
-    SELECT
-        inhabitants.id AS inhabitant_id,
-        CONCAT(inhabitants.first_name, ' ', inhabitants.last_name) AS full_name,
-        mail.mail_type AS mail_type,
-        mail.arrival_time,
-        mail.is_claimed
+CREATE  OR REPLACE VIEW `visitors_information` AS
+    SELECT 
+        visitors.id AS visitor_id,
+        CONCAT(visitors.first_name,
+                ' ',
+                visitors.last_name) AS full_name,
+        CONCAT(visitors.run,
+                '-',
+                visitors.run_vd) AS run,
+        visitors.birth_date AS birth_date,
+        visitors.last_visit AS last_visit,
+        CONCAT(visitors.housing_unit_visited,
+                '-',
+                visitors.apartment_visited) AS unit_apartment_visited,
+        visitors.visit_type AS visit_type
     FROM
-        inhabitants
-    JOIN
-        mail ON inhabitants.id = mail.inhabitant_id
-    WHERE
-        mail.is_claimed = 0;
+        visitors;
 
 -- -----------------------------------------------------
 -- View `roentgenium`.`inhabitants_information`
@@ -374,28 +289,36 @@ DROP TABLE IF EXISTS `roentgenium`.`inhabitants_information`;
 USE `roentgenium`;
 CREATE  OR REPLACE VIEW `inhabitants_information` AS
     SELECT 
-        inhabitants.id AS inhabitant_id,
-        CONCAT(inhabitants.first_name,' ',inhabitants.last_name) AS full_name,
-        CONCAT(inhabitants.run, '-', inhabitants.run_vd) AS run,
-        CONCAT('Apartment ', inhabitants.apartment) AS apartment,
-        CONCAT('Unit ', inhabitants.housing_unit) AS housing_unit,
-        inhabitants.contact_number
+        id AS visitor_id,
+        CONCAT(first_name,
+                ' ',
+                last_name) AS full_name,
+        CONCAT(run,
+                '-',
+                run_vd) AS run,
+        CONCAT(housing_unit,
+                '-',
+                apartment) AS unit_apartment,
+        contact_number AS cellphone_number
     FROM
         inhabitants;
 
 -- -----------------------------------------------------
--- View `roentgenium`.`users_by_last_access`
+-- View `roentgenium`.`unclaimed_correspondence`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `roentgenium`.`users_by_last_access`;
+DROP TABLE IF EXISTS `roentgenium`.`unclaimed_correspondence`;
 USE `roentgenium`;
-CREATE  OR REPLACE VIEW `users_by_last_access` AS
-    SELECT
-		login_system.id AS user_id,
-        login_system.username,
-        login_system.last_access
+CREATE  OR REPLACE VIEW `unclaimed_correspondence` AS
+    SELECT 
+        CONCAT(mail.housing_unit_recipient, '-', mail.apartment_recipient) AS housing_unit_apartment,
+        mail.mail_type,
+        mail.arrival_time,
+        mail.is_notified,
+        mail.is_claimed
     FROM
-        login_system
-	ORDER BY login_system.last_access DESC;
+        mail
+    WHERE
+        mail.is_claimed = 0;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
