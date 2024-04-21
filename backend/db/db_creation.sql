@@ -137,6 +137,16 @@ CREATE TABLE IF NOT EXISTS `roentgenium`.`inhabitants_information` (`visitor_id`
 CREATE TABLE IF NOT EXISTS `roentgenium`.`unclaimed_correspondence` (`id` INT, `housing_unit_apartment` INT, `mail_type` INT, `arrival_time` INT, `is_notified` INT, `is_claimed` INT);
 
 -- -----------------------------------------------------
+-- Placeholder table for view `roentgenium`.`users_by_last_access`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `roentgenium`.`users_by_last_access` (`user_id` INT, `username` INT, `last_access` INT);
+
+-- -----------------------------------------------------
+-- Placeholder table for view `roentgenium`.`currently_parked_vehicles`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `roentgenium`.`currently_parked_vehicles` (`visitor_id` INT, `full_name` INT, `license_plate` INT, `parked_at` INT, `parked_since` INT);
+
+-- -----------------------------------------------------
 -- procedure add_inhabitant
 -- -----------------------------------------------------
 
@@ -345,6 +355,39 @@ CREATE  OR REPLACE VIEW `unclaimed_correspondence` AS
         mail
     WHERE
         mail.is_claimed = 0;
+
+-- -----------------------------------------------------
+-- View `roentgenium`.`users_by_last_access`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `roentgenium`.`users_by_last_access`;
+USE `roentgenium`;
+CREATE  OR REPLACE VIEW `users_by_last_access` AS
+    SELECT
+		login_system.id AS user_id,
+        login_system.username,
+        login_system.last_access
+    FROM
+        login_system
+	ORDER BY login_system.last_access DESC;
+
+-- -----------------------------------------------------
+-- View `roentgenium`.`currently_parked_vehicles`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `roentgenium`.`currently_parked_vehicles`;
+USE `roentgenium`;
+CREATE  OR REPLACE VIEW `currently_parked_vehicles` AS
+    SELECT 
+        visitors.id AS visitor_id,
+        CONCAT(visitors.first_name, ' ', visitors.last_name) AS full_name,
+        vehicles_visitors.license_plate,
+        vehicles_visitors.parking_spot AS parked_at,
+        vehicles_visitors.parking_date AS parked_since
+    FROM
+        visitors
+            JOIN
+        vehicles_visitors ON visitors.id = vehicles_visitors.visitor_ID
+    WHERE
+        vehicles_visitors.parking_spot IS NOT NULL;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
