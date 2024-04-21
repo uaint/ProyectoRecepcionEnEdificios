@@ -30,16 +30,19 @@ const NewCorrespondenceForm = () => {
   const { t } = useTranslation();
 
   const [formData, setFormData] = useState({
-    type: '',
+    type: 'Packages',
     timeArrival: '',
     isClaimed: false,
     apartment: '',
-    inhabitant: '',
+    build: '',
   });
 
-  const [selectedOption, setSelectedOption] = useState(t('correspondenceForm.type'));
-  const [apartmentOptions, setApartmentOptions] = useState([]);
-  const [sendToAllResidents, setSendToAllResidents] = useState(false);
+  const [selectedOption, setSelectedOption] = useState('');
+  const handleOptionChange = (e) => {
+    const selectedValue = e.target.value;
+    setSelectedOption(selectedValue); // Actualiza el estado de la opción seleccionada
+    setFormData({ ...formData, type: selectedValue }); // Actualiza el formData con el nuevo valor seleccionado
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -53,6 +56,22 @@ const NewCorrespondenceForm = () => {
   const fechamsg = obtenerFecha(formData.timeArrival);
   
   const handleSubmit = (e) => {
+    
+    // Si se le envio a una persona o más el mensaje 1, sino 0
+    const notified = selectedInhabitants.length !== 0 ? 1 : 0
+
+    // Realizar la solicitud ADD al servidor
+    fetch(`https://dduhalde.online/.netlify/functions/api/add_mail/${formData.build}/${formData.apartment}/${formData.type}/${formData.timeArrival}/${notified}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error al agregar la corrrespondencia');
+      }
+      console.log(`Se agrego la corrrespondencia`);
+    })
+    .catch(error => {
+      console.error('Error al agregar la corrrespondencia:', error);
+    });
+
     e.preventDefault();
 
     // array filtrado con los que queremos que les llegue el mensaje
@@ -129,8 +148,6 @@ const NewCorrespondenceForm = () => {
   const [inhabitants, setInhabitants] = useState([]);
 
   const handleSearch = () => {
-    console.log(formData.build);
-    console.log(formData.apartment);
     const url_api = `https://dduhalde.online/.netlify/functions/api/inhabitants/${formData.build}/${formData.apartment}`;
     fetch(url_api)
       .then(response => response.json())
@@ -155,11 +172,6 @@ const NewCorrespondenceForm = () => {
     } else { // Si no está seleccionado, lo agregamos a la lista de seleccionados
       setSelectedInhabitants([...selectedInhabitants, inhabitantId]);
     }
-  };
-
-  // Función para manejar el cambio en el checkbox "Send to all residents"
-  const handleSendToAllResidentsChange = (e) => {
-    setSendToAllResidents(e.target.checked);
   };
 
   return (
@@ -214,7 +226,7 @@ const NewCorrespondenceForm = () => {
       <div className="formGroup">
         <label htmlFor="timeArrival">{t('correspondenceForm.type')}</label>
           <div className="options-container">
-            <select className="form-select" value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
+            <select className="form-select" value={selectedOption} onChange={handleOptionChange}>
               <option value="Packages">{t('correspondenceForm.packages')}</option>
               <option value="Letters">{t('correspondenceForm.letters')}</option>
               <option value="Item">{t('correspondenceForm.item')}</option>

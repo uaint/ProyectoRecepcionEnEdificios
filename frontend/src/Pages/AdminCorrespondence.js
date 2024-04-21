@@ -31,8 +31,17 @@ const AdminCorrespondence = () => {
   }, []);
 
   const handleDelete = (id) => {
-    // Logic to delete the row with the specified ID
-    console.log(`Delete row with ID: ${id}`);
+    // Realizar la solicitud UPDATE al servidor
+    fetch(`https://dduhalde.online/.netlify/functions/api/is_claimed/${id}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error al actualizar estado');
+      }
+      console.log(`Estado de ID ${id} actualizado`);
+    })
+    .catch(error => {
+      console.error('Error al actualizar estado:', error);
+    });
   };
 
   // Redirect button for New Correspondence
@@ -60,11 +69,11 @@ const AdminCorrespondence = () => {
             <tbody>
               {correspondence.map((pkg, index) => (
               <tr key={index + 1}>
-                <td>{index + 1}</td>
+                <td>{pkg.id}</td>
                 <td>{pkg.housing_unit_apartment}</td>
                 <td>{pkg.mail_type}</td>
                 <td >{formatDate(pkg.arrival_time)}</td>
-                <td>{pkg.is_notified}</td>
+                <td>{pkg.is_notified === 1 ? <span>&#10004;</span> : <span>&#10060;</span>}</td>
                 <td>
                   <button className="btn btn-success btn-sm" onClick={() => handleDelete(pkg.id)}>{t('adminCorrespondence.claimed')}</button>
                 </td>

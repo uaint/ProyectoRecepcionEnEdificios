@@ -18,6 +18,7 @@ const hostdb = process.env.DB_HOST;
 const userdb = process.env.DB_USER;
 const namedb = process.env.DB_NAME;
 const portdb = process.env.DB_PORT;
+const timezonedb = process.env.DB_TIMEZONE;
 
 // Configuración de la conexión a la base de datos
 const connection = mysql.createConnection({
@@ -25,7 +26,8 @@ const connection = mysql.createConnection({
   user: userdb,
   password: passwordbd,
   database: namedb,
-  port: portdb
+  port: portdb,
+  timezone: timezonedb,
 });
 
 // Establecer conexión a la base de datos
@@ -252,13 +254,14 @@ router.get('/parked', (req, res) => {
 });
 
 // Ruta para agregar correspondencia
-router.get('/add_mail/:id/:type/:date/:claimed', (req, res) => {
+// Link ejemplo: /add_mail/101/1/Letters//:i_notified
+router.get('/add_mail/:apt_recipient/:hu_recipient/:m_type/:a_time/:i_notified', (req, res) => {
 
   // Conseguir parametros desde el link
-  const { id, type, date, claimed } = req.params;
+  const { apt_recipient, hu_recipient, m_type, a_time, i_notified } = req.params;
 
   // Realizar Query
-  const query = `CALL add_mail(${id}, "${type}", "${date}", ${claimed})`;
+  const query = `CALL add_mail(${apt_recipient}, ${hu_recipient}, "${m_type}", "${a_time}", ${i_notified})`;
 
   // Encabezados CORS
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -298,6 +301,37 @@ router.get('/unclaimed_correspondence', (req, res) => {
       return;
     }
     res.json(rows); // Enviar los datos como JSON al cliente
+  });
+});
+
+// Ruta para marcar correspondencia como reclamada 
+router.get('/is_claimed/:id', (req, res) => {
+
+  // Conseguir parametros desde el link
+  const {id} = req.params;
+
+  // Realizar Query
+  const query = `CALL update_mail_to_claimed(${id})`;
+
+  // Encabezados CORS
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Hacer llamado a la BBDD
+  connection.query(query, [id], (err, rows) => {
+    if (err) {
+      res.status(500).send('Error al actualizar los datos en la base de datos');
+      return;
+    }
+    // Verificar si se actualizó correctamente
+    if (res.affectedRows === 0) {
+      res.status(404).send(`No se encontró la correspondencia con el ID ${id}`);
+      return;
+    }
+    // Envía una respuesta exitosa
+    res.status(200).send(`Se marcó la correspondencia con el ID ${id} como reclamada`);
   });
 });
 
