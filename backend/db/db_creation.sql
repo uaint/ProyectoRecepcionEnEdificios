@@ -170,7 +170,19 @@ DELIMITER $$
 USE `roentgenium`$$
 CREATE PROCEDURE `add_visitor`(IN f_name VARCHAR(31), IN l_name VARCHAR(31), IN rolun INT, IN rolun_vd TINYINT(1), IN b_date DATE, IN l_visit DATETIME, IN apt_visited TINYINT, IN hu_visited SMALLINT, IN v_type VARCHAR(31))
 BEGIN
-	INSERT INTO visitors (first_name, last_name, run, run_vd, birth_date, last_visit, apartment_visited, housing_unit_visited, visit_type) VALUES (f_name, l_name, rolun, rolun_vd, b_date, l_visit, apt_visited, hu_visited, v_type);
+    DECLARE visitor_id INT;
+
+    -- Verify if visitor exists into the table
+    SELECT id INTO visitor_id FROM visitors WHERE first_name = f_name AND last_name = l_name AND run = rolun;
+
+    -- Visitor exists; update just last_visit
+    IF visitor_id IS NOT NULL THEN
+        UPDATE visitors SET last_visit = l_visit WHERE id = visitor_id;
+    ELSE
+        -- Visitor does not exist in the table; add it
+        INSERT INTO visitors (first_name, last_name, run, run_vd, birth_date, last_visit, apartment_visited, housing_unit_visited, visit_type)
+        VALUES (f_name, l_name, rolun, rolun_vd, b_date, l_visit, apt_visited, hu_visited, v_type);
+    END IF;
 END$$
 
 DELIMITER ;
