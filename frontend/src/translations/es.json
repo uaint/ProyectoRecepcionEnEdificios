@@ -61,15 +61,14 @@
     "message2": "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas..."
   },
   "adminParking": {
-    "adminParking": "Administración de Estacionamiento",
-    "parking": "Estacionamiento",
-    "status": "Estado",
+    "adminParking": "Admin Parking",
+    "visitorId": "ID Visitante",
+    "full_name": "Nombre",
     "licensePlate": "Patente",
-    "apartment": "Departamento",
-    "arrivingTime": "Hora de Llegada",
-    "modifyParkingSpot": "Modificar Lugar de Estacionamiento",
-    "occupied": "Ocupado",
-    "available": "Disponible"
+    "parket_at": "Estacionado en",
+    "arrivingTime": "Estacionado desde",
+    "delete": "Eliminar",
+    "addParked": "Agregar Estacionado"
   },
   "config": {
     "configuration": "Configuración",

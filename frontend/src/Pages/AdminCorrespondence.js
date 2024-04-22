@@ -50,7 +50,7 @@ const AdminCorrespondence = () => {
   };
 
   return (
-    <div className="container">
+    <div id="change" className="container">
       <h1 className="text-center mb-4">{t('adminCorrespondence.adminCorrespondence')}</h1>
       <hr className="mb-4"/>
       <div>
@@ -83,7 +83,7 @@ const AdminCorrespondence = () => {
           </table>
         </div>
       </div>
-      <div className="text-center mt-4">
+      <div className="text-center mt-4 mb-5">
         <button className="btn btn-primary" onClick={handleButtonClick}>{t('adminCorrespondence.addNewCorrespondence')}</button>
       </div>
     </div>

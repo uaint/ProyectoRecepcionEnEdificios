@@ -44,7 +44,7 @@ const AdminFrequentVisits = () => {
   };
 
   return (
-    <div class="container">
+    <div id="change" class="container">
           <h1 class="text-center mb-4">{t('adminFrequentVisits.adminFrequentVisits')}</h1>  
           <hr class="mb-4"/> 
           <div class="table-responsive">
@@ -77,7 +77,7 @@ const AdminFrequentVisits = () => {
         </tbody>
       </table>
       </div>
-      <div class="text-center mt-4">
+      <div class="text-center mt-4 mb-5">
         <button class="btn btn-primary" onClick={handleButtonClick}>{t('adminFrequentVisits.addFrequentVisit')}</button>
       </div>
       </div>

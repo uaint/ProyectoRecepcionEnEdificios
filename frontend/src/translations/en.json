@@ -62,14 +62,13 @@
   },
   "adminParking": {
     "adminParking": "Admin Parking",
-    "parking": "Parking",
-    "status": "Status",
+    "visitorId": "Visitor ID",
+    "full_name": "Full Name",
     "licensePlate": "License Plate",
-    "apartment": "Apartment",
+    "parket_at": "Parket At",
     "arrivingTime": "Arriving Time",
-    "modifyParkingSpot": "Modify Parking Spot",
-    "occupied": "Occupied",
-    "available": "Available"
+    "delete": "Delete",
+    "addParked": "Add Parked"
   },
   "config": {
     "configuration": "Configuration",
