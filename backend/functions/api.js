@@ -142,7 +142,7 @@ router.get('/visitors', (req, res) => {
 });
 
 // Ruta para eliminar visitante
-// Link de ejemplo /add_vehicle/1
+// Link de ejemplo /delete_visitor/1
 router.get('/delete_visitor/:id', (req, res) => {
 
   // ID visitante a eliminar
@@ -250,6 +250,34 @@ router.get('/parked', (req, res) => {
       return;
     }
     res.json(rows); // Enviar los datos como JSON al cliente
+  });
+});
+
+// Ruta para eliminar vehiculo
+router.get('/delete_vehicle/:plate', (req, res) => {
+
+  // Conseguir patente
+  const plate = req.params.plate;
+
+  // Realizar Query
+  const query = `CALL delete_vehicle("${plate}")`;
+
+  // Encabezados CORS
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Hacer llamado a la BBDD
+  connection.query(query, (err, rows) => {
+    if (err) {
+      console.error('Error al ejecutar la consulta:', err);
+      res.status(500).send('Error al obtener datos desde la base de datos');
+      return;
+    }
+    else {
+      res.status(200).json({ message: 'Se elimino el vehiculo correctamente.'});
+    }
   });
 });
 

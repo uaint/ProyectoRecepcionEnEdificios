@@ -24,17 +24,17 @@ const AdminParking = () => {
       .catch(error => console.error('Error fetching visitors:', error));
   }, []);
 
-  const handleDelete = (id) => {
+  const handleDelete = (plate) => {
     // Realizar la solicitud DELETE al servidor
-    fetch(``)
+    fetch(`https://dduhalde.online/.netlify/functions/api/delete_vehicle/${plate}`)
     .then(response => {
       if (!response.ok) {
         throw new Error('Error al eliminar el auto');
       }
-      console.log(`Visitante con ID ${id} eliminado correctamente`);
+      console.log(`Auto con patente ${plate} eliminado correctamente`);
     })
     .catch(error => {
-      console.error('Error al eliminar el visitante:', error);
+      console.error('Error al eliminar el vehiculo:', error);
     });
   };
 
@@ -68,7 +68,7 @@ const AdminParking = () => {
               <td>{park.parked_at}</td>
               <td>{formatDate(park.parked_since)}</td>
               <td>
-                <button class="btn btn-danger btn-sm" onClick={() => handleDelete(park.visitor_id)}>{t('adminFrequentVisits.delete')}</button>
+                <button class="btn btn-danger btn-sm" onClick={() => handleDelete(park.license_plate)}>{t('adminFrequentVisits.delete')}</button>
               </td>
             </tr>
           ))}
