@@ -151,15 +151,15 @@
     "searchresident": "Buscar Habitantes"
   },
   "vehicleForm": {
-    "addNewVehicle": "Agregar Nuevo Vehículo",
-    "name": "Nombre:",
-    "lastName": "Apellido:",
-    "building": "Edificio:",
-    "apartment": "Apartamento:",
-    "licensePlate": "Placa de Vehículo:",
-    "car": "Vehículo:",
+    "addNewVehicle": "Agregar Nuevo Vehiculo",
+    "run": "RUT:",
+    "dv": "Digito Verificador:",
+    "rutPlaceholder": "Sin puntos ni digito verificador",
+    "dvPlaceholder": "Si termina con K, remplazar con 0",
+    "licensePlate": "Patente",
     "parking": "Estacionamiento:",
-    "addVehicle": "Agregar Vehículo"
+    "parkedSince": "Estacionado desde:",
+    "addVehicle": "Agregar Vehiculo"
   },
   "visitForm": {
     "addNewVisit": "Agregar Nueva Visita",

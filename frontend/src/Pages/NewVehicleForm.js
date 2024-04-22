@@ -24,110 +24,59 @@ const NewVehicleForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí puedes agregar la lógica para manejar los datos del formulario
-    console.log('Form submitted:', formData);
-    // Resetear el formulario después de enviar los datos
+
+    // Realizar la solicitud ADD al servidor
+    fetch(`https://dduhalde.online/.netlify/functions/api/add_vehicle/${formData.run}/${formData.license_plate}/${formData.parket_at}/${formData.parket_since}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error al agregar la corrrespondencia');
+      }
+      console.log(`Se agrego la corrrespondencia`);
+    })
+    .catch(error => {
+      console.error('Error al agregar la corrrespondencia:', error);
+    });
+    
     setFormData({
-      name: '',
-      lastName: '',
-      building: '',
-      apartment: '',
-      licensePlate: '',
-      car: '',
-      parking: '',
+      run: '',
+      license_plate: '',
+      parket_at: '',
+      parket_since: '',
     });
   };
 
   return (
-    <div className="formContainer">
-      <h2>{t('vehicleForm.addNewVehicle')}</h2>
-      <form onSubmit={handleSubmit} className="vehicleForm">
-        <div className="formGroup">
-          <label htmlFor="name">{t('vehicleForm.name')}</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            className="inputField"
-          />
+    <div id="change" className="container">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="card">
+            <div className="card-body">
+              <h2 className="card-title">{t('vehicleForm.addNewVehicle')}</h2>
+              <form onSubmit={handleSubmit}>
+                <div class="mb-3">
+                  <label for="run" class="form-label">{t('vehicleForm.run')}</label>
+                  <input type="text" class="form-control" id="run" name="run" value={formData.run} onChange={handleChange} required placeholder={t('vehicleForm.rutPlaceholder')}/>
+                </div>
+                <div class="mb-3">
+                  <label for="license_plate" class="form-label">{t('vehicleForm.licensePlate')}</label>
+                  <input type="text" class="form-control" id="license_plate" name="license_plate" value={formData.license_plate} onChange={handleChange} required/>
+                </div>
+                <div class="mb-3">
+                  <label for="parket_at" class="form-label">{t('vehicleForm.parking')}</label>
+                  <input type="text" class="form-control" id="parket_at" name="parket_at" value={formData.parket_at} onChange={handleChange} required/>
+                </div>
+                <div class="mb-3">
+                  <label for="parket_since" class="form-label">{t('vehicleForm.parkedSince')}</label>
+                  <input type="date" class="form-control" id="parket_since" name="parket_since" value={formData.parket_since} onChange={handleChange} required/>
+                </div>
+                <div class="d-grid gap-1">
+                  <button type="submit" class="btn btn-primary mt-3">{t('vehicleForm.addVehicle')}</button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-        <div className="formGroup">
-          <label htmlFor="lastName">{t('vehicleForm.lastName')}</label>
-          <input
-            type="text"
-            id="lastName"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            required
-            className="inputField"
-          />
-        </div>
-        <div className="formGroup">
-          <label htmlFor="building">{t('vehicleForm.building')}</label>
-          <input
-            type="text"
-            id="building"
-            name="building"
-            value={formData.building}
-            onChange={handleChange}
-            required
-            className="inputField"
-          />
-        </div>
-        <div className="formGroup">
-          <label htmlFor="apartment">{t('vehicleForm.apartment')}</label>
-          <input
-            type="text"
-            id="apartment"
-            name="apartment"
-            value={formData.apartment}
-            onChange={handleChange}
-            required
-            className="inputField"
-          />
-        </div>
-        <div className="formGroup">
-          <label htmlFor="licensePlate">{t('vehicleForm.licensePlate')}</label>
-          <input
-            type="text"
-            id="licensePlate"
-            name="licensePlate"
-            value={formData.licensePlate}
-            onChange={handleChange}
-            required
-            className="inputField"
-          />
-        </div>
-        <div className="formGroup">
-          <label htmlFor="car">{t('vehicleForm.car')}</label>
-          <input
-            type="text"
-            id="car"
-            name="car"
-            value={formData.car}
-            onChange={handleChange}
-            required
-            className="inputField"
-          />
-        </div>
-        <div className="formGroup">
-          <label htmlFor="parking">{t('vehicleForm.parking')}</label>
-          <input
-            type="text"
-            id="parking"
-            name="parking"
-            value={formData.parking}
-            onChange={handleChange}
-            required
-            className="inputField"
-          />
-        </div>
-        <button type="submit" className="submitButton">{t('vehicleForm.addVehicle')}</button>
-      </form>
+      </div>
     </div>
   );
 };

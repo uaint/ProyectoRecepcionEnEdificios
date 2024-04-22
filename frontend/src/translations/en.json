@@ -152,13 +152,13 @@
     },
     "vehicleForm": {
       "addNewVehicle": "Add New Vehicle",
-      "name": "Name:",
-      "lastName": "Last Name:",
-      "building": "Building:",
-      "apartment": "Apartment:",
+      "run": "RUT:",
+      "dv": "Check Digit:",
+      "rutPlaceholder": "No dots and without check digit",
+      "dvPlaceholder": "If the check digit ends with K, replace with 0",
       "licensePlate": "License Plate:",
-      "car": "Car:",
-      "parking": "Parking:",
+      "parking": "Parking At:",
+      "parkedSince": "Parking Since:",
       "addVehicle": "Add Vehicle"
     },
     "visitForm": {
