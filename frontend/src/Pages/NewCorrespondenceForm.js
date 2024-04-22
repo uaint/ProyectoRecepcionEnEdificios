@@ -175,82 +175,64 @@ const NewCorrespondenceForm = () => {
   };
 
   return (
-    <div className="formContainer">
-      <h2>{t('correspondenceForm.addNewCorrespondence')}</h2>
-      {showSearchForm && (
-        <div>
-        <div className="formGroup mt-5">
-            <label htmlFor="apartment">{t('correspondenceForm.selectApartment')}</label>
-            <input
-              id="apartment"
-              name="apartment"
-              value={formData.apartment}
-              onChange={handleApartmentChange}
-              required
-              className="inputField"
-              placeholder={t('correspondenceForm.selectApartment')}
-            />
-          </div>
-          <div className="formGroup">
-            <label htmlFor="build">{t('correspondenceForm.selectTower')}</label>
-            <input
-              id="build"
-              name="build"
-              value={formData.build}
-              onChange={handleBuildChange}
-              required
-              className="inputField"
-              placeholder={t('correspondenceForm.selectTower')}
-            />
+    <div id="change" className="container">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="card">
+            <div className="card-body">
+              <h2 className="card-title">{t('correspondenceForm.addNewCorrespondence')}</h2>
+              {showSearchForm && (
+              <form onSubmit={handleSearch}>
+                <div class="mb-3">
+                  <label for="apartment" class="form-label">{t('correspondenceForm.selectApartment')}</label>
+                  <input type="text" class="form-control" id="apartment" name="apartment" value={formData.apartment} onChange={handleChange} required placeholder={t('correspondenceForm.selectApartment')}/>
+                </div>
+                <div class="mb-3">
+                  <label for="build" class="form-label">{t('correspondenceForm.selectTower')}</label>
+                  <input type="text" class="form-control" id="build" name="build" value={formData.build} onChange={handleBuildChange} required placeholder={t('correspondenceForm.selectTower')}/>
+                </div>
+                <div class="d-grid gap-1">
+                  <button type="submit" class="btn btn-primary mt-3">{t('correspondenceForm.searchresident')}</button>
+                </div>
+              </form>
+              )}
+              {showCorrespondenceForm && (
+              <form onSubmit={handleSubmit}>
+                <h4 class="mt-2">{t('correspondenceForm.selectMsg')}</h4>
+                <div class="mb-3">
+                  <ul class="form-check">
+                  {inhabitants.map(inhabitant => (
+                    <li key={inhabitant.id}>
+                      <label class="form-check-label" for="flexCheckDefault">
+                        <input class="form-check-input" type="checkbox"checked={selectedInhabitants.includes(inhabitant.id)} onChange={() => handleSelectInhabitant(inhabitant.id)}/>
+                        {' '}{inhabitant.first_name} {inhabitant.last_name}
+                      </label>
+                    </li>
+                  ))}
+                  </ul>
+                </div>
+                <label for="type" class="form-label">{t('correspondenceForm.type')}</label>
+                <select class="form-select" aria-label="Default select example" value={selectedOption} onChange={handleOptionChange}>
+                  <option value="Packages" selected>{t('correspondenceForm.packages')}</option>
+                  <option value="Letters">{t('correspondenceForm.letters')}</option>
+                  <option value="Item">{t('correspondenceForm.item')}</option>
+                  <option value="Food">{t('correspondenceForm.food')}</option>
+                  <option value="Others">{t('correspondenceForm.others')}</option>
+                </select>
+                <div class="mb-3 mt-3">
+                  <label for="timeOfArrival" class="form-label">{t('correspondenceForm.timeOfArrival')}</label>
+                  <input type="datetime-local" class="form-control" id="timeOfArrival" name="timeOfArrival" value={formData.timeOfArrival} onChange={handleChange} required/>
+                </div>
+                <div class="d-grid gap-1">
+                  <button type="submit" class="btn btn-primary mt-3">{t('correspondenceForm.addCorrespondence')}</button>
+                </div>
+              </form>
+              )}
             </div>
-      <button type="submit" className="submitButton mt-5" onClick={handleSearch}>{t('correspondenceForm.searchresident')}</button>
+          </div>
+        </div>
       </div>
-      )}
-      {showCorrespondenceForm && (
-      <div>
-      <h4>{t('correspondenceForm.selectMsg')}</h4>
-      <ul className="list-group">
-        {inhabitants.map(inhabitant => (
-          <li key={inhabitant.id}>
-            <label>
-              <input
-                type="checkbox"
-                checked={selectedInhabitants.includes(inhabitant.id)}
-                onChange={() => handleSelectInhabitant(inhabitant.id)}
-              />
-              {' '}{inhabitant.first_name} {inhabitant.last_name}
-            </label>
-          </li>
-        ))}
-      </ul>
-      <div className="formGroup">
-        <label htmlFor="type">{t('correspondenceForm.type')}</label>
-          <div className="options-container">
-            <select className="form-select" value={selectedOption} onChange={handleOptionChange}>
-              <option value="Packages">{t('correspondenceForm.packages')}</option>
-              <option value="Letters">{t('correspondenceForm.letters')}</option>
-              <option value="Item">{t('correspondenceForm.item')}</option>
-              <option value="Food">{t('correspondenceForm.food')}</option>
-              <option value="Others">{t('correspondenceForm.others')}</option>
-            </select>
-          </div>
-        </div>
-        <div className="formGroup">
-          <label htmlFor="timeArrival">{t('correspondenceForm.timeOfArrival')}</label>
-          <input
-            type="datetime-local"
-            id="timeArrival"
-            name="timeArrival"
-            value={formData.timeArrival}
-            onChange={handleChange}
-            required
-            className="inputField"
-          />
-          </div>
-        <button type="submit" className="submitButton" onClick={handleSubmit}>{t('correspondenceForm.addCorrespondence')}</button>
-        </div>
-   )}
-  </div>
+    </div>
   );
 };
 
