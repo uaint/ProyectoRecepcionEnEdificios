@@ -301,19 +301,15 @@ DROP TABLE IF EXISTS `roentgenium`.`visitors_information`;
 USE `roentgenium`;
 CREATE  OR REPLACE VIEW `visitors_information` AS
     SELECT 
-        visitors.id AS visitor_id,
-        CONCAT(visitors.first_name,
-                ' ',
-                visitors.last_name) AS full_name,
-        CONCAT(visitors.run,
+        id AS visitor_id,
+        CONCAT(first_name, ' ', last_name) AS full_name,
+        CONCAT(run, '-', run_vd) AS run,
+        birth_date,
+        last_visit,
+        CONCAT(housing_unit_visited,
                 '-',
-                visitors.run_vd) AS run,
-        visitors.birth_date AS birth_date,
-        visitors.last_visit AS last_visit,
-        CONCAT(visitors.housing_unit_visited,
-                '-',
-                visitors.apartment_visited) AS unit_apartment_visited,
-        visitors.visit_type AS visit_type
+                apartment_visited) AS unit_apartment_visited,
+        visit_type
     FROM
         visitors;
 
@@ -363,12 +359,12 @@ DROP TABLE IF EXISTS `roentgenium`.`users_by_last_access`;
 USE `roentgenium`;
 CREATE  OR REPLACE VIEW `users_by_last_access` AS
     SELECT
-		login_system.id AS user_id,
-        login_system.username,
-        login_system.last_access
+		id AS user_id,
+        username,
+        last_access
     FROM
         login_system
-	ORDER BY login_system.last_access DESC;
+	ORDER BY last_access DESC;
 
 -- -----------------------------------------------------
 -- View `roentgenium`.`currently_parked_vehicles`
