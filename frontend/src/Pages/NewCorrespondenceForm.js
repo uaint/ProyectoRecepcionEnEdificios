@@ -31,7 +31,7 @@ const NewCorrespondenceForm = () => {
 
   const [formData, setFormData] = useState({
     type: 'Packages',
-    timeArrival: '',
+    timeOfArrival: '',
     isClaimed: false,
     apartment: '',
     build: '',
@@ -53,7 +53,7 @@ const NewCorrespondenceForm = () => {
   const [showSearchForm, setShowSearchForm] = useState(true);
   const [showCorrespondenceForm, setShowCorrespondenceForm] = useState(false);
 
-  const fechamsg = obtenerFecha(formData.timeArrival);
+  const fechamsg = obtenerFecha(formData.timeOfArrival);
   
   const handleSubmit = (e) => {
     
@@ -61,7 +61,7 @@ const NewCorrespondenceForm = () => {
     const notified = selectedInhabitants.length !== 0 ? 1 : 0
 
     // Realizar la solicitud ADD al servidor
-    fetch(`https://dduhalde.online/.netlify/functions/api/add_mail/${formData.build}/${formData.apartment}/${formData.type}/${formData.timeArrival}/${notified}`)
+    fetch(`https://dduhalde.online/.netlify/functions/api/add_mail/${formData.build}/${formData.apartment}/${formData.type}/${formData.timeOfArrival}/${notified}`)
     .then(response => {
       if (!response.ok) {
         throw new Error('Error al agregar la corrrespondencia');
@@ -213,7 +213,7 @@ const NewCorrespondenceForm = () => {
                 </div>
                 <label for="type" class="form-label">{t('correspondenceForm.type')}</label>
                 <select class="form-select" aria-label="Default select example" value={selectedOption} onChange={handleOptionChange}>
-                  <option value="Packages" selected>{t('correspondenceForm.packages')}</option>
+                  <option value="Packages">{t('correspondenceForm.packages')}</option>
                   <option value="Letters">{t('correspondenceForm.letters')}</option>
                   <option value="Item">{t('correspondenceForm.item')}</option>
                   <option value="Food">{t('correspondenceForm.food')}</option>

@@ -74,11 +74,11 @@ const NewVisitForm = () => {
                 </div>
                 <div class="mb-3">
                   <label for="run" class="form-label">{t('visitForm.run')}</label>
-                  <input type="text" class="form-control" id="run" name="lastrunName" value={formData.run} onChange={handleChange} required placeholder={t('visitForm.rutPlaceholder')}/>
+                  <input type="text" class="form-control" id="run" name="run" value={formData.run} onChange={handleChange} required placeholder={t('visitForm.rutPlaceholder')}/>
                 </div>
                 <div class="mb-3">
                   <label for="dv" class="form-label">{t('visitForm.dv')}</label>
-                  <input type="text" class="form-control" id="dv" name="dv" value={formData.run} onChange={handleChange} required placeholder={t('visitForm.dvPlaceholder')}/>
+                  <input type="text" class="form-control" id="dv" name="dv" value={formData.dv} onChange={handleChange} required placeholder={t('visitForm.dvPlaceholder')}/>
                 </div>
                 <div class="mb-3">
                   <label for="birthDate" class="form-label">{t('visitForm.birthDate')}</label>
@@ -94,7 +94,7 @@ const NewVisitForm = () => {
                 </div>
                 <label for="type" class="form-label">{t('visitForm.type')}</label>
                 <select class="form-select" aria-label="Default select example" value={selectedOption} onChange={handleOptionChange}>
-                  <option value="Frequent" selected>{t('visitForm.frequent')}</option>
+                  <option value="Frequent">{t('visitForm.frequent')}</option>
                   <option value="Regular">{t('visitForm.regular')}</option>
                   <option value="Social">{t('visitForm.social')}</option>
                   <option value="Delivery">{t('visitForm.delivery')}</option>
