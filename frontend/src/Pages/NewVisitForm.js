@@ -4,8 +4,11 @@ import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const NewVisitForm = () => {
+
+  // Configuraciones generales
   const { t } = useTranslation();
 
+  // Se inicia formData con solo type predeterminado
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -16,7 +19,8 @@ const NewVisitForm = () => {
     apartmentToVisit: '',
     type: 'Frequent',
   });
-
+  
+  // Actualizar type segun opcion que se elige
   const [selectedOption, setSelectedOption] = useState('');
   const handleOptionChange = (e) => {
     const selectedValue = e.target.value;
@@ -24,14 +28,17 @@ const NewVisitForm = () => {
     setFormData({ ...formData, type: selectedValue }); // Actualiza el formData con el nuevo valor seleccionado
   };
 
+  // Funcion para ver cambios en las opciones de formData
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  //Boton de submit
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Llamado a la API para agregar visitante
     fetch(`https://dduhalde.online/.netlify/functions/api/add_visitor/${formData.firstName}/${formData.lastName}/${formData.run}/${formData.dv}/${formData.birthDate}/${formData.buildToVisit}/${formData.apartmentToVisit}/${formData.type}`)
     .then(response => {
       if (!response.ok) {

@@ -7,13 +7,22 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // Funcion para formatear la fecha
 function formatDate(dateString) {
   const date = new Date(dateString);
-  const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+  const options = { 
+    year: 'numeric', 
+    month: 'numeric', 
+    day: 'numeric'
+  };
+  // Se ajusta para que se vea más estetica
   return date.toLocaleDateString('es-ES', options);
 }
 
 const AdminParking = () => {
+
+  // Configuraciones generales
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  // Se inician los vehiculos estacionados
   const [parking, setParking] = useState([]);
 
   // Conseguir datos de visitas con la API
@@ -25,7 +34,7 @@ const AdminParking = () => {
   }, []);
 
   const handleDelete = (plate) => {
-    // Realizar la solicitud DELETE al servidor
+    // Realizar la solicitud DELETE al servidor, para eliminar vehiculo con su pantente
     fetch(`https://dduhalde.online/.netlify/functions/api/delete_vehicle/${plate}`)
     .then(response => {
       if (!response.ok) {
@@ -38,7 +47,7 @@ const AdminParking = () => {
     });
   };
 
-    // Redirect button for newVehicleForm
+  // Boton para redireccionar a agregar nuevo vehiculo
   const handleButtonClick = () => {
       navigate('/newVehicleForm');
   };

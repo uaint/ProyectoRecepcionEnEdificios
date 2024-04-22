@@ -14,15 +14,20 @@ function formatDate(dateString) {
     hour: 'numeric',
     minute: 'numeric'
   };
+  // Se ajusta para que se vea más estetica
   return date.toLocaleDateString('es-ES', options);
 }
 
 const AdminCorrespondence = () => {
+
+  // Configuraciones generales
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  // Creamos la correspondencia
   const [correspondence, setCorrespondence] = useState([]);
 
-  // Conseguir datos de correspondencia con la API
+  // Conseguir datos de correspondencia no reclamada con la API
   useEffect(() => {
     fetch('https://dduhalde.online/.netlify/functions/api/unclaimed_correspondence')
       .then(response => response.json())
@@ -31,7 +36,7 @@ const AdminCorrespondence = () => {
   }, []);
 
   const handleDelete = (id) => {
-    // Realizar la solicitud UPDATE al servidor
+    // Realizar la solicitud UPDATE al servidor, para cambiar de no reclamada a reclamada
     fetch(`https://dduhalde.online/.netlify/functions/api/is_claimed/${id}`)
     .then(response => {
       if (!response.ok) {
@@ -44,7 +49,7 @@ const AdminCorrespondence = () => {
     });
   };
 
-  // Redirect button for New Correspondence
+  // Boton para redireccion a agregar nueva correspondencia
   const handleButtonClick = () => {
     navigate('/newcorrespondenceform');
   };

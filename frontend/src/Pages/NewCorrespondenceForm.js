@@ -4,8 +4,13 @@ import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 
+// Funcion para obtener fecha actual y comparar con otra fecha, para ver cual como será el mensaje
 function obtenerFecha(fecha) {
+
+  //Conseguir fecha actual
   const fechaActual = new Date();
+
+  //Formatear fecha entregada
   const fechaDada = new Date(fecha);
 
   const hora = String(fechaDada.getHours()).padStart(2, '0');
@@ -16,19 +21,25 @@ function obtenerFecha(fecha) {
     fechaActual.getMonth() === fechaDada.getMonth() &&
     fechaActual.getDate() === fechaDada.getDate()
   ) {
+    // Si el día es igual se retorna lo siguiente
     return `hoy a las ${hora}:${minutos}`;
   } else {
     // Formatear la fecha en formato "dd/mm/yyyy"
     const dia = String(fechaDada.getDate()).padStart(2, '0');
     const mes = String(fechaDada.getMonth() + 1).padStart(2, '0');
     const año = fechaDada.getFullYear();
+
+    // Si es otro día se retorna lo siguiente
     return `el día ${dia}/${mes}/${año} a las ${hora}:${minutos}`;
   }
 }
 
 const NewCorrespondenceForm = () => {
+
+  // Configuraciones generales
   const { t } = useTranslation();
 
+  // Se inicia formData con algunos valores "predeterminados"
   const [formData, setFormData] = useState({
     type: 'Packages',
     timeOfArrival: '',
@@ -37,6 +48,7 @@ const NewCorrespondenceForm = () => {
     build: '',
   });
 
+  // Actualizar type segun opcion que se elige
   const [selectedOption, setSelectedOption] = useState('');
   const handleOptionChange = (e) => {
     const selectedValue = e.target.value;
@@ -44,15 +56,38 @@ const NewCorrespondenceForm = () => {
     setFormData({ ...formData, type: selectedValue }); // Actualiza el formData con el nuevo valor seleccionado
   };
 
+  // Funcion para ver cambios en las opciones de formData
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === 'checkbox' ? checked : value;
     setFormData({ ...formData, [name]: newValue });
   };
 
+  // Ver que parte del form mostrar, si primera o segunda
   const [showSearchForm, setShowSearchForm] = useState(true);
   const [showCorrespondenceForm, setShowCorrespondenceForm] = useState(false);
 
+  // Buscan personas con la api, segun edificio y departamento, para ver a que enviar mensajes
+  const [selectedInhabitants, setSelectedInhabitants] = useState([]);
+  const [inhabitants, setInhabitants] = useState([]);
+
+  const handleSearch = () => {
+    const url_api = `https://dduhalde.online/.netlify/functions/api/inhabitants/${formData.build}/${formData.apartment}`;
+    fetch(url_api)
+      .then(response => response.json())
+      .then(data => {
+        setInhabitants(data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+      
+    //Se cambia el form que se visualiza
+    setShowSearchForm(false);
+    setShowCorrespondenceForm(true);
+  };
+
+  // Formatear fecha para el mensaje de WhatsApp
   const fechamsg = obtenerFecha(formData.timeOfArrival);
   
   const handleSubmit = (e) => {
@@ -60,7 +95,7 @@ const NewCorrespondenceForm = () => {
     // Si se le envio a una persona o más el mensaje 1, sino 0
     const notified = selectedInhabitants.length !== 0 ? 1 : 0
 
-    // Realizar la solicitud ADD al servidor
+    // Realizar la solicitud ADD al servidor a partir de algunos parametros
     fetch(`https://dduhalde.online/.netlify/functions/api/add_mail/${formData.build}/${formData.apartment}/${formData.type}/${formData.timeOfArrival}/${notified}`)
     .then(response => {
       if (!response.ok) {
@@ -74,7 +109,7 @@ const NewCorrespondenceForm = () => {
 
     e.preventDefault();
 
-    // array filtrado con los que queremos que les llegue el mensaje
+    // Array filtrado con los que queremos que les llegue el mensaje
     const filteredArray = inhabitants.filter(obj => selectedInhabitants.includes(obj.id));
 
     // Se importan credenciales de .env
@@ -82,7 +117,8 @@ const NewCorrespondenceForm = () => {
     const version = process.env.REACT_APP_VERSION;
     const id_number = process.env.REACT_APP_ID_NUMBER;
 
-    for (let i = 0; i < filteredArray.length; i++) { // Iterar a los que queremos enviarle el mensaje
+    // Iterar a los que queremos enviarle el mensaje
+    for (let i = 0; i < filteredArray.length; i++) {
       const obj = filteredArray[i];
       const name = obj.first_name;
       const number = obj.contact_number;
@@ -103,6 +139,7 @@ const NewCorrespondenceForm = () => {
             Accept: "application/json",
       }
       }
+      // Se genera la consulta
       const url = `https://graph.facebook.com/${version}/${id_number}/messages`
       axios.post(url, data_msg, header)
       .then((res)=>(
@@ -113,54 +150,19 @@ const NewCorrespondenceForm = () => {
       ))
       console.log('Form submitted:', formData);
     }
+    //Se cambia el form que se visualiza
     setShowSearchForm(true);
     setShowCorrespondenceForm(false);
+
+    // Se renician las selecciones
+    setFormData({
+      type: 'Packages',
+      timeOfArrival: '',
+      isClaimed: false,
+      apartment: '',
+      build: '',
+    });
   }
-
-    /*const body = {
-              "messaging_product": "whatsapp",
-              "to": "+56975672372",
-              "type": "template",
-              "template": {
-                  "name": "saludo",
-                  "language": {
-                  "code": "es"
-                },
-        }
-    }*/
-
-  // Función para manejar el cambio en la selección del apartamento
-  const handleApartmentChange = (e) => {
-    const selectedApartment = e.target.value;
-
-    setFormData({ ...formData, apartment: selectedApartment });
-  };
-
-  // Función para manejar el cambio en la selección del habitante
-  const handleBuildChange = (e) => {
-    const selectedBuild = e.target.value;
-
-    setFormData({ ...formData, build: selectedBuild });
-  };
-
-  // Buscan personas con la api
-  const [selectedInhabitants, setSelectedInhabitants] = useState([]);
-  const [inhabitants, setInhabitants] = useState([]);
-
-  const handleSearch = () => {
-    const url_api = `https://dduhalde.online/.netlify/functions/api/inhabitants/${formData.build}/${formData.apartment}`;
-    fetch(url_api)
-      .then(response => response.json())
-      .then(data => {
-        setInhabitants(data);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-
-    setShowSearchForm(false);
-    setShowCorrespondenceForm(true);
-  };
 
   const handleSelectInhabitant = (inhabitantId) => {
     // Verificar si el habitante ya está seleccionado
@@ -189,7 +191,7 @@ const NewCorrespondenceForm = () => {
                 </div>
                 <div class="mb-3">
                   <label for="build" class="form-label">{t('correspondenceForm.selectTower')}</label>
-                  <input type="text" class="form-control" id="build" name="build" value={formData.build} onChange={handleBuildChange} required placeholder={t('correspondenceForm.selectTower')}/>
+                  <input type="text" class="form-control" id="build" name="build" value={formData.build} onChange={handleChange} required placeholder={t('correspondenceForm.selectTower')}/>
                 </div>
                 <div class="d-grid gap-1">
                   <button type="submit" class="btn btn-primary mt-3">{t('correspondenceForm.searchresident')}</button>

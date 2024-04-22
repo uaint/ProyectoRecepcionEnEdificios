@@ -7,13 +7,22 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // Funcion para formatear la fecha
 function formatDate(dateString) {
   const date = new Date(dateString);
-  const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+  const options = { 
+    year: 'numeric', 
+    month: 'numeric', 
+    day: 'numeric'
+  };
+  // Se ajusta para que se vea más estetica
   return date.toLocaleDateString('es-ES', options);
 }
 
 const AdminFrequentVisits = () => {
+
+  // Configuraciones generales
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  // Se inician los visitantes
   const [visitors, setVisitors] = useState([]);
 
   // Conseguir datos de visitas con la API
@@ -25,7 +34,7 @@ const AdminFrequentVisits = () => {
   }, []);
 
   const handleDelete = (id) => {
-    // Realizar la solicitud DELETE al servidor
+    // Realizar la solicitud DELETE al servidor, para eliminar un visitante con su id
     fetch(`https://dduhalde.online/.netlify/functions/api/delete_visitor/${id}`)
     .then(response => {
       if (!response.ok) {
@@ -38,7 +47,7 @@ const AdminFrequentVisits = () => {
     });
   };
 
-  // Redirect button for New Visit
+  // Boton para redireccionar a agregar nueva visita
   const handleButtonClick = () => {
     navigate('/newvisitform');
   };

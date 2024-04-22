@@ -5,38 +5,41 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const NewVehicleForm = () => {
+
+  // Configuraciones generales
   const { t } = useTranslation();
   
+  // Se inicia formData vacio
   const [formData, setFormData] = useState({
-    name: '',
-    lastName: '',
-    building: '',
-    apartment: '',
-    licensePlate: '',
-    car: '',
-    parking: '',
+    run: '',
+    license_plate: '',
+    parket_at: '',
+    parket_since: '',
   });
 
+  // Se acutualiza formData segun van cambiando los inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Boton de Sumbit, agregar vehiculo y reniciar formData
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Realizar la solicitud ADD al servidor
+    // Realizar la solicitud ADD al servidor, agregar vehiculo a partir de los parametros conseguidos
     fetch(`https://dduhalde.online/.netlify/functions/api/add_vehicle/${formData.run}/${formData.license_plate}/${formData.parket_at}/${formData.parket_since}`)
     .then(response => {
       if (!response.ok) {
-        throw new Error('Error al agregar la corrrespondencia');
+        throw new Error('Error al agregar vehiculo');
       }
-      console.log(`Se agrego la corrrespondencia`);
+      console.log(`Se agrego el vehiculo`);
     })
     .catch(error => {
-      console.error('Error al agregar la corrrespondencia:', error);
+      console.error('Error al agregar vehiculo:', error);
     });
     
+    // Se renician las selecciones
     setFormData({
       run: '',
       license_plate: '',
