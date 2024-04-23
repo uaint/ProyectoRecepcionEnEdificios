@@ -13,7 +13,7 @@ const Login = (props) => {
     
     const navigate = useNavigate();
         
-    const onButtonClick = () => {
+    const handleSubmit = () => {
 
         // Set initial error values to empty
         setEmailError("")
@@ -92,37 +92,36 @@ const Login = (props) => {
         })
     }
 
-    return <div className={"mainContainer"}>
-        <div className={"titleContainer"}>
-            <div>{t('login.title')}</div> {/* Usa la traducción para el título */}
+return (
+    <div id="change" className="container">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="card">
+            <div className="card-body">
+              <h2 className="card-title">{t('login.title')}</h2>
+              <form onSubmit={handleSubmit}>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">{t('login.emailPlaceholder')}</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={email} placeholder={t('login.emailPlaceholder')} onChange={ev => setEmail(ev.target.value)}/>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">{t('login.passwordPlaceholder')}</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" value={password} placeholder={t('login.passwordPlaceholder')} onChange={ev => setPassword(ev.target.value)}/>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1"/>
+                    <label class="form-check-label" for="exampleCheck1">{t('login.remember')}</label>
+                </div>
+                <div class="d-grid gap-1">
+                    <button type="submit" class="btn btn-primary">{t('login.loginButton')}</button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-        <br />
-        <div className={"inputContainer"}>
-            <input
-                value={email}
-                placeholder={t('login.emailPlaceholder')} // Usa la traducción para el placeholder del email
-                onChange={ev => setEmail(ev.target.value)}
-                className={"inputBox"} />
-            <label className="errorLabel">{emailError}</label>
-        </div>
-        <br />
-        <div className={"inputContainer"}>
-            <input
-                value={password}
-                placeholder={t('login.passwordPlaceholder')} // Usa la traducción para el placeholder de la contraseña
-                onChange={ev => setPassword(ev.target.value)}
-                className={"inputBox"} />
-            <label className="errorLabel">{passwordError}</label>
-        </div>
-        <br />
-        <div className={"inputContainer"}>
-            <input
-                className={"inputButton"}
-                type="button"
-                onClick={onButtonClick}
-                value={t('login.loginButton')} /> {/* Usa la traducción para el texto del botón de iniciar sesión */}
-        </div>
+      </div>
     </div>
-}
+  );
+};
 
 export default Login;

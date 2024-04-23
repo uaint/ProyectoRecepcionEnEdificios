@@ -121,7 +121,8 @@
     "passwordError": "Por favor ingresa una contraseña",
     "shortPasswordError": "La contraseña debe tener al menos 8 caracteres",
     "accountNotExistConfirm": "No existe una cuenta asociada a este correo electrónico: {{email}}. ¿Deseas crear una nueva cuenta?",
-    "wrongCredentialsAlert": "Correo electrónico o contraseña incorrectos"
+    "wrongCredentialsAlert": "Correo electrónico o contraseña incorrectos",
+    "remember": "Recordarme"
   },
   "messages": {
     "contactConcierge": "Contactar con el conserje",

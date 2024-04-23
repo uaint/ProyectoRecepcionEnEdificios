@@ -121,7 +121,8 @@
       "passwordError": "Please enter a password",
       "shortPasswordError": "The password must be 8 characters or longer",
       "accountNotExistConfirm": "An account does not exist with this email address: {{email}}. Do you want to create a new account?",
-      "wrongCredentialsAlert": "Wrong email or password"
+      "wrongCredentialsAlert": "Wrong email or password",
+      "remember": "Remember me"
     },
     "messages": {
       "contactConcierge": "Contact Concierge",
