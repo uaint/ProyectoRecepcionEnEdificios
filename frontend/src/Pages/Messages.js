@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
+/* to be developed */
 const Messages = () => {
   const { t } = useTranslation();
 
@@ -19,7 +19,7 @@ const Messages = () => {
   };
 
   const handleSendMessage = () => {
-    // Lógica para enviar el mensaje se implementa aquí
+    // Lógica para enviar el mensaje se implementara aquí
     console.log(`Mensaje: ${message}, Tipo: ${selectedOption}`);
   };
 

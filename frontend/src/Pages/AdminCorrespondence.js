@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '../App.css';
 
 // Funcion para formatear la fecha
 function formatDate(dateString) {
@@ -36,7 +36,7 @@ const AdminCorrespondence = () => {
   }, []);
 
   const handleDelete = (id) => {
-    // Realizar la solicitud UPDATE al servidor, para cambiar de no reclamada a reclamada
+    // Realizar la solicitud UPDATE al servidor, para cambiar de "no reclamada" a "reclamada"
     fetch(`https://dduhalde.online/.netlify/functions/api/is_claimed/${id}`)
     .then(response => {
       if (!response.ok) {

@@ -4,7 +4,7 @@ import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 
-// Funcion para obtener fecha actual y comparar con otra fecha, para ver cual como será el mensaje
+// Obtener fecha actual y comparar con otra fecha
 function obtenerFecha(fecha) {
 
   //Conseguir fecha actual
@@ -29,7 +29,7 @@ function obtenerFecha(fecha) {
     const mes = String(fechaDada.getMonth() + 1).padStart(2, '0');
     const año = fechaDada.getFullYear();
 
-    // Si es otro día se retorna lo siguiente
+    // Si es otro día, se retorna lo siguiente:
     return `el día ${dia}/${mes}/${año} a las ${hora}:${minutos}`;
   }
 }
@@ -67,7 +67,7 @@ const NewCorrespondenceForm = () => {
   const [showSearchForm, setShowSearchForm] = useState(true);
   const [showCorrespondenceForm, setShowCorrespondenceForm] = useState(false);
 
-  // Buscan personas con la api, segun edificio y departamento, para ver a que enviar mensajes
+  // Buscan personas con la api, segun edificio y departamento, para ver a quienes enviar mensajes
   const [selectedInhabitants, setSelectedInhabitants] = useState([]);
   const [inhabitants, setInhabitants] = useState([]);
 
@@ -92,7 +92,7 @@ const NewCorrespondenceForm = () => {
   
   const handleSubmit = (e) => {
     
-    // Si se le envio a una persona o más el mensaje 1, sino 0
+    // Si se le envio a una persona o más el mensaje es 1, sino 0
     const notified = selectedInhabitants.length !== 0 ? 1 : 0
 
     // Realizar la solicitud ADD al servidor a partir de algunos parametros

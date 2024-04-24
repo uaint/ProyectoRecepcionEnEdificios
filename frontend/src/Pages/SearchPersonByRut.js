@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import '../App.css'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+
+/* to be developed */
 const SearchPersonByRut = () => {
   const { t } = useTranslation();
   const [rut, setRut] = useState('');

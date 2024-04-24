@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
+/* to be developed */
 const Login = (props) => {
     const { t } = useTranslation(); // Usa useTranslation para acceder a las traducciones
     const [email, setEmail] = useState("")

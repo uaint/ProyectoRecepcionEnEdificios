@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import '../App.css';
-import i18n from '../i18n';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import i18n from '../i18n';
+import '../App.css';
+
 
 // Estilo de la Navbar
 const navbarStyle = {
