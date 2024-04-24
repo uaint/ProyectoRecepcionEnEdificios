@@ -23,22 +23,22 @@ const Home = (props) => {
     }
 
     return (
-        <div className="mainContainer">
-            <div className={"titleContainer"}>
-                <div>{t('home.welcome')}</div>
-            </div>
-            <div>
-                {t('home.homePage')}
-            </div>
-            <div className={"buttonContainer"}>
-                <input
-                    className={"inputButton"}
-                    type="button"
-                    onClick={onButtonClick}
-                    value={loggedIn ? t('home.logInOut.loggedIn') : t('home.logInOut.loggedOut')} />
-                {(loggedIn ? <div>
-                    {t('home.emailAddress', { email })}
-                </div> : <div/>)}
+        <div id="change" className="container">
+            <div className="row justify-content-center">
+                <div className="col-md-6">
+                    <div className="card">
+                        <div className="card-body">
+                            <h2 className="card-title text-center">{t('home.welcome')}</h2>
+                            <h4 className="card-title text-center">{t('home.homePage')}</h4>
+                            <div class="d-grid gap-1">
+                                <button type="submit" class="btn btn-primary mt-3" onClick={onButtonClick}>{loggedIn ? t('home.logInOut.loggedIn') : t('home.logInOut.loggedOut')}</button>
+                                {loggedIn && (
+                                    <div>{t('home.emailAddress', { email })}</div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );

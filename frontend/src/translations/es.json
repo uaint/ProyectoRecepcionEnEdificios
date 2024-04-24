@@ -21,11 +21,13 @@
   },
   "adminCorrespondence": {
     "adminCorrespondence": "Correspondencia de Administración",
-    "id": "Id",
+    "id": "ID",
     "building": "Edificio",
     "apartment": "Departamento",
     "type": "Tipo",
     "notified": "Notificado",
+    "claimed": "Reclamado",
+    "date": "Fecha",
     "contact": "Contacto",
     "delete": "Eliminar",
     "addNewCorrespondence": "Agregar Nueva Correspondencia"
@@ -33,10 +35,11 @@
   "adminFrequentVisits": {
     "adminFrequentVisits": "Visitas Frecuentes de Administración",
     "name": "Nombre",
-    "lastName": "Apellido",
+    "birthDate": "Fecha Nacimiento",
     "rut": "RUT",
     "apartment": "Departamento",
-    "visitCount": "Cantidad de Visitas",
+    "visitType": "Tipo Visita",
+    "lastVisit": "Fecha Visita",
     "delete": "Eliminar",
     "addFrequentVisit": "Agregar Visita Frecuente"
   },
@@ -58,15 +61,14 @@
     "message2": "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas..."
   },
   "adminParking": {
-    "adminParking": "Administración de Estacionamiento",
-    "parking": "Estacionamiento",
-    "status": "Estado",
+    "adminParking": "Admin Parking",
+    "visitorId": "ID Visitante",
+    "full_name": "Nombre",
     "licensePlate": "Patente",
-    "apartment": "Departamento",
-    "arrivingTime": "Hora de Llegada",
-    "modifyParkingSpot": "Modificar Lugar de Estacionamiento",
-    "occupied": "Ocupado",
-    "available": "Disponible"
+    "parket_at": "Estacionado en",
+    "arrivingTime": "Estacionado desde",
+    "delete": "Eliminar",
+    "addParked": "Agregar Estacionado"
   },
   "config": {
     "configuration": "Configuración",
@@ -119,7 +121,8 @@
     "passwordError": "Por favor ingresa una contraseña",
     "shortPasswordError": "La contraseña debe tener al menos 8 caracteres",
     "accountNotExistConfirm": "No existe una cuenta asociada a este correo electrónico: {{email}}. ¿Deseas crear una nueva cuenta?",
-    "wrongCredentialsAlert": "Correo electrónico o contraseña incorrectos"
+    "wrongCredentialsAlert": "Correo electrónico o contraseña incorrectos",
+    "remember": "Recordarme"
   },
   "messages": {
     "contactConcierge": "Contactar con el conserje",
@@ -134,33 +137,48 @@
   },
   "correspondenceForm": {
     "addNewCorrespondence": "Agregar Nueva Correspondencia",
-    "type": "Tipo",
+    "type": "Tipo:",
     "packages": "Paquetes",
     "letters": "Cartas",
     "item": "Ítem",
+    "food": "Comida",
     "others": "Otros",
     "timeOfArrival": "Hora de Llegada:",
     "selectApartment": "Seleccionar Apartamento",
-    "selectInhabitant": "Seleccionar Habitante",
+    "selectTower": "Seleccionar Torre",
     "addCorrespondence": "Agregar Correspondencia",
-    "checkboxSendToAll": "Enviar a todos los residentes"
+    "checkboxSendToAll": "Enviar a todos los residentes",
+    "selectMsg": "Selecciona para enviar mensaje:",
+    "searchresident": "Buscar Habitantes"
   },
   "vehicleForm": {
-    "addNewVehicle": "Agregar Nuevo Vehículo",
-    "name": "Nombre:",
-    "lastName": "Apellido:",
-    "building": "Edificio:",
-    "apartment": "Apartamento:",
-    "licensePlate": "Placa de Vehículo:",
-    "car": "Vehículo:",
+    "addNewVehicle": "Agregar Nuevo Vehiculo",
+    "run": "RUT:",
+    "dv": "Digito Verificador:",
+    "rutPlaceholder": "Sin puntos ni digito verificador",
+    "dvPlaceholder": "Si termina con K, remplazar con 0",
+    "licensePlate": "Patente",
     "parking": "Estacionamiento:",
-    "addVehicle": "Agregar Vehículo"
+    "parkedSince": "Estacionado desde:",
+    "addVehicle": "Agregar Vehiculo"
   },
   "visitForm": {
     "addNewVisit": "Agregar Nueva Visita",
     "firstName": "Nombre:",
     "lastName": "Apellido:",
     "run": "RUT:",
+    "dv": "Digito Verificador:",
+    "rutPlaceholder": "Sin puntos ni digito verificador",
+    "dvPlaceholder": "Si termina con K, remplazar con 0",
+    "buildToVisit": "Torre a Visitar:",
+    "type": "Tipo de Visita:",
+    "frequent": "Frecuente",
+    "regular": "Regular",
+    "social": "Social",
+    "delivery": "Delivery",
+    "medical": "Medica",
+    "business": "Negocio",
+    "others": "Otra",
     "birthDate": "Fecha de Nacimiento:",
     "apartmentToVisit": "Apartamento a Visitar:",
     "addVisit": "Agregar Visita",

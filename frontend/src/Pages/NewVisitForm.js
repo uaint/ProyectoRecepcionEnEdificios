@@ -4,122 +4,119 @@ import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const NewVisitForm = () => {
+
+  // Configuraciones generales
   const { t } = useTranslation();
 
+  // Se inicia formData con solo type predeterminado
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     run: '',
+    dv: '',
     birthDate: '',
+    buildToVisit: '',
     apartmentToVisit: '',
+    type: 'Frequent',
   });
+  
+  // Actualizar type segun opcion que se elige
+  const [selectedOption, setSelectedOption] = useState('');
+  const handleOptionChange = (e) => {
+    const selectedValue = e.target.value;
+    setSelectedOption(selectedValue); // Actualiza el estado de la opción seleccionada
+    setFormData({ ...formData, type: selectedValue }); // Actualiza el formData con el nuevo valor seleccionado
+  };
 
-  const [apartmentOptions, setApartmentOptions] = useState([
-    '101', '202', '303' // Departamentos disponibles, puedes modificar estos valores
-  ]);
-
-  const [selectAll, setSelectAll] = useState(false);
-
+  // Funcion para ver cambios en las opciones de formData
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleApartmentChange = (e) => {
-    const selectedApartment = e.target.value;
-    setFormData({ ...formData, apartmentToVisit: selectedApartment });
-  };
-
-  const handleSelectAllChange = (e) => {
-    setSelectAll(e.target.checked);
-  };
-
+  //Boton de submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí puedes agregar la lógica para manejar los datos del formulario
-    console.log('Form submitted:', formData);
+
+    // Llamado a la API para agregar visitante
+    fetch(`https://dduhalde.online/.netlify/functions/api/add_visitor/${formData.firstName}/${formData.lastName}/${formData.run}/${formData.dv}/${formData.birthDate}/${formData.buildToVisit}/${formData.apartmentToVisit}/${formData.type}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error al agregar la visitante');
+      }
+      console.log(`Se agrego la visitante`);
+    })
+    .catch(error => {
+      console.error('Error al agregar la visitante:', error);
+    });
+    
     // Resetear el formulario después de enviar los datos
     setFormData({
       firstName: '',
       lastName: '',
       run: '',
+      dv: '',
       birthDate: '',
+      buildToVisit: '',
       apartmentToVisit: '',
+      type: 'Frequent',
     });
   };
 
   return (
-    <div className="formContainer">
-      <h2>{t('visitForm.addNewVisit')}</h2>
-      <form onSubmit={handleSubmit} className="visitForm">
-        <div className="formGroup">
-          <label htmlFor="firstName">{t('visitForm.firstName')}</label>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-            required
-            className="inputField"
-          />
+    <div id="change" className="container">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="card">
+            <div className="card-body">
+              <h2 className="card-title">{t('visitForm.addNewVisit')}</h2>
+              <form onSubmit={handleSubmit}>
+                <div class="mb-3">
+                  <label for="firstName" class="form-label">{t('visitForm.firstName')}</label>
+                  <input type="text" class="form-control" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} required />
+                </div>
+                <div class="mb-3">
+                  <label for="firstName" class="form-label">{t('visitForm.lastName')}</label>
+                  <input type="text" class="form-control" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} required />
+                </div>
+                <div class="mb-3">
+                  <label for="run" class="form-label">{t('visitForm.run')}</label>
+                  <input type="text" class="form-control" id="run" name="run" value={formData.run} onChange={handleChange} required placeholder={t('visitForm.rutPlaceholder')}/>
+                </div>
+                <div class="mb-3">
+                  <label for="dv" class="form-label">{t('visitForm.dv')}</label>
+                  <input type="text" class="form-control" id="dv" name="dv" value={formData.dv} onChange={handleChange} required placeholder={t('visitForm.dvPlaceholder')}/>
+                </div>
+                <div class="mb-3">
+                  <label for="birthDate" class="form-label">{t('visitForm.birthDate')}</label>
+                  <input type="date" class="form-control" id="birthDate" name="birthDate" value={formData.birthDate} onChange={handleChange} required/>
+                </div>
+                <div class="mb-3">
+                  <label for="birthDate" class="form-label">{t('visitForm.apartmentToVisit')}</label>
+                  <input type="text" class="form-control" id="apartmentToVisit" name="apartmentToVisit" value={formData.apartmentToVisit} onChange={handleChange} required/>
+                </div>
+                <div class="mb-3">
+                  <label for="buildToVisit" class="form-label">{t('visitForm.buildToVisit')}</label>
+                  <input type="text" class="form-control" id="buildToVisit" name="buildToVisit" value={formData.buildToVisit} onChange={handleChange} required/>
+                </div>
+                <label for="type" class="form-label">{t('visitForm.type')}</label>
+                <select class="form-select" aria-label="Default select example" value={selectedOption} onChange={handleOptionChange}>
+                  <option value="Frequent">{t('visitForm.frequent')}</option>
+                  <option value="Regular">{t('visitForm.regular')}</option>
+                  <option value="Social">{t('visitForm.social')}</option>
+                  <option value="Delivery">{t('visitForm.delivery')}</option>
+                  <option value="Medical">{t('visitForm.medical')}</option>
+                  <option value="Business">{t('visitForm.business')}</option>
+                  <option value="Others">{t('visitForm.others')}</option>
+                </select>
+                <div class="d-grid gap-1">
+                  <button type="submit" class="btn btn-primary mt-3">{t('visitForm.addVisit')}</button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-        <div className="formGroup">
-          <label htmlFor="lastName">{t('visitForm.lastName')}</label>
-          <input
-            type="text"
-            id="lastName"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            required
-            className="inputField"
-          />
-        </div>
-        <div className="formGroup">
-          <label htmlFor="run">{t('visitForm.run')}</label>
-          <input
-            type="text"
-            id="run"
-            name="run"
-            value={formData.run}
-            onChange={handleChange}
-            required
-            className="inputField"
-          />
-        </div>
-        <div className="formGroup">
-          <label htmlFor="birthDate">{t('visitForm.birthDate')}</label>
-          <input
-            type="date"
-            id="birthDate"
-            name="birthDate"
-            value={formData.birthDate}
-            onChange={handleChange}
-            required
-            className="inputField"
-          />
-        </div>
-        <div className="formGroup">
-          <label htmlFor="apartmentToVisit">{t('visitForm.apartmentToVisit')}</label>
-          <select
-            id="apartmentToVisit"
-            name="apartmentToVisit"
-            value={formData.apartmentToVisit}
-            onChange={handleApartmentChange}
-            required
-            className="inputField"
-          >
-            <option value="" disabled hidden>{t('visitForm.selectApartment')}</option>
-            {apartmentOptions.map((apartment, index) => (
-              <option key={index} value={apartment}>
-                {apartment}
-              </option>
-            ))}
-          </select>
-        </div>
-        <button type="submit" className="submitButton">{t('visitForm.addVisit')}</button>
-      </form>
+      </div>
     </div>
   );
 };

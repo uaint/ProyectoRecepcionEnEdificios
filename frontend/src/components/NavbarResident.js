@@ -2,33 +2,61 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import '../App.css';
+import i18n from '../i18n';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// Estilo de la Navbar
+const navbarStyle = {
+  textAlign: 'center',
+}
+
+// Boton para cambiar el idioma
 const NavbarResident = () => {
   const { t } = useTranslation();
+  const handleLanguageChange = (newLanguage) => {
+    i18n.changeLanguage(newLanguage);
+  };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-      <div className="container-fluid">
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary mb-3 fixed-top" style={navbarStyle}>
+      <div class="container-fluid">
+        <div className="btn-group navbar-brand" role="group" style={navbarStyle}>
+          <button
+              type="button"
+              className={`btn ${i18n.language === 'es' ? 'btn-primary btn-sm' : 'btn-secondary btn-sm'}`}
+              onClick={() => handleLanguageChange('es')}
+          >
+              ESP
+          </button>
+          <button
+              type="button"
+              className={`btn ${i18n.language === 'en' ? 'btn-danger btn-sm' : 'btn-secondary btn-sm'}`}
+              onClick={() => handleLanguageChange('en')}
+          >
+              EN
+          </button>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
-          <ul className="navbar-nav">
-            <li className="nav-item">
-              <Link className="nav-link" to="/notifications">{t('navbarResident.notifications')}</Link>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <Link class="nav-link" to="/notifications">{t('navbarResident.notifications')}</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/adminfrequentvisits">{t('navbarResident.adminFrequentVisits')}</Link>
+            <li class="nav-item">
+              <Link class="nav-link" to="/adminfrequentvisits">{t('navbarResident.adminFrequentVisits')}</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/messages">{t('navbarResident.messages')}</Link>
+            <li class="nav-item">
+              <Link class="nav-link" to="/messages">{t('navbarResident.messages')}</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/config">{t('navbarResident.config')}</Link>
+            <li class="nav-item">
+              <Link class="nav-link" to="/config">{t('navbarResident.config')}</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/home">{t('navbarResident.signOut')}</Link>
+            <li class="nav-item">
+              <Link class="nav-link" to="/home">{t('navbarResident.signOut')}</Link>
+            </li>
+            <li>
             </li>
           </ul>
         </div>

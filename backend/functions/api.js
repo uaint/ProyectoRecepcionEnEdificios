@@ -2,10 +2,14 @@ import express from 'express';
 import mysql from 'mysql';
 import env from 'dotenv';
 import serverless from 'serverless-http';
+import cors from 'cors';
 
 // Iniciar App y Router
 const app = express();
 const router = express.Router();
+
+// Habilitar completamente las consultas
+app.options('*', cors());
 
 // Llamar las variables del .env
 env.config()
@@ -14,6 +18,7 @@ const hostdb = process.env.DB_HOST;
 const userdb = process.env.DB_USER;
 const namedb = process.env.DB_NAME;
 const portdb = process.env.DB_PORT;
+const timezonedb = process.env.DB_TIMEZONE;
 
 // Configuración de la conexión a la base de datos
 const connection = mysql.createConnection({
@@ -21,7 +26,8 @@ const connection = mysql.createConnection({
   user: userdb,
   password: passwordbd,
   database: namedb,
-  port: portdb
+  port: portdb,
+  timezone: timezonedb,
 });
 
 // Establecer conexión a la base de datos
@@ -34,6 +40,7 @@ connection.connect((err) => {
 });
 
 // Ruta para obtener datos de personas con su apartment y housing_unit
+// Link de ejemplo /inhabitants/1/101
 router.get('/inhabitants/:apartment/:housing_unit', (req, res) => {
 
   // Conseguir parametros desde el link
@@ -84,14 +91,14 @@ router.get('/inhabitants', (req, res) => {
 });
 
 // Ruta para agregar visitantes
-// Link de ejemplo /add_visitor/Anuel/Brr/21123456/7/1999-09-09/null/Frequent
-router.get('/add_visitor/:name/:last_name/:rut/:dv/:birthdate/:last_visit/:visit_type', (req, res) => {
+// Link de ejemplo /add_visitor/Anuel/Brr/21123456/7/1999-09-09/null/1/101/Frequent
+router.get('/add_visitor/:name/:last_name/:rut/:dv/:birthdate/:apartment/:housing_unit/:visit_type', (req, res) => {
 
   // Conseguir parametros desde el link
-  const { name, last_name, rut, dv, birthdate, last_visit, visit_type } = req.params;
+  const { name, last_name, rut, dv, birthdate, apartment, housing_unit, visit_type } = req.params;
 
   // Realizar Query
-  const query = `CALL add_visitor("${name}", "${last_name}", ${rut}, ${dv}, "${birthdate}", ${last_visit}, "${visit_type}")`;
+  const query = `CALL add_visitor("${name}", "${last_name}", ${rut}, ${dv}, "${birthdate}", NOW(), "${apartment}", "${housing_unit}", "${visit_type}")`;
 
   // Encabezados CORS
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -131,6 +138,49 @@ router.get('/visitors', (req, res) => {
       return;
     }
     res.json(rows); // Enviar los datos como JSON al cliente
+  });
+});
+
+// Ruta para eliminar visitante
+// Link de ejemplo /delete_visitor/1
+router.get('/delete_visitor/:id', (req, res) => {
+
+  // ID visitante a eliminar
+  const visitorId = req.params.id;
+
+  // Realizar Query
+  const query = `DELETE FROM vehicles_visitors WHERE visitor_id = ?;`;
+
+  // Encabezados CORS
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Hacer llamado a la BBDD para eliminar vehiculos asociados
+  connection.query(query, [visitorId], (err, rows) => {
+    if (err) {
+      console.error('Error al ejecutar la consulta:', err);
+      console.log(err);
+      res.status(500).send('Error al obtener datos desde la base de datos');
+      return;
+    }
+    else {
+      res.status(200).json({ message: 'Se elimino el vehículo correctamente.'});
+      // Hacer llamado a la BBDD para eliminar finalmente el visitante
+      const query = `DELETE FROM visitors WHERE id = ?;`;
+      connection.query(query, [visitorId], (err, rows) => {
+        if (err) {
+          console.error('Error al ejecutar la consulta:', err);
+          console.log(err);
+          res.status(500).send('Error al obtener datos desde la base de datos');
+          return;
+        }
+        else {
+          res.status(200).json({ message: 'Se elimino el visitante correctamente.'});
+        }
+      });
+    }
   });
 });
 
@@ -203,14 +253,43 @@ router.get('/parked', (req, res) => {
   });
 });
 
-// Ruta para agregar correspondencia
-router.get('/add_mail/:id/:type/:date/:claimed', (req, res) => {
+// Ruta para eliminar vehiculo
+router.get('/delete_vehicle/:plate', (req, res) => {
 
-  // Conseguir parametros desde el link
-  const { id, type, date, claimed } = req.params;
+  // Conseguir patente
+  const plate = req.params.plate;
 
   // Realizar Query
-  const query = `CALL add_mail(${id}, "${type}", "${date}", ${claimed})`;
+  const query = `CALL delete_vehicle("${plate}")`;
+
+  // Encabezados CORS
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Hacer llamado a la BBDD
+  connection.query(query, (err, rows) => {
+    if (err) {
+      console.error('Error al ejecutar la consulta:', err);
+      res.status(500).send('Error al obtener datos desde la base de datos');
+      return;
+    }
+    else {
+      res.status(200).json({ message: 'Se elimino el vehiculo correctamente.'});
+    }
+  });
+});
+
+// Ruta para agregar correspondencia
+// Link ejemplo: /add_mail/101/1/Letters//:i_notified
+router.get('/add_mail/:apt_recipient/:hu_recipient/:m_type/:a_time/:i_notified', (req, res) => {
+
+  // Conseguir parametros desde el link
+  const { apt_recipient, hu_recipient, m_type, a_time, i_notified } = req.params;
+
+  // Realizar Query
+  const query = `CALL add_mail(${apt_recipient}, ${hu_recipient}, "${m_type}", "${a_time}", ${i_notified})`;
 
   // Encabezados CORS
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -250,6 +329,37 @@ router.get('/unclaimed_correspondence', (req, res) => {
       return;
     }
     res.json(rows); // Enviar los datos como JSON al cliente
+  });
+});
+
+// Ruta para marcar correspondencia como reclamada 
+router.get('/is_claimed/:id', (req, res) => {
+
+  // Conseguir parametros desde el link
+  const {id} = req.params;
+
+  // Realizar Query
+  const query = `CALL update_mail_to_claimed(${id})`;
+
+  // Encabezados CORS
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Hacer llamado a la BBDD
+  connection.query(query, [id], (err, rows) => {
+    if (err) {
+      res.status(500).send('Error al actualizar los datos en la base de datos');
+      return;
+    }
+    // Verificar si se actualizó correctamente
+    if (res.affectedRows === 0) {
+      res.status(404).send(`No se encontró la correspondencia con el ID ${id}`);
+      return;
+    }
+    // Envía una respuesta exitosa
+    res.status(200).send(`Se marcó la correspondencia con el ID ${id} como reclamada`);
   });
 });
 

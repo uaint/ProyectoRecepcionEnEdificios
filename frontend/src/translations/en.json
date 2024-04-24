@@ -21,11 +21,13 @@
   },
   "adminCorrespondence": {
     "adminCorrespondence": "Admin Correspondence",
-    "id": "Id",
+    "id": "ID",
     "building": "Building",
     "apartment": "Apartment",
     "type": "Type",
     "notified": "Notified",
+    "claimed": "Claimed",
+    "date": "Date",
     "contact": "Contact",
     "delete": "Delete",
     "addNewCorrespondence": "Add New Correspondence"
@@ -33,10 +35,11 @@
   "adminFrequentVisits": {
     "adminFrequentVisits": "Admin Frequent Visits",
     "name": "Name",
-    "lastName": "Last Name",
+    "birthDate": "Birth Date",
     "rut": "RUT",
     "apartment": "Apartment",
-    "visitCount": "Visit Count",
+    "visitType": "Visit Type",
+    "lastVisit": "Visit Date",
     "delete": "Delete",
     "addFrequentVisit": "Add Frequent Visit"
   },
@@ -59,14 +62,13 @@
   },
   "adminParking": {
     "adminParking": "Admin Parking",
-    "parking": "Parking",
-    "status": "Status",
+    "visitorId": "Visitor ID",
+    "full_name": "Full Name",
     "licensePlate": "License Plate",
-    "apartment": "Apartment",
+    "parket_at": "Parket At",
     "arrivingTime": "Arriving Time",
-    "modifyParkingSpot": "Modify Parking Spot",
-    "occupied": "Occupied",
-    "available": "Available"
+    "delete": "Delete",
+    "addParked": "Add Parked"
   },
   "config": {
     "configuration": "Configuration",
@@ -119,7 +121,8 @@
       "passwordError": "Please enter a password",
       "shortPasswordError": "The password must be 8 characters or longer",
       "accountNotExistConfirm": "An account does not exist with this email address: {{email}}. Do you want to create a new account?",
-      "wrongCredentialsAlert": "Wrong email or password"
+      "wrongCredentialsAlert": "Wrong email or password",
+      "remember": "Remember me"
     },
     "messages": {
       "contactConcierge": "Contact Concierge",
@@ -134,26 +137,29 @@
     },
     "correspondenceForm": {
       "addNewCorrespondence": "Add New Correspondence",
-      "type": "Type",
+      "type": "Type:",
       "packages": "Packages",
       "letters": "Letters",
       "item": "Item",
+      "food": "Food",
       "others": "Others",
       "timeOfArrival": "Time of Arrival:",
       "selectApartment": "Select Apartment",
-      "selectInhabitant": "Select Inhabitant",
+      "selectTower": "Select Tower",
       "addCorrespondence": "Add Correspondence",
-      "checkboxSendToAll": "Send to all residents"
+      "checkboxSendToAll": "Send to all residents",
+      "selectMsg": "Select to send message:",
+      "searchresident": "Search Residents"
     },
     "vehicleForm": {
       "addNewVehicle": "Add New Vehicle",
-      "name": "Name:",
-      "lastName": "Last Name:",
-      "building": "Building:",
-      "apartment": "Apartment:",
+      "run": "RUT:",
+      "dv": "Check Digit:",
+      "rutPlaceholder": "No dots and without check digit",
+      "dvPlaceholder": "If the check digit ends with K, replace with 0",
       "licensePlate": "License Plate:",
-      "car": "Car:",
-      "parking": "Parking:",
+      "parking": "Parking At:",
+      "parkedSince": "Parking Since:",
       "addVehicle": "Add Vehicle"
     },
     "visitForm": {
@@ -161,6 +167,18 @@
       "firstName": "First Name:",
       "lastName": "Last Name:",
       "run": "RUT:",
+      "dv": "Check Digit:",
+      "rutPlaceholder": "No dots and without check digit",
+      "dvPlaceholder": "If the check digit ends with K, replace with 0",
+      "buildToVisit": "Tower to Visit:",
+      "type": "Visit Type:",
+      "frequent": "Frequent",
+      "regular": "Regular",
+      "social": "Social",
+      "delivery": "Delivery",
+      "medical": "Medical",
+      "business": "Business",
+      "others": "Other",
       "birthDate": "Birth Date:",
       "apartmentToVisit": "Apartment to Visit:",
       "addVisit": "Add Visit",
