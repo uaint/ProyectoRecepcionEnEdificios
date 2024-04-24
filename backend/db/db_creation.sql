@@ -57,10 +57,6 @@ CREATE TABLE IF NOT EXISTS `roentgenium`.`visitors` (
   `run` INT NOT NULL,
   `run_vd` TINYINT(1) NOT NULL,
   `birth_date` DATE NOT NULL,
-  `last_visit` DATETIME NOT NULL,
-  `apartment_visited` TINYINT NOT NULL,
-  `housing_unit_visited` SMALLINT NOT NULL,
-  `visit_type` VARCHAR(31) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `run_UNIQUE` (`run` ASC) VISIBLE)
 ENGINE = InnoDB
@@ -80,6 +76,7 @@ CREATE TABLE IF NOT EXISTS `roentgenium`.`vehicles_visitors` (
   PRIMARY KEY (`id`, `visitor_id`),
   UNIQUE INDEX `parking_spot_UNIQUE` (`parking_spot` ASC) VISIBLE,
   INDEX `fk_vehicle_registry_visitors_visitors1_idx` (`visitor_id` ASC) VISIBLE,
+  UNIQUE INDEX `license_plate_UNIQUE` (`license_plate` ASC) VISIBLE,
   CONSTRAINT `fk_vehicle_registry_visitors_visitors1`
     FOREIGN KEY (`visitor_id`)
     REFERENCES `roentgenium`.`visitors` (`id`))
@@ -114,6 +111,26 @@ CREATE TABLE IF NOT EXISTS `roentgenium`.`mail` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `roentgenium`.`visitors_log`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `roentgenium`.`visitors_log` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `visitor_id` INT NOT NULL,
+  `visit_date` DATETIME NOT NULL,
+  `apartment_visited` TINYINT NOT NULL,
+  `housing_unit_visited` SMALLINT NOT NULL,
+  `visit_type` VARCHAR(31) NOT NULL,
+  PRIMARY KEY (`id`, `visitor_id`),
+  INDEX `fk_visitors_log_visitors1_idx` (`visitor_id` ASC) VISIBLE,
+  CONSTRAINT `fk_visitors_log_visitors1`
+    FOREIGN KEY (`visitor_id`)
+    REFERENCES `roentgenium`.`visitors` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 USE `roentgenium` ;
 
 -- -----------------------------------------------------
@@ -124,7 +141,7 @@ CREATE TABLE IF NOT EXISTS `roentgenium`.`vehicle_owners` (`visitor_id` INT, `fu
 -- -----------------------------------------------------
 -- Placeholder table for view `roentgenium`.`visitors_information`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium`.`visitors_information` (`visitor_id` INT, `full_name` INT, `run` INT, `birth_date` INT, `last_visit` INT, `unit_apartment_visited` INT, `visit_type` INT);
+CREATE TABLE IF NOT EXISTS `roentgenium`.`visitors_information` (`visitor_id` INT, `full_name` INT, `run` INT, `birth_date` INT, `visit_date` INT, `unit_apartment_visited` INT, `visit_type` INT);
 
 -- -----------------------------------------------------
 -- Placeholder table for view `roentgenium`.`inhabitants_information`
@@ -145,6 +162,11 @@ CREATE TABLE IF NOT EXISTS `roentgenium`.`users_by_last_access` (`user_id` INT, 
 -- Placeholder table for view `roentgenium`.`currently_parked_vehicles`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `roentgenium`.`currently_parked_vehicles` (`visitor_id` INT, `full_name` INT, `license_plate` INT, `parked_at` INT, `parked_since` INT);
+
+-- -----------------------------------------------------
+-- Placeholder table for view `roentgenium`.`visitors_most_visits`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `roentgenium`.`visitors_most_visits` (`visitor_id` INT, `full_name` INT, `total_visits_registered` INT);
 
 -- -----------------------------------------------------
 -- procedure add_inhabitant
@@ -231,7 +253,7 @@ DELIMITER $$
 USE `roentgenium`$$
 CREATE PROCEDURE `assign_parking_spot` (IN l_plate VARCHAR(8), IN p_spot SMALLINT)
 BEGIN
-	UPDATE vehicles_visitors SET parking_spot = p_spot WHERE license_plate = l_plate;
+	UPDATE vehicles_visitors SET parking_spot = p_spot, parking_date = NOW() WHERE (license_plate = l_plate AND p_spot BETWEEN 1 AND 8);
 END$$
 
 DELIMITER ;
@@ -244,7 +266,7 @@ DELIMITER $$
 USE `roentgenium`$$
 CREATE PROCEDURE `delete_vehicle` (IN l_plate VARCHAR(8))
 BEGIN
-	DELETE FROM vehicles_visitors WHERE license_plate = l_plate;
+	DELETE FROM vehicles_visitors WHERE (license_plate = l_plate AND id > 0);
 END$$
 
 DELIMITER ;
@@ -276,6 +298,19 @@ END$$
 DELIMITER ;
 
 -- -----------------------------------------------------
+-- procedure search_visitor_run
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `search_visitor_run`(IN search_run INT)
+BEGIN
+    SELECT * FROM visitors WHERE run = search_run;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
 -- View `roentgenium`.`vehicle_owners`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `roentgenium`.`vehicle_owners`;
@@ -301,17 +336,17 @@ DROP TABLE IF EXISTS `roentgenium`.`visitors_information`;
 USE `roentgenium`;
 CREATE  OR REPLACE VIEW `visitors_information` AS
     SELECT 
-        id AS visitor_id,
-        CONCAT(first_name, ' ', last_name) AS full_name,
-        CONCAT(run, '-', run_vd) AS run,
-        birth_date,
-        last_visit,
-        CONCAT(housing_unit_visited,
-                '-',
-                apartment_visited) AS unit_apartment_visited,
-        visit_type
+        v.id AS visitor_id,
+        CONCAT(v.first_name, ' ', v.last_name) AS full_name,
+        CONCAT(v.run, '-', v.run_vd) AS run,
+        v.birth_date,
+        vl.visit_date,
+        CONCAT(vl.housing_unit_visited, '-', vl.apartment_visited) AS unit_apartment_visited,
+        vl.visit_type
     FROM
-        visitors;
+        visitors v
+    LEFT JOIN
+        visitors_log vl ON v.id = vl.visitor_id;
 
 -- -----------------------------------------------------
 -- View `roentgenium`.`inhabitants_information`
@@ -384,6 +419,23 @@ CREATE  OR REPLACE VIEW `currently_parked_vehicles` AS
         vehicles_visitors ON visitors.id = vehicles_visitors.visitor_ID
     WHERE
         vehicles_visitors.parking_spot IS NOT NULL;
+
+-- -----------------------------------------------------
+-- View `roentgenium`.`visitors_most_visits`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `roentgenium`.`visitors_most_visits`;
+USE `roentgenium`;
+CREATE  OR REPLACE VIEW `visitors_most_visits` AS
+SELECT
+    v.id AS visitor_id,
+    CONCAT(v.first_name, ' ', v.last_name) AS full_name,
+    COUNT(vl.id) AS total_visits_registered
+FROM
+    visitors v
+LEFT JOIN
+    visitors_log vl ON v.id = vl.visitor_id
+GROUP BY
+    v.id, full_name;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
