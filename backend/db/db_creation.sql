@@ -347,7 +347,9 @@ CREATE  OR REPLACE VIEW `visitors_information` AS
     FROM
         visitors v
     LEFT JOIN
-        visitors_log vl ON v.id = vl.visitor_id;
+        visitors_log vl ON v.id = vl.visitor_id
+	ORDER BY
+		vl.visit_date DESC;
 
 -- -----------------------------------------------------
 -- View `roentgenium`.`inhabitants_information`
