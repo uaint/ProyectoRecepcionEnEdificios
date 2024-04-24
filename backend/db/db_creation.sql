@@ -226,9 +226,9 @@ DELIMITER ;
 
 DELIMITER $$
 USE `roentgenium`$$
-CREATE PROCEDURE `add_visitor_vehicle` (IN v_id INT, IN l_plate VARCHAR(8), IN p_spot SMALLINT, IN p_date DATETIME)
+CREATE PROCEDURE `add_visitor_vehicle` (IN v_id INT, IN l_plate VARCHAR(8))
 BEGIN
-	INSERT INTO vehicles_visitors (visitor_id, license_plate, parking_spot, parking_date) VALUES (v_id, l_plate, p_spot, p_date);
+	INSERT INTO vehicles_visitors (visitor_id, license_plate) VALUES (v_id, l_plate);
 END$$
 
 DELIMITER ;
