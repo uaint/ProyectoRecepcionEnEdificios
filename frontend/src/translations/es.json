@@ -113,15 +113,15 @@
   },
   "login": {
     "title": "Inicio de sesión",
-    "emailPlaceholder": "Ingresa tu correo electrónico aquí",
+    "emailPlaceholder": "Ingresa tu usuario aquí",
     "passwordPlaceholder": "Ingresa tu contraseña aquí",
     "loginButton": "Iniciar sesión",
-    "emailError": "Por favor ingresa tu correo electrónico",
-    "invalidEmailError": "Por favor ingresa un correo electrónico válido",
+    "emailError": "Por favor ingresa tu usuario",
+    "invalidEmailError": "Por favor ingresa un usuario válido",
     "passwordError": "Por favor ingresa una contraseña",
     "shortPasswordError": "La contraseña debe tener al menos 8 caracteres",
-    "accountNotExistConfirm": "No existe una cuenta asociada a este correo electrónico: {{email}}. ¿Deseas crear una nueva cuenta?",
-    "wrongCredentialsAlert": "Correo electrónico o contraseña incorrectos",
+    "accountNotExistConfirm": "No existe una cuenta asociada a este usuario: {{username}}. ¿Deseas crear una nueva cuenta?",
+    "wrongCredentialsAlert": "Usuario o contraseña incorrectos",
     "remember": "Recordarme"
   },
   "messages": {
