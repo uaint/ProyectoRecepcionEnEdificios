@@ -11,7 +11,7 @@ const ScanID = () => {
   };
 
   const handleUpload = () => {
-    // Aquí puedes implementar la lógica para subir la fotografía al servidor
+    // Aquí se implementara la lógica para subir la fotografía del carnet
   };
 
   return (

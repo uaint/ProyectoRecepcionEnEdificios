@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import i18n from './i18n';
 import { I18nextProvider } from 'react-i18next';
+import React, { useEffect } from 'react';
 
 // Importa los componentes
 import NavbarConcierge from './components/NavbarConcierge';
@@ -30,60 +30,59 @@ import ConfigAdmin from './Pages/ConfigAdmin';
 import NewVehicleForm from './Pages/NewVehicleForm';
 import AdminParking from './Pages/AdminParking';
 
-
+//Importar funcion de verificacion token
+import { parseJwt } from './Utils';
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [email, setEmail] = useState("");
-
   useEffect(() => {
-    // Fetch the user email and token from local storage
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    // If the token/email does not exist, mark the user as logged out
-    if (!user || !user.token) {
-      setLoggedIn(false);
-      return;
-    }
-
-    // If the token exists, verify it with the auth server to see if it is valid
-    fetch("http://localhost:3080/verify", {
-      method: "POST",
-      headers: {
-        'jwt-token': user.token
+    const token = localStorage.getItem('token');
+    if (token) {
+      const tokenExpiration = parseJwt(token).exp * 1000;
+      if (tokenExpiration > Date.now()) {
+        console.log('Token válido');
+      } else {
+        console.log('Token expirado');
+        localStorage.removeItem('token');
+        if (window.location.pathname === '/login'){
+        } else {
+          window.location.href = '/login';
+        }
       }
-    })
-    .then(r => r.json())
-    .then(r => {
-      setLoggedIn('success' === r.message);
-      setEmail(user.email || "");
-    });
+    } else {
+      console.log('No hay token');
+      if (window.location.pathname === '/login'){
+      } else {
+        window.location.href = '/login';
+      }
+    }
   }, []);
 
   return (
     <div className="App">
-      <I18nextProvider i18n={i18n}> {/* Usa I18nextProvider para traducir todo el sistema */}
-      <BrowserRouter>
-        <NavbarConcierge /> {/* Tambien esta NavbarResident, pero tal vez no la usemos */}
-        <Routes>
-          <Route path="/home" element={<Home email={email} loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>} />
-          <Route path="/login" element={<Login setLoggedIn={setLoggedIn} setEmail={setEmail} />} />
-          <Route path="/newcorrespondenceform" element={<NewCorrespondenceForm />} />
-          <Route path="/newvisitform" element={<NewVisitForm />} />
-          <Route path="/searchpersonbyrut" element={<SearchPersonByRut />} />
-          <Route path="/scanid" element={<ScanID />} />
-          <Route path="/notifications" element={<Notifications />} />
-          <Route path="/messages" element={<Messages />} />
-          <Route path="/newvehicleform" element={<NewVehicleForm />} />
-          <Route path="/config" element={<Config />} />
-          <Route path="/configadmin" element={<ConfigAdmin />} />
-          <Route path="/admincorrespondence" element={<AdminCorrespondence />} />
-          <Route path="/adminmessages" element={<AdminMessages />} />
-          <Route path="/adminfrequentvisits" element={<AdminFrequentVisits />} />
-          <Route path="/adminparking" element={<AdminParking />} />
-          <Route path="*" element={<Navigate to="/home" replace />} /> {/* Redireccionar desde cualquier ruta inválida a /home */}
-        </Routes>
-      </BrowserRouter>
+      <I18nextProvider i18n={i18n}> {/* Usa I18nextProvider para traducir el sistema */}
+        <BrowserRouter>
+        {window.location.pathname !== '/login' && (
+        <NavbarConcierge />
+        )}
+          <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/newcorrespondenceform" element={<NewCorrespondenceForm />} />
+              <Route path="/newvisitform" element={<NewVisitForm />} />
+              <Route path="/searchpersonbyrut" element={<SearchPersonByRut />} />
+              <Route path="/scanid" element={<ScanID />} />
+              <Route path="/notifications" element={<Notifications />} />
+              <Route path="/messages" element={<Messages />} />
+              <Route path="/newvehicleform" element={<NewVehicleForm />} />
+              <Route path="/config" element={<Config />} />
+              <Route path="/configadmin" element={<ConfigAdmin />} />
+              <Route path="/admincorrespondence" element={<AdminCorrespondence />} />
+              <Route path="/adminmessages" element={<AdminMessages />} />
+              <Route path="/adminfrequentvisits" element={<AdminFrequentVisits />} />
+              <Route path="/adminparking" element={<AdminParking />} />
+              <Route path="*" element={<Navigate to="/home" replace />} /> {/* Redireccionar desde cualquier ruta inválida a /home */}
+          </Routes>
+        </BrowserRouter>
       </I18nextProvider>
     </div>
   );

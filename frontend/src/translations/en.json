@@ -109,20 +109,22 @@
       "loggedIn": "Log out",
       "loggedOut": "Log in"
     },
-    "emailAddress": "Your email address is {{email}}"
+    "usernameAddress": "Your username is {{username}}"
   },
     "login": {
       "title": "Login",
-      "emailPlaceholder": "Enter your email here",
+      "usernamePlaceholder": "Enter your username here",
       "passwordPlaceholder": "Enter your password here",
       "loginButton": "Log in",
-      "emailError": "Please enter your email",
-      "invalidEmailError": "Please enter a valid email",
+      "usernameError": "Please enter your username",
+      "invalidUsernameError": "Please enter a valid username",
       "passwordError": "Please enter a password",
       "shortPasswordError": "The password must be 8 characters or longer",
-      "accountNotExistConfirm": "An account does not exist with this email address: {{email}}. Do you want to create a new account?",
-      "wrongCredentialsAlert": "Wrong email or password",
-      "remember": "Remember me"
+      "accountNotExistConfirm": "An account does not exist with this username: {{username}}. Do you want to create a new account?",
+      "wrongCredentialsAlert": "Wrong username or password",
+      "remember": "Remember me",
+      "passwordMissmatchError": "Passwords do not match",
+      "usernameNotFoundError": "Username not found"
     },
     "messages": {
       "contactConcierge": "Contact Concierge",

@@ -1,22 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-// Funcion para formatear la fecha
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  const options = { 
-    year: 'numeric', 
-    month: 'numeric', 
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric'
-  };
-  // Se ajusta para que se vea más estetica
-  return date.toLocaleDateString('es-ES', options);
-}
+import '../App.css';
+import { formatDateLarge } from '../Utils.js';
 
 const AdminCorrespondence = () => {
 
@@ -36,7 +23,7 @@ const AdminCorrespondence = () => {
   }, []);
 
   const handleDelete = (id) => {
-    // Realizar la solicitud UPDATE al servidor, para cambiar de no reclamada a reclamada
+    // Realizar la solicitud UPDATE al servidor, para cambiar de "no reclamada" a "reclamada"
     fetch(`https://dduhalde.online/.netlify/functions/api/is_claimed/${id}`)
     .then(response => {
       if (!response.ok) {
@@ -77,7 +64,7 @@ const AdminCorrespondence = () => {
                 <td>{pkg.id}</td>
                 <td>{pkg.housing_unit_apartment}</td>
                 <td>{pkg.mail_type}</td>
-                <td >{formatDate(pkg.arrival_time)}</td>
+                <td >{formatDateLarge(pkg.arrival_time)}</td>
                 <td>{pkg.is_notified === 1 ? <span>&#10004;</span> : <span>&#10060;</span>}</td>
                 <td>
                   <button className="btn btn-success btn-sm" onClick={() => handleDelete(pkg.id)}>{t('adminCorrespondence.claimed')}</button>

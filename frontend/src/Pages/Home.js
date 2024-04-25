@@ -10,7 +10,7 @@ const Home = (props) => {
     const navigate = useNavigate();
     
     useEffect(() => {
-        console.log('Idioma detectado:', i18n.language);
+        console.log('Idioma detectado:', i18n.language); // Seleccion de idioma respecto a i18n
     }, []);
 
     const onButtonClick = () => {

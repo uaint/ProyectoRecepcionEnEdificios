@@ -3,6 +3,7 @@ import mysql from 'mysql';
 import env from 'dotenv';
 import serverless from 'serverless-http';
 import cors from 'cors';
+import jwt from 'jsonwebtoken';
 
 // Iniciar App y Router
 const app = express();
@@ -51,7 +52,7 @@ router.get('/inhabitants/:apartment/:housing_unit', (req, res) => {
   const query = 'SELECT * FROM inhabitants WHERE apartment = ? AND housing_unit = ?;';
 
   // Encabezados CORS
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -74,7 +75,7 @@ router.get('/inhabitants', (req, res) => {
   const query = 'SELECT * FROM inhabitants;';
 
   // Encabezados CORS
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -101,7 +102,7 @@ router.get('/add_visitor/:name/:last_name/:rut/:dv/:birthdate/:apartment/:housin
   const query = `CALL add_visitor("${name}", "${last_name}", ${rut}, ${dv}, "${birthdate}", NOW(), "${apartment}", "${housing_unit}", "${visit_type}")`;
 
   // Encabezados CORS
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -125,7 +126,7 @@ router.get('/visitors', (req, res) => {
   const query = 'SELECT * FROM visitors_information;';
 
   // Encabezados CORS
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -152,7 +153,7 @@ router.get('/delete_visitor/:id', (req, res) => {
   const query = `DELETE FROM vehicles_visitors WHERE visitor_id = ?;`;
 
   // Encabezados CORS
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -195,7 +196,7 @@ router.get('/add_vehicle/:rut/:license_plate/:parket_at/:parket_since', (req, re
   const query = `CALL search_visitor_run(${rut})`;
 
   // Encabezados CORS
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -237,7 +238,7 @@ router.get('/parked', (req, res) => {
   const query = 'SELECT * FROM currently_parked_vehicles;';
 
   // Encabezados CORS
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -263,7 +264,7 @@ router.get('/delete_vehicle/:plate', (req, res) => {
   const query = `CALL delete_vehicle("${plate}")`;
 
   // Encabezados CORS
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -292,7 +293,7 @@ router.get('/add_mail/:apt_recipient/:hu_recipient/:m_type/:a_time/:i_notified',
   const query = `CALL add_mail(${apt_recipient}, ${hu_recipient}, "${m_type}", "${a_time}", ${i_notified})`;
 
   // Encabezados CORS
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -316,7 +317,7 @@ router.get('/unclaimed_correspondence', (req, res) => {
   const query = 'SELECT * FROM unclaimed_correspondence;';
 
   // Encabezados CORS
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -342,7 +343,7 @@ router.get('/is_claimed/:id', (req, res) => {
   const query = `CALL update_mail_to_claimed(${id})`;
 
   // Encabezados CORS
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -361,6 +362,54 @@ router.get('/is_claimed/:id', (req, res) => {
     // Envía una respuesta exitosa
     res.status(200).send(`Se marcó la correspondencia con el ID ${id} como reclamada`);
   });
+});
+
+// Ruta para el login
+router.get('/login/:username', (req, res) => {
+  // Obtener username
+  const username = req.params.username;
+
+  // Realizar la consulta para verificar si el usuario es valido y conseguir los datos
+  const query = 'SELECT * FROM login_system WHERE username = ?';
+
+  // Encabezados CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Hacer llamado a la BBDD
+  connection.query(query, username, (err, rows) => {
+    if (err) {
+      console.error('Error al ejecutar la consulta:', err);
+      res.status(500).send('Error al autenticar al usuario');
+      return;
+    }
+    res.json(rows); // Enviar los datos como JSON al cliente
+    }
+  );
+});
+
+// Ruta para conseguir el token
+router.get('/token/:username', (req, res) => {
+
+  // Obtener username y password
+  const username = req.params.username;
+
+  // Encabezados CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Crear y firmar token
+  const token = jwt.sign({username}, "Stack", {
+    expiresIn: '5m' // Tiempo de expiracion
+  });
+
+  // Enviar token 
+  res.send({token});
+
 });
 
 // Iniciar el servidor
