@@ -3,18 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-// Funcion para formatear la fecha
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  const options = { 
-    year: 'numeric', 
-    month: 'numeric', 
-    day: 'numeric'
-  };
-  // Se ajusta para que se vea más estetica
-  return date.toLocaleDateString('es-ES', options);
-}
+import { formatDate } from '../Utils.js';
 
 const AdminFrequentVisits = () => {
 
