@@ -122,7 +122,9 @@
     "shortPasswordError": "La contraseña debe tener al menos 8 caracteres",
     "accountNotExistConfirm": "No existe una cuenta asociada a este usuario: {{username}}. ¿Deseas crear una nueva cuenta?",
     "wrongCredentialsAlert": "Usuario o contraseña incorrectos",
-    "remember": "Recordarme"
+    "remember": "Recordarme",
+    "passwordMissmatchError": "Las contraseñas no coinciden",
+    "usernameNotFoundError": "Usuario no encontrado"
   },
   "messages": {
     "contactConcierge": "Contactar con el conserje",

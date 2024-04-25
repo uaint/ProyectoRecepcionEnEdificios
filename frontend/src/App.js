@@ -29,6 +29,7 @@ import AdminMessages from './Pages/AdminMessages';
 import ConfigAdmin from './Pages/ConfigAdmin';
 import NewVehicleForm from './Pages/NewVehicleForm';
 import AdminParking from './Pages/AdminParking';
+import Token from './Pages/Token'; // TEST
 
 
 
@@ -57,7 +58,8 @@ function App() {
           <Route path="/adminmessages" element={<AdminMessages />} />
           <Route path="/adminfrequentvisits" element={<AdminFrequentVisits />} />
           <Route path="/adminparking" element={<AdminParking />} />
-          <Route path="*" element={<Navigate to="/home" replace />} /> {/* Redireccionar desde cualquier ruta inválida a /home */}
+          <Route path="/token" element={<Token />} /> {/* TEST */}
+         <Route path="*" element={<Navigate to="/home" replace />} /> {/* Redireccionar desde cualquier ruta inválida a /home */}
         </Routes>
       </BrowserRouter>
       </I18nextProvider>

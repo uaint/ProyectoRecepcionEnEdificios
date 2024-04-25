@@ -122,7 +122,9 @@
       "shortPasswordError": "The password must be 8 characters or longer",
       "accountNotExistConfirm": "An account does not exist with this username: {{username}}. Do you want to create a new account?",
       "wrongCredentialsAlert": "Wrong username or password",
-      "remember": "Remember me"
+      "remember": "Remember me",
+      "passwordMissmatchError": "Passwords do not match",
+      "usernameNotFoundError": "Username not found"
     },
     "messages": {
       "contactConcierge": "Contact Concierge",

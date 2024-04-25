@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from 'react-i18next'; 
 import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { sha256 } from 'js-sha256';
 
 const Login = (props) => {
     const { t } = useTranslation(); // Usa useTranslation para acceder a las traducciones EN y ES
@@ -11,6 +12,15 @@ const Login = (props) => {
     const [passwordError, setPasswordError] = useState("");
     const navigate = useNavigate(); // Redireccionar al usuario
         
+
+
+        // Lógica del hash:
+    // Recibir input de usuario
+    // Pasarle a la bbdd username (asumiendo que password ya está en bbdd, dado que es un login y no un registro)
+    // Recibir dato de la API --> recibir username + salt + password_hashed
+    // Tomar password que entregó el usuario y hacer: salt + password en código de React (función generateHash)
+    // Se hace generateHash y luego se compara secondHash con password_hashed de la bbdd
+    // Si password_hashed = secondHash, login exitoso. Si no, login fallido
 
     // Función del backend al hacer clic en el botón de login
     const handleSubmit = (e) => {
@@ -39,19 +49,51 @@ const Login = (props) => {
         logIn();
     }
 
+    
+
+    // Función para generar una contraseña hash utilizando doble SHA-256
+    function generateHash(password, salt) {
+        const combinedString = salt + password;
+        const firstHash = sha256(combinedString);
+        const secondHash = sha256(firstHash);
+    return secondHash;
+    }
+
+
+
+
 
     // Llama a la API para logear al usuario con username y contraseña
     const logIn = () => {
-        const url_api = `https://dduhalde.online/.netlify/functions/api/login/${username}/${password}`;
+        const url_api = `https://dduhalde.online/.netlify/functions/api/login/${username}`;
+        const url_api_token = `https://dduhalde.online/.netlify/functions/api/token/${username}`;
         fetch(url_api)
             .then(response => response.json())
             .then(data => {
-                if (data.success) {
-                    // Si el login es exitoso, redirige al usuario a la página principal
-                    navigate('/home');
+                if (data[0] != null) {
+                    const salt = data[0].salt;
+                    const password_hashed = data[0].password_hashed;
+                    const password_hashed_input = generateHash(password, salt);
+                    if (password_hashed === password_hashed_input) {
+                        fetch(url_api_token) // Ahora conseguimos token desde API especifica
+                            .then(response => response.json())
+                            .then(data2 => {
+                                console.log(data.token) // TEST TOKEN
+                                // Si el login es exitoso, guarda el token en el localStorage del navegador
+                                localStorage.setItem('token', data2.token)
+                            })
+                            .catch(error => {
+                                console.error('Error fetching token data:', error);
+                            });
+                        // Si el login es exitoso, redirige al usuario a la página principal
+                        navigate('/admincorrespondence');
+                    } else {
+                        // Si contraseñas no calzan, muestra mensaje de discrepancia
+                        setPasswordError(t('login.passwordMissmatchError'));
+                    }
                 } else {
-                    // Si hay un problema con el login, muestra un mensaje de error
-                    setPasswordError(t('login.loginError'));
+                    // Si usuario no existe, muestra un mensaje de discrepancia
+                    setUsernameError(t('login.usernameNotFoundError'));
                 }
             })
             .catch(error => {
@@ -60,6 +102,10 @@ const Login = (props) => {
                 setPasswordError(t('login.apiError'));
             });
     }
+
+
+    // Para un eventual log out
+    // localStorage.removeItem('token')
 
     return (
         <div id="change" className="container">
