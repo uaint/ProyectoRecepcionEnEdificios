@@ -30,7 +30,9 @@
     "date": "Fecha",
     "contact": "Contacto",
     "delete": "Eliminar",
-    "addNewCorrespondence": "Agregar Nueva Correspondencia"
+    "addNewCorrespondence": "Agregar Nueva Correspondencia",
+    "successAlert": "¡Correspondencia marcada como reclamada!",
+    "dangerAlert": "Error al cambiar estado de correspondencia"
   },
   "adminFrequentVisits": {
     "adminFrequentVisits": "Visitas Frecuentes de Administración",

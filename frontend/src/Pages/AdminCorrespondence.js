@@ -14,12 +14,16 @@ const AdminCorrespondence = () => {
   // Creamos la correspondencia
   const [correspondence, setCorrespondence] = useState([]);
 
-  // Conseguir datos de correspondencia no reclamada con la API
-  useEffect(() => {
+  const fetchCorrespondenceData = () => {
     fetch('https://dduhalde.online/.netlify/functions/api/unclaimed_correspondence')
       .then(response => response.json())
       .then(data => setCorrespondence(data))
       .catch(error => console.error('Error fetching correspondence:', error));
+  };
+
+  // Conseguir datos de correspondencia no reclamada con la API
+  useEffect(() => {
+    fetchCorrespondenceData();
   }, []);
 
   const handleDelete = (id) => {
@@ -30,9 +34,18 @@ const AdminCorrespondence = () => {
         throw new Error('Error al actualizar estado');
       }
       console.log(`Estado de ID ${id} actualizado`);
+      setShowClaimetAlert(true);
+      setTimeout(() => {
+        setShowClaimetAlert(false);
+      }, 3000);
+      fetchCorrespondenceData();
     })
     .catch(error => {
       console.error('Error al actualizar estado:', error);
+      setShowClaimetFailAlert(true);
+      setTimeout(() => {
+        setShowClaimetFailAlert(false);
+      }, 3000);
     });
   };
 
@@ -40,6 +53,10 @@ const AdminCorrespondence = () => {
   const handleButtonClick = () => {
     navigate('/newcorrespondenceform');
   };
+
+
+  const [showClaimetAlert, setShowClaimetAlert] = useState(false);
+  const [showClaimetFailAlert, setShowClaimetFailAlert] = useState(false);
 
   return (
     <div id="change" className="container">
@@ -78,7 +95,22 @@ const AdminCorrespondence = () => {
       <div className="text-center mt-4 mb-5">
         <button className="btn btn-primary" onClick={handleButtonClick}>{t('adminCorrespondence.addNewCorrespondence')}</button>
       </div>
+      <div className='row'>
+        <div className='col-md-3 order-md-3 rounded-5'>
+          {showClaimetAlert && (
+          <div className="alert alert-success text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
+            &#10004; {t('adminCorrespondence.successAlert')}
+          </div>
+          )}
+          {showClaimetFailAlert && (
+          <div className="alert alert-danger text-center" role="alert">
+            &#9888; {t('adminCorrespondence.dangerAlert')}
+          </div>
+          )}
+        </div>
+      </div>
     </div>
+    
   );
 };
 

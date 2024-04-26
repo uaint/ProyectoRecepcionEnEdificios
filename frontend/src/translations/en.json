@@ -30,7 +30,9 @@
     "date": "Date",
     "contact": "Contact",
     "delete": "Delete",
-    "addNewCorrespondence": "Add New Correspondence"
+    "addNewCorrespondence": "Add New Correspondence",
+    "successAlert": "Mail marked as claimed!",
+    "dangerAlert": "Error when changing correspondence status"
   },
   "adminFrequentVisits": {
     "adminFrequentVisits": "Admin Frequent Visits",
