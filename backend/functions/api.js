@@ -390,6 +390,13 @@ router.get('/login/:username', (req, res) => {
   );
 });
 
+// Ruta para cerrar sesión
+router.get('/logout', (req, res) => {
+  res.clearCookie('token'); // Ejemplo para borrar una cookie llamada 'token'
+  res.status(200).send('Sesión cerrada exitosamente');
+});
+
+
 // Ruta para conseguir el token
 router.get('/token/:username', (req, res) => {
 
@@ -404,10 +411,11 @@ router.get('/token/:username', (req, res) => {
 
   // Crear y firmar token
   const token = jwt.sign({username}, "Stack", {
-    expiresIn: '5m' // Tiempo de expiracion
+    expiresIn: '6m' // Tiempo de expiracion
   });
 
-  // Enviar token 
+  // Enviar token
+  res.cookie('token', token, { httpOnly: true }); // HttpOnly para entregar mayor seguridad
   res.send({token});
 
 });

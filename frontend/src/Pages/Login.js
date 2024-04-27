@@ -14,7 +14,7 @@ const Login = (props) => {
         
 
 
-        // Lógica del hash:
+    // Lógica del hash:
     // Recibir input de usuario
     // Pasarle a la bbdd username (asumiendo que password ya está en bbdd, dado que es un login y no un registro)
     // Recibir dato de la API --> recibir username + salt + password_hashed
@@ -113,15 +113,13 @@ const Login = (props) => {
                 <div className="col-md-6">
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="card-title">{t('login.title')}</h2>
+                            <h2 className="card-title text-center">{t('login.title')}</h2>
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
-                                    <label htmlFor="exampleInputUsername" className="form-label">{t('login.usernamePlaceholder')}</label>
                                     <input type="text" className="form-control" id="exampleInputUsername" aria-describedby="usernameHelp" value={username} placeholder={t('login.usernamePlaceholder')} onChange={(ev) => setUsername(ev.target.value)} /> 
                                     {usernameError && <div className="text-danger">{usernameError}</div>}
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="exampleInputPassword1" className="form-label">{t('login.passwordPlaceholder')}</label>
                                     <input type="password" className="form-control" id="exampleInputPassword1" value={password} placeholder={t('login.passwordPlaceholder')} onChange={(ev) => setPassword(ev.target.value)} />
                                     {passwordError && <div className="text-danger">{passwordError}</div>}
                                 </div>
