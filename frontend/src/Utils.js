@@ -39,4 +39,10 @@ function formatDate(dateString) {
     return date.toLocaleDateString('es-ES', options);
   }
 
-export { parseJwt, formatDateLarge, formatDate };
+function timeAlerts(funcion) {
+    setTimeout(() => {
+      funcion(false);
+    }, 3000);
+  }
+
+export { parseJwt, formatDateLarge, formatDate, timeAlerts };

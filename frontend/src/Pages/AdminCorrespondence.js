@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
-import { formatDateLarge } from '../Utils.js';
+import { formatDateLarge, timeAlerts } from '../Utils.js';
 
 const AdminCorrespondence = () => {
 
@@ -14,11 +14,16 @@ const AdminCorrespondence = () => {
   // Creamos la correspondencia
   const [correspondence, setCorrespondence] = useState([]);
 
+  // Se define la llamada a la API (Para no tener que hacerla multiples veces)
   const fetchCorrespondenceData = () => {
     fetch('https://dduhalde.online/.netlify/functions/api/unclaimed_correspondence')
       .then(response => response.json())
       .then(data => setCorrespondence(data))
-      .catch(error => console.error('Error fetching correspondence:', error));
+      .catch(error => {
+        console.error('Error fetching correspondence:', error);
+        setShowCorrespondenceAlert(true);
+        timeAlerts(() => setShowCorrespondenceAlert(false));
+      });
   };
 
   // Conseguir datos de correspondencia no reclamada con la API
@@ -34,18 +39,14 @@ const AdminCorrespondence = () => {
         throw new Error('Error al actualizar estado');
       }
       console.log(`Estado de ID ${id} actualizado`);
-      setShowClaimetAlert(true);
-      setTimeout(() => {
-        setShowClaimetAlert(false);
-      }, 3000);
+      setShowClaimedAlert(true);
+      timeAlerts(() => setShowClaimedAlert(false));
       fetchCorrespondenceData();
     })
     .catch(error => {
       console.error('Error al actualizar estado:', error);
-      setShowClaimetFailAlert(true);
-      setTimeout(() => {
-        setShowClaimetFailAlert(false);
-      }, 3000);
+      setShowClaimedFailAlert(true);
+      timeAlerts(() => setShowClaimedFailAlert(false));
     });
   };
 
@@ -55,8 +56,9 @@ const AdminCorrespondence = () => {
   };
 
 
-  const [showClaimetAlert, setShowClaimetAlert] = useState(false);
-  const [showClaimetFailAlert, setShowClaimetFailAlert] = useState(false);
+  const [showClaimedAlert, setShowClaimedAlert] = useState(false);
+  const [showClaimedFailAlert, setShowClaimedFailAlert] = useState(false);
+  const [showCorrespondenceAlert, setShowCorrespondenceAlert] = useState(false);
 
   return (
     <div id="change" className="container">
@@ -97,14 +99,19 @@ const AdminCorrespondence = () => {
       </div>
       <div className='row'>
         <div className='col-md-3 order-md-3 rounded-5'>
-          {showClaimetAlert && (
+          {showClaimedAlert && (
           <div className="alert alert-success text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
-            &#10004; {t('adminCorrespondence.successAlert')}
+            &#10004; {t('adminCorrespondence.calimedSuccessAlert')}
           </div>
           )}
-          {showClaimetFailAlert && (
+          {showClaimedFailAlert && (
           <div className="alert alert-danger text-center" role="alert">
-            &#9888; {t('adminCorrespondence.dangerAlert')}
+            &#9888; {t('adminCorrespondence.calimedFailAlert')}
+          </div>
+          )}
+          {showCorrespondenceAlert && (
+          <div className="alert alert-danger text-center" role="alert">
+            &#9888; {t('adminCorrespondence.correspondenceAlert')}
           </div>
           )}
         </div>

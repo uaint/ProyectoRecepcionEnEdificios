@@ -31,8 +31,9 @@
     "contact": "Contact",
     "delete": "Delete",
     "addNewCorrespondence": "Add New Correspondence",
-    "successAlert": "Mail marked as claimed!",
-    "dangerAlert": "Error when changing correspondence status"
+    "calimedSuccessAlert": "Mail marked as claimed!",
+    "calimedFailAlert": "Error when changing correspondence status",
+    "correspondenceAlert": "Problem loading data"
   },
   "adminFrequentVisits": {
     "adminFrequentVisits": "Admin Frequent Visits",

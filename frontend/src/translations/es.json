@@ -31,8 +31,9 @@
     "contact": "Contacto",
     "delete": "Eliminar",
     "addNewCorrespondence": "Agregar Nueva Correspondencia",
-    "successAlert": "¡Correspondencia marcada como reclamada!",
-    "dangerAlert": "Error al cambiar estado de correspondencia"
+    "calimedSuccessAlert": "¡Correspondencia marcada como reclamada!",
+    "calimedFailAlert": "Error al cambiar estado de correspondencia",
+    "correspondenceAlert": "Problema al cargar datos"
   },
   "adminFrequentVisits": {
     "adminFrequentVisits": "Visitas Frecuentes de Administración",
