@@ -36,8 +36,10 @@ connection.connect((err) => {
   if (err) {
     console.error('Error al conectar a la base de datos:', err);
     return;
+  } else {
+    console.log('Conexión exitosa a la base de datos de Azure MySQL');
+    return;
   }
-  console.log('Conexión exitosa a la base de datos de Azure MySQL');
 });
 
 // Ruta para obtener datos de personas con su apartment y housing_unit
@@ -63,8 +65,10 @@ router.get('/inhabitants/:apartment/:housing_unit', (req, res) => {
       console.error('Error al ejecutar la consulta:', err);
       res.status(500).send('Error al obtener datos desde la base de datos');
       return;
+    } else {
+      res.json(rows); // Enviar los datos como JSON al cliente
+      return;
     }
-    res.json(rows); // Enviar los datos como JSON al cliente
   });
 });
 
@@ -86,8 +90,10 @@ router.get('/inhabitants', (req, res) => {
       console.error('Error al ejecutar la consulta:', err);
       res.status(500).send('Error al obtener datos desde la base de datos');
       return;
+    } else {
+      res.json(rows); // Enviar los datos como JSON al cliente
+      return;
     }
-    res.json(rows); // Enviar los datos como JSON al cliente
   });
 });
 
@@ -112,9 +118,11 @@ router.get('/add_visitor/:name/:last_name/:rut/:dv/:birthdate/:apartment/:housin
     if (err) {
       console.error('Error al ejecutar la consulta:', err);
       res.status(500).json({ err: 'Ocurrió un error al procesar la solicitud.' });
+      return;
     } else {
       console.log('Se agregó el visitante correctamente.');
       res.status(200).json({ message: 'Se agregó el visitante correctamente.' });
+      return;
     }
   });
 });
@@ -137,8 +145,10 @@ router.get('/visitors', (req, res) => {
       console.error('Error al ejecutar la consulta:', err);
       res.status(500).send('Error al obtener datos desde la base de datos');
       return;
+    } else {
+      res.json(rows); // Enviar los datos como JSON al cliente
+      return;
     }
-    res.json(rows); // Enviar los datos como JSON al cliente
   });
 });
 
@@ -179,6 +189,7 @@ router.get('/delete_visitor/:id', (req, res) => {
         }
         else {
           res.status(200).json({ message: 'Se elimino el visitante correctamente.'});
+          return;
         }
       });
     }
@@ -206,6 +217,7 @@ router.get('/add_vehicle/:rut/:license_plate/:parket_at/:parket_since', (req, re
     if (err) {
       console.error('Error al ejecutar la consulta:', err);
       res.status(500).json({ err: 'Ocurrió un error al procesar la solicitud.' });
+      return;
     } else {
       // Conseguir id por RUT
       if (results[0].length > 0) {
@@ -217,15 +229,19 @@ router.get('/add_vehicle/:rut/:license_plate/:parket_at/:parket_since', (req, re
           if (error) {
             console.error('Error al agregar el vehículo:', error);
             res.status(500).json({ error: 'Ocurrió un error al procesar la solicitud.' });
+            return;
           } else {
             res.status(200).json({ message: 'Se agregó el vehículo correctamente.' });
+            return;
           }
         });
       console.log('Se agregó el visitante correctamente.');
       res.status(200).json({ message: 'Se agregó el visitante correctamente.' });
+      return;
     }
     else {
       res.status(404).json({ error: 'No se encontró ningún visitante con el RUN proporcionado.' });
+      return;
     }
   }
   });
@@ -249,8 +265,10 @@ router.get('/parked', (req, res) => {
       console.error('Error al ejecutar la consulta:', err);
       res.status(500).send('Error al obtener datos desde la base de datos');
       return;
+    } else {
+      res.json(rows); // Enviar los datos como JSON al cliente
+      return;
     }
-    res.json(rows); // Enviar los datos como JSON al cliente
   });
 });
 
@@ -278,6 +296,7 @@ router.get('/delete_vehicle/:plate', (req, res) => {
     }
     else {
       res.status(200).json({ message: 'Se elimino el vehiculo correctamente.'});
+      return;
     }
   });
 });
@@ -303,9 +322,11 @@ router.get('/add_mail/:apt_recipient/:hu_recipient/:m_type/:a_time/:i_notified',
     if (err) {
       console.error('Error al ejecutar la consulta:', err);
       res.status(500).json({ err: 'Ocurrió un error al procesar la solicitud.' });
+      return;
     } else {
       console.log('Se agregó el visitante correctamente.');
       res.status(200).json({ message: 'Se agregó el visitante correctamente.' });
+      return;
     }
   });
 });
@@ -328,8 +349,10 @@ router.get('/unclaimed_correspondence', (req, res) => {
       console.error('Error al ejecutar la consulta:', err);
       res.status(500).send('Error al obtener datos desde la base de datos');
       return;
+    } else {
+      res.json(rows); // Enviar los datos como JSON al cliente
+      return;
     }
-    res.json(rows); // Enviar los datos como JSON al cliente
   });
 });
 
@@ -358,9 +381,11 @@ router.get('/is_claimed/:id', (req, res) => {
     if (res.affectedRows === 0) {
       res.status(404).send(`No se encontró la correspondencia con el ID ${id}`);
       return;
+    } else {
+      // Envía una respuesta exitosa
+      res.status(200).send(`Se marcó la correspondencia con el ID ${id} como reclamada`);
+      return;
     }
-    // Envía una respuesta exitosa
-    res.status(200).send(`Se marcó la correspondencia con el ID ${id} como reclamada`);
   });
 });
 
@@ -384,8 +409,10 @@ router.get('/login/:username', (req, res) => {
       console.error('Error al ejecutar la consulta:', err);
       res.status(500).send('Error al autenticar al usuario');
       return;
+    } else {
+      res.json(rows); // Enviar los datos como JSON al cliente
+      return;
     }
-    res.json(rows); // Enviar los datos como JSON al cliente
     }
   );
 });
