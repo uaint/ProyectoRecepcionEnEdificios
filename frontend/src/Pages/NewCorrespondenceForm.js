@@ -2,37 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
-
-// Obtener fecha actual y comparar con otra fecha
-function obtenerFecha(fecha) {
-
-  //Conseguir fecha actual
-  const fechaActual = new Date();
-
-  //Formatear fecha entregada
-  const fechaDada = new Date(fecha);
-
-  const hora = String(fechaDada.getHours()).padStart(2, '0');
-  const minutos = String(fechaDada.getMinutes()).padStart(2, '0');
-
-  if (
-    fechaActual.getFullYear() === fechaDada.getFullYear() &&
-    fechaActual.getMonth() === fechaDada.getMonth() &&
-    fechaActual.getDate() === fechaDada.getDate()
-  ) {
-    // Si el día es igual se retorna lo siguiente
-    return `hoy a las ${hora}:${minutos}`;
-  } else {
-    // Formatear la fecha en formato "dd/mm/yyyy"
-    const dia = String(fechaDada.getDate()).padStart(2, '0');
-    const mes = String(fechaDada.getMonth() + 1).padStart(2, '0');
-    const año = fechaDada.getFullYear();
-
-    // Si es otro día, se retorna lo siguiente:
-    return `el día ${dia}/${mes}/${año} a las ${hora}:${minutos}`;
-  }
-}
+import { WhatsAppMsg, timeAlerts } from '../Utils.js';
 
 const NewCorrespondenceForm = () => {
 
@@ -71,15 +41,27 @@ const NewCorrespondenceForm = () => {
   const [selectedInhabitants, setSelectedInhabitants] = useState([]);
   const [inhabitants, setInhabitants] = useState([]);
 
+  // Mostrar o no las alertas
+  const [showMsgSuccessAlert, setShowMsgSuccessAlert] = useState(false);
+  const [showMsgFaildAlert, setShowMsgFaildAlert] = useState(false);
+  const [showInhabitantsFaildAlert, setShowInhabitantsFaildAlert] = useState(false);
+  const [showNoInhabitantsAlert, setShowNoInhabitantsAlert] = useState(false);
+
   const handleSearch = () => {
     const url_api = `https://dduhalde.online/.netlify/functions/api/inhabitants/${formData.build}/${formData.apartment}`;
     fetch(url_api)
       .then(response => response.json())
       .then(data => {
-        setInhabitants(data);
+        if (data && data.length > 0) {
+          setInhabitants(data);
+      } else {
+          setShowNoInhabitantsAlert(true)
+          timeAlerts(() => setShowNoInhabitantsAlert(false));
+      }
       })
       .catch(error => {
-        console.error('Error fetching data:', error);
+        setShowInhabitantsFaildAlert(true);
+        timeAlerts(() => setShowInhabitantsFaildAlert(false));
       });
       
     //Se cambia el form que se visualiza
@@ -87,13 +69,14 @@ const NewCorrespondenceForm = () => {
     setShowCorrespondenceForm(true);
   };
 
-  // Formatear fecha para el mensaje de WhatsApp
-  const fechamsg = obtenerFecha(formData.timeOfArrival);
   
   const handleSubmit = (e) => {
     
     // Si se le envio a una persona o más el mensaje es 1, sino 0
     const notified = selectedInhabitants.length !== 0 ? 1 : 0
+
+    // Array filtrado con los que queremos que les llegue el mensaje
+    const filteredArray = inhabitants.filter(obj => selectedInhabitants.includes(obj.id));
 
     // Realizar la solicitud ADD al servidor a partir de algunos parametros
     fetch(`https://dduhalde.online/.netlify/functions/api/add_mail/${formData.build}/${formData.apartment}/${formData.type}/${formData.timeOfArrival}/${notified}`)
@@ -107,70 +90,39 @@ const NewCorrespondenceForm = () => {
       console.error('Error al agregar la corrrespondencia:', error);
     });
 
-    e.preventDefault();
-
-    // Array filtrado con los que queremos que les llegue el mensaje
-    const filteredArray = inhabitants.filter(obj => selectedInhabitants.includes(obj.id));
-
-    // Se importan credenciales de .env
-    const token = process.env.REACT_APP_TOKEN;
-    const version = process.env.REACT_APP_VERSION;
-    const id_number = process.env.REACT_APP_ID_NUMBER;
-
-    // Iterar a los que queremos enviarle el mensaje
-    for (let i = 0; i < filteredArray.length; i++) {
-      const obj = filteredArray[i];
-      const name = obj.first_name;
-      const number = obj.contact_number;
-
-      // Se envia WhatsApp por la correspondencia
-      const message = `*Atención ${name}* \nHay un paquete esperando por ti en conserjería, llego *${fechamsg}*, por favor ven a recogerlo a la brevedad.`;
-
-      const data_msg = {
-        "messaging_product": "whatsapp",
-        "recipient_type": "individual",
-        "to": `+${number}`,
-        "type": "text",
-        "text": {"preview_url": false, "body": message},
-      }
-      const header = {
-      headers: {
-            Authorization: "Bearer " + token,
-            Accept: "application/json",
-      }
-      }
-      // Se genera la consulta
-      const url = `https://graph.facebook.com/${version}/${id_number}/messages`
-      axios.post(url, data_msg, header)
-      .then((res)=>(
-          console.log("Msg send success", res)
-      ))
-      .catch((res)=>(
-          console.log("Error sending msg", res)
-      ))
-      console.log('Form submitted:', formData);
+    const error = WhatsAppMsg(formData, filteredArray)
+    if (error) {
+      // Alerta de Mensaje No enviado
+      setShowMsgFaildAlert(true);
+      timeAlerts(() => setShowMsgFaildAlert(false));
     }
-    //Se cambia el form que se visualiza
-    setShowSearchForm(true);
-    setShowCorrespondenceForm(false);
+    else {
+      // Alerta de Mensaje envio
+      setShowMsgSuccessAlert(true);
+      timeAlerts(() => setShowMsgSuccessAlert(false));
+    }
 
-    // Se renician las selecciones
-    setFormData({
-      type: 'Packages',
-      timeOfArrival: '',
-      isClaimed: false,
-      apartment: '',
-      build: '',
-    });
+  // Se renician las selecciones
+  setFormData({
+    type: 'Packages',
+    timeOfArrival: '',
+    isClaimed: false,
+    apartment: '',
+    build: '',
+  });
+
+  //Se cambia el form que se visualiza
+  setShowSearchForm(true);
+  setShowCorrespondenceForm(false);
   }
 
   const handleSelectInhabitant = (inhabitantId) => {
-    // Verificar si el habitante ya está seleccionado
-    const isSelected = selectedInhabitants.includes(inhabitantId);
+  // Verificar si el habitante ya está seleccionado
+  const isSelected = selectedInhabitants.includes(inhabitantId);
 
-    // Si ya está seleccionado, lo eliminamos de la lista de seleccionados
-    if (isSelected) {
-      setSelectedInhabitants(selectedInhabitants.filter(id => id !== inhabitantId));
+  // Si ya está seleccionado, lo eliminamos de la lista de seleccionados
+  if (isSelected) {
+    setSelectedInhabitants(selectedInhabitants.filter(id => id !== inhabitantId));
     } else { // Si no está seleccionado, lo agregamos a la lista de seleccionados
       setSelectedInhabitants([...selectedInhabitants, inhabitantId]);
     }
@@ -200,19 +152,23 @@ const NewCorrespondenceForm = () => {
               )}
               {showCorrespondenceForm && (
               <form onSubmit={handleSubmit}>
-                <h4 class="mt-2">{t('correspondenceForm.selectMsg')}</h4>
-                <div class="mb-3">
-                  <ul class="form-check">
-                  {inhabitants.map(inhabitant => (
-                    <li key={inhabitant.id}>
-                      <label class="form-check-label" for="flexCheckDefault">
-                        <input class="form-check-input" type="checkbox"checked={selectedInhabitants.includes(inhabitant.id)} onChange={() => handleSelectInhabitant(inhabitant.id)}/>
-                        {' '}{inhabitant.first_name} {inhabitant.last_name}
-                      </label>
-                    </li>
-                  ))}
-                  </ul>
+                {inhabitants && inhabitants.length > 0 && (
+                <div>
+                  <h4 class="mt-2">{t('correspondenceForm.selectMsg')}</h4>
+                  <div class="mb-3">
+                    <ul class="form-check">
+                      {inhabitants.map(inhabitant => (
+                        <li key={inhabitant.id}>
+                          <label class="form-check-label" for="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox"checked={selectedInhabitants.includes(inhabitant.id)} onChange={() => handleSelectInhabitant(inhabitant.id)}/>
+                            {' '}{inhabitant.first_name} {inhabitant.last_name}
+                          </label>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
+                )}
                 <label for="type" class="form-label">{t('correspondenceForm.type')}</label>
                 <select class="form-select" aria-label="Default select example" value={selectedOption} onChange={handleOptionChange}>
                   <option value="Packages">{t('correspondenceForm.packages')}</option>
@@ -232,6 +188,30 @@ const NewCorrespondenceForm = () => {
               )}
             </div>
           </div>
+        </div>
+      </div>
+      <div className='row'>
+        <div className='col-md-3 order-md-3 rounded-5'>
+          {showMsgSuccessAlert && (
+          <div className="alert alert-success text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
+            &#10004; {t('correspondenceForm.MsgSuccessAlert')}
+          </div>
+          )}
+          {showMsgFaildAlert && (
+          <div className="alert alert-danger text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
+            &#9888; {t('correspondenceForm.MsgFailAlert')}
+          </div>
+          )}
+          {showInhabitantsFaildAlert && (
+          <div className="alert alert-danger text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
+            &#9888; {t('correspondenceForm.inhabitantsFailAlert')}
+          </div>
+          )}
+          {showNoInhabitantsAlert && (
+          <div className="alert alert-warning text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
+            &#9888; {t('correspondenceForm.NoinhabitantsAlert')}
+          </div>
+          )}
         </div>
       </div>
     </div>

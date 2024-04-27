@@ -154,7 +154,11 @@
       "addCorrespondence": "Add Correspondence",
       "checkboxSendToAll": "Send to all residents",
       "selectMsg": "Select to send message:",
-      "searchresident": "Search Residents"
+      "searchresident": "Search Residents",
+      "MsgSuccessAlert": "WhatsApp message sent successfully",
+      "MsgFailAlert": "Error sending WhatsApp Message",
+      "inhabitantsFailAlert": "Error searching inhabitants",
+      "NoinhabitantsAlert": "Inhabitants not found"
     },
     "vehicleForm": {
       "addNewVehicle": "Add New Vehicle",

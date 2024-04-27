@@ -436,7 +436,6 @@ router.get('/token/:username', (req, res) => {
 
   // Enviar token 
   res.send({token});
-
 });
 
 // Iniciar el servidor
