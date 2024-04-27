@@ -14,6 +14,11 @@ const AdminCorrespondence = () => {
   // Creamos la correspondencia
   const [correspondence, setCorrespondence] = useState([]);
 
+  // Mostrar o no las alertas
+  const [showClaimedAlert, setShowClaimedAlert] = useState(false);
+  const [showClaimedFailAlert, setShowClaimedFailAlert] = useState(false);
+  const [showCorrespondenceAlert, setShowCorrespondenceAlert] = useState(false);
+
   // Se define la llamada a la API (Para no tener que hacerla multiples veces)
   const fetchCorrespondenceData = () => {
     fetch('https://dduhalde.online/.netlify/functions/api/unclaimed_correspondence')
@@ -38,13 +43,11 @@ const AdminCorrespondence = () => {
       if (!response.ok) {
         throw new Error('Error al actualizar estado');
       }
-      console.log(`Estado de ID ${id} actualizado`);
       setShowClaimedAlert(true);
       timeAlerts(() => setShowClaimedAlert(false));
       fetchCorrespondenceData();
     })
     .catch(error => {
-      console.error('Error al actualizar estado:', error);
       setShowClaimedFailAlert(true);
       timeAlerts(() => setShowClaimedFailAlert(false));
     });
@@ -54,11 +57,6 @@ const AdminCorrespondence = () => {
   const handleButtonClick = () => {
     navigate('/newcorrespondenceform');
   };
-
-
-  const [showClaimedAlert, setShowClaimedAlert] = useState(false);
-  const [showClaimedFailAlert, setShowClaimedFailAlert] = useState(false);
-  const [showCorrespondenceAlert, setShowCorrespondenceAlert] = useState(false);
 
   return (
     <div id="change" className="container">
@@ -105,12 +103,12 @@ const AdminCorrespondence = () => {
           </div>
           )}
           {showClaimedFailAlert && (
-          <div className="alert alert-danger text-center" role="alert">
+          <div className="alert alert-danger text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
             &#9888; {t('adminCorrespondence.calimedFailAlert')}
           </div>
           )}
           {showCorrespondenceAlert && (
-          <div className="alert alert-danger text-center" role="alert">
+          <div className="alert alert-danger text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
             &#9888; {t('adminCorrespondence.correspondenceAlert')}
           </div>
           )}
