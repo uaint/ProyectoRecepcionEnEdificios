@@ -30,7 +30,10 @@
     "date": "Fecha",
     "contact": "Contacto",
     "delete": "Eliminar",
-    "addNewCorrespondence": "Agregar Nueva Correspondencia"
+    "addNewCorrespondence": "Agregar Nueva Correspondencia",
+    "calimedSuccessAlert": "¡Correspondencia marcada como reclamada!",
+    "calimedFailAlert": "Error al cambiar estado de correspondencia",
+    "correspondenceAlert": "Problema al cargar datos"
   },
   "adminFrequentVisits": {
     "adminFrequentVisits": "Visitas Frecuentes de Administración",
@@ -151,7 +154,11 @@
     "addCorrespondence": "Agregar Correspondencia",
     "checkboxSendToAll": "Enviar a todos los residentes",
     "selectMsg": "Selecciona para enviar mensaje:",
-    "searchresident": "Buscar Habitantes"
+    "searchresident": "Buscar Habitantes",
+    "MsgSuccessAlert": "Mensaje de WhatsApp enviado correctamente",
+    "MsgFailAlert": "Error al enviar mensaje de WhatsApp",
+    "inhabitantsFailAlert": "Error buscando residentes",
+    "NoinhabitantsAlert": "Residentes no encontrados"
   },
   "vehicleForm": {
     "addNewVehicle": "Agregar Nuevo Vehiculo",
