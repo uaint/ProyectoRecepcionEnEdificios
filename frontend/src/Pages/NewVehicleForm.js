@@ -48,6 +48,18 @@ const NewVehicleForm = () => {
     });
   };
 
+  const redirectUser = () => {
+    // Verificar si todos los campos obligatorios están completos
+    const { run, license_plate, parket_at, parket_since } = formData;
+    if (run && license_plate && parket_at && parket_since) {
+      // Redirigir a la página de adminparking si todos los campos están completos
+      window.location.href = '/adminparking';
+    } else {
+      alert('Por favor completa todos los campos antes de agregar el vehículo.');
+    }
+  };
+  
+
   return (
     <div id="change" className="container">
       <div className="row justify-content-center">
@@ -73,7 +85,7 @@ const NewVehicleForm = () => {
                   <input type="date" class="form-control" id="parket_since" name="parket_since" value={formData.parket_since} onChange={handleChange} required/>
                 </div>
                 <div class="d-grid gap-1">
-                  <button type="submit" class="btn btn-primary mt-3">{t('vehicleForm.addVehicle')}</button>
+                  <button type="submit" class="btn btn-primary mt-3" onClick={redirectUser}>{t('vehicleForm.addVehicle')}</button>
                 </div>
               </form>
             </div>
