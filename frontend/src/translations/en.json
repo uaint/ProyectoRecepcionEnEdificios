@@ -10,7 +10,9 @@
     "config": "Config",
     "signOut": "Sign Out",
     "searchByRut":"Search by RUT",
-    "scanID":"Scan ID"
+    "scanID":"Scan ID",
+    "admin": "Admin",
+    "new": "Add New"
   },
   "navbarResident": {
     "notifications": "Notifications",
@@ -127,7 +129,8 @@
       "wrongCredentialsAlert": "Wrong username or password",
       "remember": "Remember me",
       "passwordMissmatchError": "Passwords do not match",
-      "usernameNotFoundError": "Username not found"
+      "usernameNotFoundError": "Username not found",
+      "apiError": "An error related to the API occurred while trying to log in. Please try again later."
     },
     "messages": {
       "contactConcierge": "Contact Concierge",

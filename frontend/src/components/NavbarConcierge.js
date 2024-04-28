@@ -17,6 +17,13 @@ const NavbarConcierge = () => {
     i18n.changeLanguage(newLanguage);
   };
 
+
+  // Cerrar sesión y liminar el token del almacenamiento local y redirigir a la página de inicio de sesión
+  const handleSignOut = () => {
+    localStorage.removeItem('token');
+    window.location.href = '/login';
+  };
+
   return (
     <nav class="navbar navbar-expand-lg bg-body-tertiary mb-3 fixed-top" style={navbarStyle}>
       <div class="container-fluid">
@@ -41,16 +48,17 @@ const NavbarConcierge = () => {
         </button>
         <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
           <ul class="navbar-nav">
-            <li class="nav-item active">
+          <li class="nav-item dropdown me-4">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {t('navbarConcierge.admin')}
+              </a>
+              <ul class="dropdown-menu" style={navbarStyle}>
               <Link class="nav-link" to="/admincorrespondence">{t('navbarConcierge.adminCorrespondence')}</Link>
-            </li>
-            <li class="nav-item">
               <Link class="nav-link" to="/adminfrequentvisits">{t('navbarConcierge.adminFrequentVisits')}</Link>
-            </li>
-            <li class="nav-item">
               <Link class="nav-link" to="/adminparking">{t('navbarConcierge.adminParking')}</Link>
+              </ul>
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown me-4">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {t('navbarConcierge.searchPerson')}
               </a>
@@ -59,20 +67,23 @@ const NavbarConcierge = () => {
                 <li><Link class="dropdown-item" to="/scanid">{t('navbarConcierge.scanID')}</Link></li>
               </ul>
             </li>
-            <li class="nav-item">
+            <li class="nav-item dropdown me-4">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {t('navbarConcierge.new')}
+              </a>
+              <ul class="dropdown-menu" style={navbarStyle}>
               <Link class="nav-link" to="/newvisitform">{t('navbarConcierge.newVisit')}</Link>
-            </li>
-            <li class="nav-item">
               <Link class="nav-link" to="/newvehicleform">{t('navbarConcierge.newVehicle')}</Link>
+              </ul>
             </li>
-            <li class="nav-item">
+            <li class="nav-item me-4">
               <Link class="nav-link" to="/adminmessages">{t('navbarConcierge.messages')}</Link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item me-4">
               <Link class="nav-link" to="/configadmin">{t('navbarConcierge.config')}</Link>
             </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="/home">{t('navbarConcierge.signOut')}</Link>
+            <li class="nav-item me-4">
+              <Link class="nav-link" to="/login" onClick={handleSignOut}>{t('navbarConcierge.signOut')}</Link>
             </li>
             <li>
             </li>

@@ -1,13 +1,16 @@
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import i18n from './i18n';
 import { I18nextProvider } from 'react-i18next';
-import React, { useEffect } from 'react';
+import i18n from './i18n';
+import './App.css';
+
+
 
 // Importa los componentes
 import NavbarConcierge from './components/NavbarConcierge';
 import NavbarResident from './components/NavbarResident';
+import NavbarVisible from './components/NavbarVisible'; // Considera NavbarConcierge
+import NavbarNotVisible from './components/NavbarNotVisible'; // Considera Outlet
 
 // Bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -33,39 +36,43 @@ import AdminParking from './Pages/AdminParking';
 //Importar funcion de verificacion token
 import { parseJwt } from './Utils';
 
+
+
+
 function App() {
+
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token'); // Obtiene la data del token desde localStorage
     if (token) {
+      // Parsea el token y verifica su caducacion (si esta expirado o vencido)
       const tokenExpiration = parseJwt(token).exp * 1000;
       if (tokenExpiration > Date.now()) {
         console.log('Token válido');
       } else {
+        // Si token expira, redirigimos a la página de login, removemos el token del ambiente local y quitamos navbar
         console.log('Token expirado');
-        localStorage.removeItem('token');
-        if (window.location.pathname === '/login'){
-        } else {
+        localStorage.removeItem('token'); // removemos data del token del ambiente local
+        if (window.location.pathname !== '/login'){
           window.location.href = '/login';
         }
       }
     } else {
+      // Al no estar loggeado o caducar token, redirige a la página de login
       console.log('No hay token');
-      if (window.location.pathname === '/login'){
-      } else {
+      if (window.location.pathname !== '/login') {
         window.location.href = '/login';
-      }
     }
+  }
   }, []);
+
+
 
   return (
     <div className="App">
       <I18nextProvider i18n={i18n}> {/* Usa I18nextProvider para traducir el sistema */}
         <BrowserRouter>
-        {window.location.pathname !== '/login' && (
-        <NavbarConcierge />
-        )}
-          <Routes>
-              <Route path="/login" element={<Login />} />
+        <Routes>
+            <Route element={<NavbarVisible />}>
               <Route path="/home" element={<Home />} />
               <Route path="/newcorrespondenceform" element={<NewCorrespondenceForm />} />
               <Route path="/newvisitform" element={<NewVisitForm />} />
@@ -81,6 +88,10 @@ function App() {
               <Route path="/adminfrequentvisits" element={<AdminFrequentVisits />} />
               <Route path="/adminparking" element={<AdminParking />} />
               <Route path="*" element={<Navigate to="/home" replace />} /> {/* Redireccionar desde cualquier ruta inválida a /home */}
+            </Route>
+            <Route element={<NavbarNotVisible />}>
+              <Route path="/login" element={<Login />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </I18nextProvider>

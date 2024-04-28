@@ -116,6 +116,17 @@ const NewCorrespondenceForm = () => {
   setShowCorrespondenceForm(false);
   }
 
+  const redirectUser = () => {
+    // Verificar si todos los campos obligatorios están completados
+    const { apartment, build, type, timeOfArrival } = formData;
+  if (apartment && build && type && timeOfArrival) {
+      window.location.href = '/admincorrespondence';
+    } else {
+      alert('Por favor completa todos los campos antes de agregar el vehículo.');
+    }
+  };
+  
+
   const handleSelectInhabitant = (inhabitantId) => {
   // Verificar si el habitante ya está seleccionado
   const isSelected = selectedInhabitants.includes(inhabitantId);
@@ -182,7 +193,7 @@ const NewCorrespondenceForm = () => {
                   <input type="datetime-local" class="form-control" id="timeOfArrival" name="timeOfArrival" value={formData.timeOfArrival} onChange={handleChange} required/>
                 </div>
                 <div class="d-grid gap-1">
-                  <button type="submit" class="btn btn-primary mt-3">{t('correspondenceForm.addCorrespondence')}</button>
+                  <button type="submit" class="btn btn-primary mt-3" onClick={redirectUser}>{t('correspondenceForm.addCorrespondence')}</button>
                 </div>
               </form>
               )}

@@ -1,26 +1,28 @@
 {
   "navbarConcierge": {
-    "adminCorrespondence": "Correspondencia de Administración",
-    "adminFrequentVisits": "Visitas Frecuentes de Administración",
+    "adminCorrespondence": "Correspondencia",
+    "adminFrequentVisits": "Visitas Frecuentes",
     "searchPerson": "Buscar Persona",
     "newVisit": "Nueva Visita",
     "newVehicle": "Nuevo Vehículo",
-    "adminParking": "Estacionamiento de Administración",
+    "adminParking": "Estacionamientos",
     "messages": "Mensajes",
     "config": "Configuración",
     "signOut": "Cerrar Sesión",
     "searchByRut":"Buscar por RUT",
-    "scanID":"Escanear Carnet"
+    "scanID":"Escanear Carnet",
+    "admin": "Administrar",
+    "new": "Agregar nuevo elemento"
   },
   "navbarResident": {
     "notifications": "Notificaciones",
-    "adminFrequentVisits": "Visitas Frecuentes de Administración",
+    "adminFrequentVisits": "Administrar Visitas Frecuentes",
     "messages": "Mensajes",
     "config": "Configuración",
     "signOut": "Cerrar Sesión"
   },
   "adminCorrespondence": {
-    "adminCorrespondence": "Correspondencia de Administración",
+    "adminCorrespondence": "Administrar Correspondencia",
     "id": "ID",
     "building": "Edificio",
     "apartment": "Departamento",
@@ -36,12 +38,12 @@
     "correspondenceAlert": "Problema al cargar datos"
   },
   "adminFrequentVisits": {
-    "adminFrequentVisits": "Visitas Frecuentes de Administración",
+    "adminFrequentVisits": "Administrar Visitas Frecuentes",
     "name": "Nombre",
-    "birthDate": "Fecha Nacimiento",
+    "birthDate": "Fecha de Nacimiento",
     "rut": "RUT",
     "apartment": "Departamento",
-    "visitType": "Tipo Visita",
+    "visitType": "Tipo de Visita",
     "lastVisit": "Fecha Visita",
     "delete": "Eliminar",
     "addFrequentVisit": "Agregar Visita Frecuente"
@@ -64,7 +66,7 @@
     "message2": "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas..."
   },
   "adminParking": {
-    "adminParking": "Admin Parking",
+    "adminParking": "Administrar Estacionamientos",
     "visitorId": "ID Visitante",
     "full_name": "Nombre",
     "licensePlate": "Patente",
@@ -116,7 +118,7 @@
   },
   "login": {
     "title": "Inicio de sesión",
-    "emailPlaceholder": "Ingresa tu usuario aquí",
+    "usernamePlaceholder": "Ingresa tu usuario aquí",
     "passwordPlaceholder": "Ingresa tu contraseña aquí",
     "loginButton": "Iniciar sesión",
     "emailError": "Por favor ingresa tu usuario",
@@ -127,7 +129,8 @@
     "wrongCredentialsAlert": "Usuario o contraseña incorrectos",
     "remember": "Recordarme",
     "passwordMissmatchError": "Las contraseñas no coinciden",
-    "usernameNotFoundError": "Usuario no encontrado"
+    "usernameNotFoundError": "Usuario no encontrado",
+    "apiError": "Error de conexión con la API"
   },
   "messages": {
     "contactConcierge": "Contactar con el conserje",
