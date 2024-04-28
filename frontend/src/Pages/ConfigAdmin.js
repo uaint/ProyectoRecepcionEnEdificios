@@ -29,17 +29,17 @@ const ConfigAdmin = () => {
   };
 
   return (
-    <div className="config-container">
-      <h1>{t('configAdmin.configuration')}</h1>
-      <div className="buttons-container">
-        <button className="config-button" onClick={handleToggleAdminUsersRoles}>{t('configAdmin.adminUsersRoles')}</button>
-        <button className="config-button" onClick={handleCreateNewUser}>{t('configAdmin.newUser')}</button>
-        <button className="config-button" onClick={handleToggleNotifications}>{t('configAdmin.notifications')}</button>
+    <div class="container">
+      <h1 class="text-center">{t('configAdmin.configuration')}</h1>
+      <div class="d-grid gap-2 d-md-block">
+        <button class="btn btn-primary config-button" onClick={handleToggleAdminUsersRoles}>{t('configAdmin.adminUsersRoles')}</button>
+        <button class="btn btn-primary config-button" onClick={handleCreateNewUser}>{t('configAdmin.newUser')}</button>
+        <button class="btn btn-primary config-button" onClick={handleToggleNotifications}>{t('configAdmin.notifications')}</button>
       </div>
 
       {/* Mostrar cuadro de crear nuevo usuario */}
       {showCreateNewUser && (
-        <div className="config-box">
+        <div class="card mt-3">
           <h2>{t('configAdmin.createNewUserTitle')}</h2>
           {/* Campos de info nuevo usuario , tbd */}
         </div>
@@ -47,7 +47,7 @@ const ConfigAdmin = () => {
 
       {/* Mostrar cuadro de Notifications */}
       {showNotifications && (
-        <div className="config-box">
+        <div class="card mt-3">
           <h2>{t('configAdmin.notificationsTitle')}</h2>
           {/* Campos de notificaciones, tbd */}
         </div>
@@ -55,7 +55,7 @@ const ConfigAdmin = () => {
 
       {/* Mostrar cuadro de Admin Users & Roles */}
       {showAdminUsersRoles && (
-        <div className="config-box">
+        <div class="card mt-3">
           <h2>{t('configAdmin.adminUsersRolesTitle')}</h2>
           {/* Campos de administración de usuarios y roles aquí, tbd */}
         </div>
