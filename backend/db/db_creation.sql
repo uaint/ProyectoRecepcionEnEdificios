@@ -39,10 +39,12 @@ DEFAULT CHARACTER SET = utf8mb3;
 CREATE TABLE IF NOT EXISTS `roentgenium`.`login_system` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(31) NOT NULL,
-  `password` VARCHAR(256) NOT NULL,
+  `password_hashed` CHAR(64) NOT NULL,
+  `salt` CHAR(32) NOT NULL,
   `user_type` TINYINT NOT NULL,
   `last_access` DATETIME NOT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -239,9 +241,9 @@ DELIMITER ;
 
 DELIMITER $$
 USE `roentgenium`$$
-CREATE PROCEDURE `add_user_login` (IN usrnm VARCHAR(31), IN psswrd VARCHAR(256), IN u_type TINYINT)
+CREATE PROCEDURE `add_user_login` (IN usrnm VARCHAR(31), IN psswrd CHAR(64), IN slt CHAR(32), IN u_type TINYINT)
 BEGIN
-	INSERT INTO login_system (username, password, user_type, last_access) VALUES (usrnm, psswrd, u_type, NOW());
+	INSERT INTO login_system (username, password_hashed, salt, user_type, last_access) VALUES (usrnm, psswrd, slt, u_type, NOW());
 END$$
 
 DELIMITER ;
@@ -347,7 +349,9 @@ CREATE  OR REPLACE VIEW `visitors_information` AS
     FROM
         visitors v
     LEFT JOIN
-        visitors_log vl ON v.id = vl.visitor_id;
+        visitors_log vl ON v.id = vl.visitor_id
+	ORDER BY
+		vl.visit_date DESC;
 
 -- -----------------------------------------------------
 -- View `roentgenium`.`inhabitants_information`
