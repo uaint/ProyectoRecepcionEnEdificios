@@ -4,14 +4,17 @@ import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-/* to be developed */
+// TODO
 const Notifications = () => {
+
+  // Receive translations
   const { t } = useTranslation();
 
+  // Temporary notifications for testing purposes
   const notifications = [
-    t('notifications.packageArrival', { type: "tipo", date: "fecha" }),
-    t('notifications.personArrival', { person: "persona", date: "fecha" }),
-    t('notifications.parkingOccupied', { parking: "estacionamiento", visitor_name: "nombre_visita", remaining_time: "remaining_time" })
+    t('notifications.packageArrival', { type: "type", date: "date" }),
+    t('notifications.personArrival', { person: "person", date: "date" }),
+    t('notifications.parkingOccupied', { parking: "parking_spot", visitor_name: "visitor_name", remaining_time: "remaining_time" })
   ];
 
   return (

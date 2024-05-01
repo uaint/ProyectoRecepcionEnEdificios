@@ -6,10 +6,10 @@ import { WhatsAppMsg, timeAlerts } from '../Utils.js';
 
 const NewCorrespondenceForm = () => {
 
-  // Configuraciones generales
+  // General configurations
   const { t } = useTranslation();
 
-  // Se inicia formData con algunos valores "predeterminados"
+  // Initiate formData with some 'default' values
   const [formData, setFormData] = useState({
     type: 'Packages',
     timeOfArrival: '',
@@ -18,35 +18,36 @@ const NewCorrespondenceForm = () => {
     build: '',
   });
 
-  // Actualizar type segun opcion que se elige
+  // Update type according to selected option
   const [selectedOption, setSelectedOption] = useState('');
   const handleOptionChange = (e) => {
     const selectedValue = e.target.value;
-    setSelectedOption(selectedValue); // Actualiza el estado de la opción seleccionada
-    setFormData({ ...formData, type: selectedValue }); // Actualiza el formData con el nuevo valor seleccionado
+    setSelectedOption(selectedValue); // Updates status of the selected option
+    setFormData({ ...formData, type: selectedValue }); // Updates formData with the new selected value
   };
 
-  // Funcion para ver cambios en las opciones de formData
+  // Function to handle changes in the options of formData
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === 'checkbox' ? checked : value;
     setFormData({ ...formData, [name]: newValue });
   };
 
-  // Ver que parte del form mostrar, si primera o segunda
+  // Indicate which part/section of the form to show first or second
   const [showSearchForm, setShowSearchForm] = useState(true);
   const [showCorrespondenceForm, setShowCorrespondenceForm] = useState(false);
 
-  // Buscan personas con la api, segun edificio y departamento, para ver a quienes enviar mensajes
+  // Search people with the API according to building and apartment, to check to whom send messages
   const [selectedInhabitants, setSelectedInhabitants] = useState([]);
   const [inhabitants, setInhabitants] = useState([]);
 
-  // Mostrar o no las alertas
+  // Show alerts
   const [showMsgSuccessAlert, setShowMsgSuccessAlert] = useState(false);
   const [showMsgFaildAlert, setShowMsgFaildAlert] = useState(false);
   const [showInhabitantsFaildAlert, setShowInhabitantsFaildAlert] = useState(false);
   const [showNoInhabitantsAlert, setShowNoInhabitantsAlert] = useState(false);
 
+  // Do the call to the API
   const handleSearch = () => {
     const url_api = `https://dduhalde.online/.netlify/functions/api/inhabitants/${formData.build}/${formData.apartment}`;
     fetch(url_api)
@@ -64,45 +65,45 @@ const NewCorrespondenceForm = () => {
         timeAlerts(() => setShowInhabitantsFaildAlert(false));
       });
       
-    //Se cambia el form que se visualiza
+    // Change form that's being viewed
     setShowSearchForm(false);
     setShowCorrespondenceForm(true);
   };
-
   
+  // Submit the new correspondence
   const handleSubmit = (e) => {
     
-    // Si se le envio a una persona o más el mensaje es 1, sino 0
+    // If sent to one or more people = 1, otherwise = 0
     const notified = selectedInhabitants.length !== 0 ? 1 : 0
 
-    // Array filtrado con los que queremos que les llegue el mensaje
+    // Filtered array with whatever we want them to receive on the message
     const filteredArray = inhabitants.filter(obj => selectedInhabitants.includes(obj.id));
 
-    // Realizar la solicitud ADD al servidor a partir de algunos parametros
+    // Do the ADD request to the server according to the parameters
     fetch(`https://dduhalde.online/.netlify/functions/api/add_mail/${formData.build}/${formData.apartment}/${formData.type}/${formData.timeOfArrival}/${notified}`)
     .then(response => {
       if (!response.ok) {
-        throw new Error('Error al agregar la corrrespondencia');
+        throw new Error('An error occurred trying to add correspondence.');
       }
-      console.log(`Se agrego la corrrespondencia`);
+      console.log(`Correspondence added successfully.`);
     })
     .catch(error => {
-      console.error('Error al agregar la corrrespondencia:', error);
+      console.error('An error occurred trying to add correspondence:', error);
     });
 
     const error = WhatsAppMsg(formData, filteredArray)
     if (error) {
-      // Alerta de Mensaje No enviado
+      // Alert: Message failed to be sent
       setShowMsgFaildAlert(true);
       timeAlerts(() => setShowMsgFaildAlert(false));
     }
     else {
-      // Alerta de Mensaje envio
+      // Alert: Message sent successfully
       setShowMsgSuccessAlert(true);
       timeAlerts(() => setShowMsgSuccessAlert(false));
     }
 
-  // Se renician las selecciones
+  // Reset formData
   setFormData({
     type: 'Packages',
     timeOfArrival: '',
@@ -111,30 +112,30 @@ const NewCorrespondenceForm = () => {
     build: '',
   });
 
-  //Se cambia el form que se visualiza
+  // Change form being viewed
   setShowSearchForm(true);
   setShowCorrespondenceForm(false);
   }
 
   const redirectUser = () => {
-    // Verificar si todos los campos obligatorios están completados
+    // Verify if all required fields are filled
     const { apartment, build, type, timeOfArrival } = formData;
   if (apartment && build && type && timeOfArrival) {
       window.location.href = '/admincorrespondence';
     } else {
-      alert('Por favor completa todos los campos antes de agregar el vehículo.');
+      alert('Please fill all the fields required before adding the correspondence.');
     }
   };
   
 
   const handleSelectInhabitant = (inhabitantId) => {
-  // Verificar si el habitante ya está seleccionado
+  // Verify if the inhabitant has been selected
   const isSelected = selectedInhabitants.includes(inhabitantId);
 
-  // Si ya está seleccionado, lo eliminamos de la lista de seleccionados
+  // If selected, delete it from the selected list
   if (isSelected) {
     setSelectedInhabitants(selectedInhabitants.filter(id => id !== inhabitantId));
-    } else { // Si no está seleccionado, lo agregamos a la lista de seleccionados
+    } else { // Else, add it to the list
       setSelectedInhabitants([...selectedInhabitants, inhabitantId]);
     }
   };

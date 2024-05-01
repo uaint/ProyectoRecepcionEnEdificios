@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-/* to be developed */
+// TODO
 const AdminMessages = () => {
   const { t } = useTranslation();
 

@@ -10,9 +10,10 @@ const Home = (props) => {
     const navigate = useNavigate();
     
     useEffect(() => {
-        console.log('Idioma detectado:', i18n.language); // Seleccion de idioma respecto a i18n
+        console.log('Language detected:', i18n.language); // Language selection according to i18n
     }, []);
 
+    // Button to log in
     const onButtonClick = () => {
         if (loggedIn) {
             localStorage.removeItem("user");

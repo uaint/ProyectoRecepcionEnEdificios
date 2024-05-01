@@ -3,24 +3,24 @@ import { useTranslation } from 'react-i18next';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-/* to be developed */
+// TODO
 const Messages = () => {
   const { t } = useTranslation();
 
+  // Create message & selected option states
   const [message, setMessage] = useState('');
   const [selectedOption, setSelectedOption] = useState(t('messages.selectType'));
 
+  // Create the handles for input, selection and sending of messages
   const handleInputChange = (e) => {
     setMessage(e.target.value);
   };
-
   const handleSelectChange = (e) => {
     setSelectedOption(e.target.value);
   };
-
   const handleSendMessage = () => {
-    // Lógica para enviar el mensaje se implementara aquí
-    console.log(`Mensaje: ${message}, Tipo: ${selectedOption}`);
+    // TODO logic to send message
+    console.log(`Message: ${message}, Type: ${selectedOption}`);
   };
 
   return (

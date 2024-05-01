@@ -5,10 +5,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const NewVisitForm = () => {
 
-  // Configuraciones generales
+  // General configurations
   const { t } = useTranslation();
 
-  // Se inicia formData con solo type predeterminado
+  // Initiate formData, only default value for Type
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -20,37 +20,37 @@ const NewVisitForm = () => {
     type: 'Frequent',
   });
   
-  // Actualizar type segun opcion que se elige
+  // Update type according to selected option
   const [selectedOption, setSelectedOption] = useState('');
   const handleOptionChange = (e) => {
     const selectedValue = e.target.value;
-    setSelectedOption(selectedValue); // Actualiza el estado de la opción seleccionada
-    setFormData({ ...formData, type: selectedValue }); // Actualiza el formData con el nuevo valor seleccionado
+    setSelectedOption(selectedValue); // Update status of the selected option
+    setFormData({ ...formData, type: selectedValue }); // Update formData with the new selected value
   };
 
-  // Funcion para ver cambios en las opciones de formData
+  // Function to handle changes in options of formData
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  //Boton de submit
+  // Submit button
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Llamado a la API para agregar visitante
+    // Call API to add visitor
     fetch(`https://dduhalde.online/.netlify/functions/api/add_visitor/${formData.firstName}/${formData.lastName}/${formData.run}/${formData.dv}/${formData.birthDate}/${formData.buildToVisit}/${formData.apartmentToVisit}/${formData.type}`)
     .then(response => {
       if (!response.ok) {
-        throw new Error('Error al agregar la visitante');
+        throw new Error('An error occured trying to add a visitor.');
       }
-      console.log(`Se agrego la visitante`);
+      console.log(`Visitor added successfully.`);
     })
     .catch(error => {
-      console.error('Error al agregar la visitante:', error);
+      console.error('An error occured trying to add a visitor:', error);
     });
     
-    // Resetear el formulario después de enviar los datos
+    // Reset formData
     setFormData({
       firstName: '',
       lastName: '',

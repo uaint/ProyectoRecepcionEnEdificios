@@ -7,41 +7,41 @@ import { formatDateLarge, timeAlerts } from '../Utils.js';
 
 const AdminCorrespondence = () => {
 
-  // Configuraciones generales
+  // General configurations
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  // Creamos la correspondencia
+  // Create correspondence
   const [correspondence, setCorrespondence] = useState([]);
 
-  // Mostrar o no las alertas
+  // Create alerts
   const [showClaimedAlert, setShowClaimedAlert] = useState(false);
   const [showClaimedFailAlert, setShowClaimedFailAlert] = useState(false);
   const [showCorrespondenceAlert, setShowCorrespondenceAlert] = useState(false);
 
-  // Se define la llamada a la API (Para no tener que hacerla multiples veces)
+  // Define the API call to the unclaimed_correspondence
   const fetchCorrespondenceData = () => {
     fetch('https://dduhalde.online/.netlify/functions/api/unclaimed_correspondence')
       .then(response => response.json())
       .then(data => setCorrespondence(data))
       .catch(error => {
-        console.error('Error fetching correspondence:', error);
+        console.error('An error occurred when fetching the correspondence:', error);
         setShowCorrespondenceAlert(true);
         timeAlerts(() => setShowCorrespondenceAlert(false));
       });
   };
 
-  // Conseguir datos de correspondencia no reclamada con la API
+  // Fetch unclaimed correspondence data through the API
   useEffect(() => {
     fetchCorrespondenceData();
   }, []);
 
   const handleDelete = (id) => {
-    // Realizar la solicitud UPDATE al servidor, para cambiar de "no reclamada" a "reclamada"
+    // Do the UPDATE request to the server (channge from "unclaimed/not claimed" to "claimed")
     fetch(`https://dduhalde.online/.netlify/functions/api/is_claimed/${id}`)
     .then(response => {
       if (!response.ok) {
-        throw new Error('Error al actualizar estado');
+        throw new Error('An error occurred when trying to update the correspondence status.');
       }
       setShowClaimedAlert(true);
       timeAlerts(() => setShowClaimedAlert(false));
@@ -53,7 +53,7 @@ const AdminCorrespondence = () => {
     });
   };
 
-  // Boton para redireccion a agregar nueva correspondencia
+  // Button to redirect to the add new correspondence form
   const handleButtonClick = () => {
     navigate('/newcorrespondenceform');
   };

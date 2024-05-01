@@ -3,25 +3,26 @@ import { useTranslation } from 'react-i18next';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-/* to be developed */
+// TODO
 const ConfigAdmin = () => {
   const { t } = useTranslation();
+
+  // Create panels
   const [showCreateNewUser, setShowCreateNewUser] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showAdminUsersRoles, setShowAdminUsersRoles] = useState(false);
 
+  // Create the handle for each pannel
   const handleCreateNewUser = () => {
     setShowCreateNewUser(!showCreateNewUser);
     setShowNotifications(false);
     setShowAdminUsersRoles(false);
   };
-
   const handleToggleNotifications = () => {
     setShowNotifications(!showNotifications);
     setShowCreateNewUser(false);
     setShowAdminUsersRoles(false);
   };
-
   const handleToggleAdminUsersRoles = () => {
     setShowAdminUsersRoles(!showAdminUsersRoles);
     setShowCreateNewUser(false);
@@ -37,27 +38,27 @@ const ConfigAdmin = () => {
         <button class="btn btn-primary config-button" onClick={handleToggleNotifications}>{t('configAdmin.notifications')}</button>
       </div>
 
-      {/* Mostrar cuadro de crear nuevo usuario */}
+      {/* Show create new user panel */}
       {showCreateNewUser && (
         <div class="card mt-3">
           <h2>{t('configAdmin.createNewUserTitle')}</h2>
-          {/* Campos de info nuevo usuario , tbd */}
+          {/* TODO new user fields */}
         </div>
       )}
 
-      {/* Mostrar cuadro de Notifications */}
+      {/* Show notifications panel */}
       {showNotifications && (
         <div class="card mt-3">
           <h2>{t('configAdmin.notificationsTitle')}</h2>
-          {/* Campos de notificaciones, tbd */}
+          {/* TODO notifications field */}
         </div>
       )}
 
-      {/* Mostrar cuadro de Admin Users & Roles */}
+      {/* Show panel for managing users & roles */}
       {showAdminUsersRoles && (
         <div class="card mt-3">
           <h2>{t('configAdmin.adminUsersRolesTitle')}</h2>
-          {/* Campos de administración de usuarios y roles aquí, tbd */}
+          {/* TODO managing fields */}
         </div>
       )}
     </div>

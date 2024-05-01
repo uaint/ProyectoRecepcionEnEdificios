@@ -6,10 +6,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const NewVehicleForm = () => {
 
-  // Configuraciones generales
+  // General configurations
   const { t } = useTranslation();
   
-  // Se inicia formData vacio
+  // Initiate formData empty
   const [formData, setFormData] = useState({
     run: '',
     license_plate: '',
@@ -17,29 +17,29 @@ const NewVehicleForm = () => {
     parket_since: '',
   });
 
-  // Se acutualiza formData segun van cambiando los inputs
+  // Update formData according to input data
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Boton de Sumbit, agregar vehiculo y reniciar formData
+  // Submit button, add vehicle and restart formData
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Realizar la solicitud ADD al servidor, agregar vehiculo a partir de los parametros conseguidos
+    // Do the ADD request to the server. Add vehicle according to the specified parameters
     fetch(`https://dduhalde.online/.netlify/functions/api/add_vehicle/${formData.run}/${formData.license_plate}/${formData.parket_at}/${formData.parket_since}`)
     .then(response => {
       if (!response.ok) {
-        throw new Error('Error al agregar vehiculo');
+        throw new Error('An error occured trying to add the vehicle.');
       }
-      console.log(`Se agrego el vehiculo`);
+      console.log(`Vehicle added successfully.`);
     })
     .catch(error => {
-      console.error('Error al agregar vehiculo:', error);
+      console.error('An error occured trying to add the vehicle:', error);
     });
     
-    // Se renician las selecciones
+    // Reset formData
     setFormData({
       run: '',
       license_plate: '',
@@ -49,13 +49,13 @@ const NewVehicleForm = () => {
   };
 
   const redirectUser = () => {
-    // Verificar si todos los campos obligatorios están completos
+    // Verify if all required fields are filled
     const { run, license_plate, parket_at, parket_since } = formData;
     if (run && license_plate && parket_at && parket_since) {
-      // Redirigir a la página de adminparking si todos los campos están completos
+      // Redirect to adminparking if all fields are filled
       window.location.href = '/adminparking';
     } else {
-      alert('Por favor completa todos los campos antes de agregar el vehículo.');
+      alert('Please fill all the required fields before adding the vehicle.');
     }
   };
   
