@@ -149,16 +149,16 @@ const NewCorrespondenceForm = () => {
               <h2 className="card-title">{t('correspondenceForm.addNewCorrespondence')}</h2>
               {showSearchForm && (
               <form onSubmit={handleSearch}>
-                <div class="mb-3">
-                  <label for="apartment" class="form-label">{t('correspondenceForm.selectApartment')}</label>
-                  <input type="text" class="form-control" id="apartment" name="apartment" value={formData.apartment} onChange={handleChange} required placeholder={t('correspondenceForm.selectApartment')}/>
+                <div className="mb-3">
+                  <label htmlFor="apartment" className="form-label">{t('correspondenceForm.selectApartment')}</label>
+                  <input type="text" className="form-control" id="apartment" name="apartment" value={formData.apartment} onChange={handleChange} required placeholder={t('correspondenceForm.selectApartment')}/>
                 </div>
-                <div class="mb-3">
-                  <label for="build" class="form-label">{t('correspondenceForm.selectTower')}</label>
-                  <input type="text" class="form-control" id="build" name="build" value={formData.build} onChange={handleChange} required placeholder={t('correspondenceForm.selectTower')}/>
+                <div className="mb-3">
+                  <label htmlFor="build" className="form-label">{t('correspondenceForm.selectTower')}</label>
+                  <input type="text" className="form-control" id="build" name="build" value={formData.build} onChange={handleChange} required placeholder={t('correspondenceForm.selectTower')}/>
                 </div>
-                <div class="d-grid gap-1">
-                  <button type="submit" class="btn btn-primary mt-3">{t('correspondenceForm.searchresident')}</button>
+                <div className="d-grid gap-1">
+                  <button type="submit" className="btn btn-primary mt-3">{t('correspondenceForm.searchresident')}</button>
                 </div>
               </form>
               )}
@@ -166,13 +166,13 @@ const NewCorrespondenceForm = () => {
               <form onSubmit={handleSubmit}>
                 {inhabitants && inhabitants.length > 0 && (
                 <div>
-                  <h4 class="mt-2">{t('correspondenceForm.selectMsg')}</h4>
-                  <div class="mb-3">
-                    <ul class="form-check">
+                  <h4 className="mt-2">{t('correspondenceForm.selectMsg')}</h4>
+                  <div className="mb-3">
+                    <ul className="form-check">
                       {inhabitants.map(inhabitant => (
                         <li key={inhabitant.id}>
-                          <label class="form-check-label" for="flexCheckDefault">
-                            <input class="form-check-input" type="checkbox"checked={selectedInhabitants.includes(inhabitant.id)} onChange={() => handleSelectInhabitant(inhabitant.id)}/>
+                          <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox"checked={selectedInhabitants.includes(inhabitant.id)} onChange={() => handleSelectInhabitant(inhabitant.id)}/>
                             {' '}{inhabitant.first_name} {inhabitant.last_name}
                           </label>
                         </li>
@@ -181,20 +181,20 @@ const NewCorrespondenceForm = () => {
                   </div>
                 </div>
                 )}
-                <label for="type" class="form-label">{t('correspondenceForm.type')}</label>
-                <select class="form-select" aria-label="Default select example" value={selectedOption} onChange={handleOptionChange}>
+                <label htmlFor="type" className="form-label">{t('correspondenceForm.type')}</label>
+                <select className="form-select" aria-label="Default select example" value={selectedOption} onChange={handleOptionChange}>
                   <option value="Packages">{t('correspondenceForm.packages')}</option>
                   <option value="Letters">{t('correspondenceForm.letters')}</option>
                   <option value="Item">{t('correspondenceForm.item')}</option>
                   <option value="Food">{t('correspondenceForm.food')}</option>
                   <option value="Others">{t('correspondenceForm.others')}</option>
                 </select>
-                <div class="mb-3 mt-3">
-                  <label for="timeOfArrival" class="form-label">{t('correspondenceForm.timeOfArrival')}</label>
-                  <input type="datetime-local" class="form-control" id="timeOfArrival" name="timeOfArrival" value={formData.timeOfArrival} onChange={handleChange} required/>
+                <div className="mb-3 mt-3">
+                  <label htmlFor="timeOfArrival" className="form-label">{t('correspondenceForm.timeOfArrival')}</label>
+                  <input type="datetime-local" className="form-control" id="timeOfArrival" name="timeOfArrival" value={formData.timeOfArrival} onChange={handleChange} required/>
                 </div>
-                <div class="d-grid gap-1">
-                  <button type="submit" class="btn btn-primary mt-3" onClick={redirectUser}>{t('correspondenceForm.addCorrespondence')}</button>
+                <div className="d-grid gap-1">
+                  <button type="submit" className="btn btn-primary mt-3" onClick={redirectUser}>{t('correspondenceForm.addCorrespondence')}</button>
                 </div>
               </form>
               )}
