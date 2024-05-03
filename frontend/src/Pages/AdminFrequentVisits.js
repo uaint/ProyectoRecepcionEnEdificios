@@ -7,36 +7,36 @@ import { formatDate } from '../Utils.js';
 
 const AdminFrequentVisits = () => {
 
-  // Configuraciones generales
+  // General configurations
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  // Se inician los visitantes
+  // Initiate/Create the visitors
   const [visitors, setVisitors] = useState([]);
 
-  // Conseguir datos de visitas con la API
+  // Fetch visitors data from the API
   useEffect(() => {
     fetch('https://dduhalde.online/.netlify/functions/api/visitors')
       .then(response => response.json())
       .then(data => setVisitors(data))
-      .catch(error => console.error('Error fetching visitors:', error));
+      .catch(error => console.error('An error occurred when trying to fetch visitors:', error));
   }, []);
 
   const handleDelete = (id) => {
-    // Realizar la solicitud DELETE al servidor, para eliminar un visitante con su id
+    // Do the DELETE request to the server, thus deleting a visitor given his ID
     fetch(`https://dduhalde.online/.netlify/functions/api/delete_visitor/${id}`)
     .then(response => {
       if (!response.ok) {
-        throw new Error('Error al eliminar el visitante');
+        throw new Error('An error occurred when trying to delete the visitor.');
       }
-      console.log(`Visitante con ID ${id} eliminado correctamente`);
+      console.log(`Visitor with ID ${id} deleted successfully.`);
     })
     .catch(error => {
-      console.error('Error al eliminar el visitante:', error);
+      console.error('An error occurred when trying to delete the visitor:', error);
     });
   };
 
-  // Boton para redireccionar a agregar nueva visita
+  // Button to redirect to the new visit form
   const handleButtonClick = () => {
     navigate('/newvisitform');
   };

@@ -3,15 +3,18 @@ import { useTranslation } from 'react-i18next';
 import '../App.css'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-/* to be developed */
+// TODO
 const SearchPersonByRut = () => {
+
+  // Receive translations
   const { t } = useTranslation();
+
+  // Create rut & personData
   const [rut, setRut] = useState('');
   const [personData, setPersonData] = useState(null);
 
   const handleSearch = () => {
-    // Simulando una respuesta con datos de la persona encontrada
+    // Simulate data with a mock person
     const mockPersonData = {
       rut: rut,
       firstName: 'John',

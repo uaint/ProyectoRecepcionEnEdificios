@@ -6,12 +6,12 @@ import i18n from '../i18n';
 import '../App.css';
 
 
-// Estilo de la Navbar
+// Navbar style
 const navbarStyle = {
   textAlign: 'center',
 }
 
-// Boton para cambiar el idioma
+// Button to change language (i18n package)
 const NavbarResident = () => {
   const { t } = useTranslation();
   const handleLanguageChange = (newLanguage) => {

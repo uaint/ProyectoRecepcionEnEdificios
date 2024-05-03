@@ -5,53 +5,49 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { sha256 } from 'js-sha256';
 
 const Login = (props) => {
-    const { t } = useTranslation(); // Usa useTranslation para acceder a las traducciones EN y ES
+    const { t } = useTranslation(); // useTranslation: Access translations (EN & ES)
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [usernameError, setUsernameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
-    const navigate = useNavigate(); // Redireccionar al usuario
-        
+    const navigate = useNavigate(); // Redirect the user
 
+    /* Hash logic:
+    1) Receive user input
+    2) Pass username to the database (usernname should already exist in the database)
+    3) Receive data from the API (username + salt + password_hashed)
+    4) Retrieve password given by user. Do salt + password on ReactJS (generatehash func)
+    5) generateHash is done. Compare secondHash with password_hashed (db)
+    6) If password_hashed == secondHash, then login is successful. Else, login fails. */
 
-    // Lógica del hash:
-    // Recibir input de usuario
-    // Pasarle a la bbdd username (asumiendo que password ya está en bbdd, dado que es un login y no un registro)
-    // Recibir dato de la API --> recibir username + salt + password_hashed
-    // Tomar password que entregó el usuario y hacer: salt + password en código de React (función generateHash)
-    // Se hace generateHash y luego se compara secondHash con password_hashed de la bbdd
-    // Si password_hashed = secondHash, login exitoso. Si no, login fallido
-
-    // Función del backend al hacer clic en el botón de login
+    // Backend function when clicking the login button
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Determinamos valores iniciales de errores vacíos
+        // Set empty initial values for errors 
         setUsernameError("");
         setPasswordError("");
 
-        // Checkear si usuario ingresó un username
+        // Check if user passed an username
         if ("" === username) {
             setUsernameError(t('login.usernameError'));
             return;
         }
-        // Checkear si usuario ingresó una contraseña
+        // Check if user passed a password
         if ("" === password) {
             setPasswordError(t('login.passwordError'));
             return;
         }
-        // Mensaje para contraseña corta
-        if (password.length < 4) {
+        // Message for short password
+        if (password.length < 8) {
             setPasswordError(t('login.shortPasswordError'));
             return;
         }
-        // Verificar si la cuenta existe
+        // Verify if the account exists
         logIn();
     }
 
-    
-
-    // Función para generar una contraseña hash utilizando doble SHA-256
+    // Function to generate a hashed password using a salt & double SHA-256
     function generateHash(password, salt) {
         const combinedString = salt + password;
         const firstHash = sha256(combinedString);
@@ -59,54 +55,49 @@ const Login = (props) => {
     return secondHash;
     }
 
-
-
-
-
-    // Llama a la API para logear al usuario con username y contraseña
+    // Call to the API (logging of the user)
     const logIn = () => {
         const url_api = `https://dduhalde.online/.netlify/functions/api/login/${username}`;
         const url_api_token = `https://dduhalde.online/.netlify/functions/api/token/${username}`;
         fetch(url_api)
             .then(response => response.json())
             .then(data => {
+                // There's data retrieved (non-null)
                 if (data[0] != null) {
                     const salt = data[0].salt;
                     const password_hashed = data[0].password_hashed;
                     const password_hashed_input = generateHash(password, salt);
                     if (password_hashed === password_hashed_input) {
-                        fetch(url_api_token) // Ahora conseguimos token desde API especifica
+                        fetch(url_api_token) // Retrieve the token from the specific API
                             .then(response => response.json())
                             .then(data2 => {
                                 console.log(data.token) // TEST TOKEN
-                                // Si el login es exitoso, guarda el token en el localStorage del navegador
+                                // If login is successful, save token into the localStorage of the browser
                                 localStorage.setItem('token', data2.token)
                             })
                             .catch(error => {
                                 console.error('Error fetching token data:', error);
                             });
-                        // Si el login es exitoso, redirige al usuario a la página principal
+                        // If login is successful, redirect user to main page
                         navigate('/admincorrespondence');
                     } else {
-                        // Si contraseñas no calzan, muestra mensaje de discrepancia
+                        // If passwords do not match, show an error message
                         setPasswordError(t('login.passwordMissmatchError'));
                     }
                 } else {
-                    // Si usuario no existe, muestra un mensaje de discrepancia
+                    // If user does not exist, show an error message
                     setUsernameError(t('login.usernameNotFoundError'));
                 }
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
-                // Muestra un mensaje de error genérico si hay un problema con la API
+                // Show generic message for API error
                 setPasswordError(t('login.apiError'));
             });
     }
 
-
-    // Para un eventual log out
+    // For eventual logout
     // localStorage.removeItem('token')
-
     return (
         <div id="change" className="container">
             <div className="row justify-content-center">

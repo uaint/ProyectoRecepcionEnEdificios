@@ -4,25 +4,26 @@ import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-/* to be developed */
+// TODO
 const Config = () => {
   const { t } = useTranslation();
+
+  // Create the panels
   const [showPersonalInfo, setShowPersonalInfo] = useState(false);
   const [showChangePassword, setShowChangePassword] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
 
+  // Create the handleToggle for each panel
   const handleTogglePersonalInfo = () => {
     setShowPersonalInfo(!showPersonalInfo);
     setShowChangePassword(false);
     setShowNotifications(false);
   };
-
   const handleToggleChangePassword = () => {
     setShowChangePassword(!showChangePassword);
     setShowPersonalInfo(false);
     setShowNotifications(false);
   };
-
   const handleToggleNotifications = () => {
     setShowNotifications(!showNotifications);
     setShowPersonalInfo(false);
@@ -40,7 +41,7 @@ const Config = () => {
             <button class="btn btn-primary mx-2" type="button" onClick={handleToggleChangePassword}>{t('config.changePassword')}</button>
             <button class="btn btn-primary mx-2" type="button" onClick={handleToggleNotifications}>{t('config.notifications')}</button>
           </div>
-      {/* Mostrar cuadro de Información Personal */}
+      {/* Show panel: Personal Information */}
       {showPersonalInfo && (
         <div class="card mt-3">
         <div class="card-header">
@@ -76,7 +77,7 @@ const Config = () => {
       </div>
     )}
 
-      {/* Mostrar cuadro de Cambiar Contraseña */}
+      {/* Show panel: Change Password */}
       {showChangePassword && (
         <div class="card mt-3">
         <div class="card-header">
@@ -99,7 +100,7 @@ const Config = () => {
           <button type="button" class="btn btn-primary">{t('config.updateInfo')}</button>
         </div>
       )}
-      {/* Mostrar cuadro de Notificaciones */}
+      {/* Show panel: Notifications */}
       {showNotifications && (
         <div class="card mt-3">
         <div class="card-header">

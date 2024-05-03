@@ -5,14 +5,14 @@ import serverless from 'serverless-http';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
 
-// Iniciar App y Router
+// Start app & router with Express
 const app = express();
 const router = express.Router();
 
-// Habilitar completamente las consultas
+// Enable all CORS queries
 app.options('*', cors());
 
-// Llamar las variables del .env
+// Call all the vars in .env
 env.config()
 const passwordbd = process.env.DB_PASSWORD;
 const hostdb = process.env.DB_HOST;
@@ -21,7 +21,7 @@ const namedb = process.env.DB_NAME;
 const portdb = process.env.DB_PORT;
 const timezonedb = process.env.DB_TIMEZONE;
 
-// Configuración de la conexión a la base de datos
+// DB connection configuration
 const connection = mysql.createConnection({
   host: hostdb,
   user: userdb,
@@ -31,164 +31,186 @@ const connection = mysql.createConnection({
   timezone: timezonedb,
 });
 
-// Establecer conexión a la base de datos
+// Establish a connection with the database
 connection.connect((err) => {
+
+  // No connection was established
   if (err) {
-    console.error('Error al conectar a la base de datos:', err);
+    console.error('An error occurred when attempting to connect to the database:', err);
     return;
-  } else {
-    console.log('Conexión exitosa a la base de datos de Azure MySQL');
+  }
+  
+  // Connection successful
+  else {
+    console.log('Successful connection made to the database hosted in the Azure MySQL Flexible Server instance.');
     return;
   }
 });
 
-// Ruta para obtener datos de personas con su apartment y housing_unit
-// Link de ejemplo /inhabitants/1/101
+// Route to obtain people data (apartment & housing_unit)
+// Example: /inhabitants/1/101
 router.get('/inhabitants/:apartment/:housing_unit', (req, res) => {
 
-  // Conseguir parametros desde el link
+  // Fetch the parameters from the previous link
   const apartment = req.params.apartment;
   const housing_unit = req.params.housing_unit;
 
-  // Realizar Query
+  // Create the query
   const query = 'SELECT * FROM inhabitants WHERE apartment = ? AND housing_unit = ?;';
 
-  // Encabezados CORS
+  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
 
-  // Hacer llamado a la BBDD
+  // Execute the query (call to the database)
   connection.query(query, [apartment, housing_unit], (err, rows) => {
+    // Query failed
     if (err) {
-      console.error('Error al ejecutar la consulta:', err);
-      res.status(500).send('Error al obtener datos desde la base de datos');
+      console.error('There was an error executing the query:', err);
+      res.status(500).send('There was an error trying to fetch data from the database.');
       return;
-    } else {
-      res.json(rows); // Enviar los datos como JSON al cliente
+    }
+    // Query success
+    else {
+      res.json(rows); // Send the data obtained as .json to the client
       return;
     }
   });
 });
 
-// Ruta para obtener datos de personas
+// Route: Obtain data from all the inhabitants of the building
 router.get('/inhabitants', (req, res) => {
 
-  // Realizar Query
+  // Create the query
   const query = 'SELECT * FROM inhabitants;';
 
-  // Encabezados CORS
+  // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
 
-  // Hacer llamado a la BBDD
+  // Execute the query (call to the database)
   connection.query(query, (err, rows) => {
+    // Query failed
     if (err) {
-      console.error('Error al ejecutar la consulta:', err);
-      res.status(500).send('Error al obtener datos desde la base de datos');
+      console.error('There was an error executing the query:', err);
+      res.status(500).send('There was an error trying to fetch data from the database.');
       return;
-    } else {
-      res.json(rows); // Enviar los datos como JSON al cliente
+    }
+    // Query success
+    else {
+      res.json(rows); // Send the data obtained as .json to the client
       return;
     }
   });
 });
 
-// Ruta para agregar visitantes
-// Link de ejemplo /add_visitor/Anuel/Brr/21123456/7/1999-09-09/null/1/101/Frequent
+// Route: Add visitors
+// Example: /add_visitor/Anuel/Brr/21123456/7/1999-09-09/null/1/101/Frequent
 router.get('/add_visitor/:name/:last_name/:rut/:dv/:birthdate/:apartment/:housing_unit/:visit_type', (req, res) => {
 
-  // Conseguir parametros desde el link
+  // Fetch the parameters from the previous link
   const { name, last_name, rut, dv, birthdate, apartment, housing_unit, visit_type } = req.params;
 
-  // Realizar Query
+  // Create the query using the add_visitor stored procedure
   const query = `CALL add_visitor("${name}", "${last_name}", ${rut}, ${dv}, "${birthdate}", NOW(), "${apartment}", "${housing_unit}", "${visit_type}")`;
 
-  // Encabezados CORS
+  // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
 
-  // Hacer llamado a la BBDD
+  // Execute the query (call to the database)
   connection.query(query, (err, results, fields) => {
+    // Query failed
     if (err) {
-      console.error('Error al ejecutar la consulta:', err);
-      res.status(500).json({ err: 'Ocurrió un error al procesar la solicitud.' });
+      console.error('There was an error executing the query:', err);
+      res.status(500).send('There was an error trying to send data to the database.');
       return;
-    } else {
-      console.log('Se agregó el visitante correctamente.');
-      res.status(200).json({ message: 'Se agregó el visitante correctamente.' });
+    } 
+    // Query success
+    else {
+      console.log('The visitor was added successfully to the database.');
+      res.status(200).json({ message: 'The visitor was added successfully to the database.' });
       return;
     }
   });
 });
 
-// Ruta para obtener datos de personas
+// Route: Fetch data from visitors
 router.get('/visitors', (req, res) => {
 
-  // Realizar Query
+  // Create the query using the visitors_information view
   const query = 'SELECT * FROM visitors_information;';
 
-  // Encabezados CORS
+  // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
 
-  // Hacer llamado a la BBDD
+  // Execute the query (call to the database)
   connection.query(query, (err, rows) => {
+    // Query failed
     if (err) {
-      console.error('Error al ejecutar la consulta:', err);
-      res.status(500).send('Error al obtener datos desde la base de datos');
+      console.error('There was an error executing the query:', err);
+      res.status(500).send('There was an error trying to fetch data from the database.');
       return;
-    } else {
-      res.json(rows); // Enviar los datos como JSON al cliente
+    }
+    // Query success
+    else {
+      res.json(rows); // Send data as .JSON to the client
       return;
     }
   });
 });
 
-// Ruta para eliminar visitante
-// Link de ejemplo /delete_visitor/1
+// Route: Delete visitor
+// Example: /delete_visitor/1
 router.get('/delete_visitor/:id', (req, res) => {
 
-  // ID visitante a eliminar
+  // Fetch the ID of the visitor that's going to be deleted
   const visitorId = req.params.id;
 
-  // Realizar Query
+  // Create the query
   const query = `DELETE FROM vehicles_visitors WHERE visitor_id = ?;`;
 
-  // Encabezados CORS
+  // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
 
-  // Hacer llamado a la BBDD para eliminar vehiculos asociados
+  // Execute the query (call to the database to first delete associated vehicles to the visitor ID, and then the visitor)
   connection.query(query, [visitorId], (err, rows) => {
+    // Query failed
     if (err) {
-      console.error('Error al ejecutar la consulta:', err);
+      console.error('There was an error executing the query:', err);
       console.log(err);
-      res.status(500).send('Error al obtener datos desde la base de datos');
+      res.status(500).send('There was an error trying to manipulate data from the database.');
       return;
     }
+    // Query success
     else {
-      res.status(200).json({ message: 'Se elimino el vehículo correctamente.'});
-      // Hacer llamado a la BBDD para eliminar finalmente el visitante
+      res.status(200).json({ message: 'Vehicle(s) deleted successfully.'});
+
+      // Create and execute the query to finally delete the visitor
       const query = `DELETE FROM visitors WHERE id = ?;`;
       connection.query(query, [visitorId], (err, rows) => {
+        // Query failed
         if (err) {
-          console.error('Error al ejecutar la consulta:', err);
+          console.error('There was an error executing the query:', err);
           console.log(err);
-          res.status(500).send('Error al obtener datos desde la base de datos');
+          res.status(500).send('There was an error trying to manipulate data from the database.');
           return;
         }
+        // Query success
         else {
-          res.status(200).json({ message: 'Se elimino el visitante correctamente.'});
+          res.status(200).json({ message: 'The data from this visitor has been deleted succesfully.'});
           return;
         }
       });
@@ -196,256 +218,276 @@ router.get('/delete_visitor/:id', (req, res) => {
   });
 });
 
-// Ruta para agregar vehiculos
-// Link de ejemplo /add_vehicle/21123456/ABC123/5/1999-09-09
+// Route: Add vehicle
+// Example: /add_vehicle/21123456/ABC123/5/1999-09-09
 router.get('/add_vehicle/:rut/:license_plate/:parket_at/:parket_since', (req, res) => {
 
-  // Conseguir parametros desde el link
+  // Fetch the parameters from the previous link
   const { rut, license_plate, parket_at, parket_since} = req.params;
 
-  // Realizar Query
+  // Create query for searching the visitor's RUN with the help of search_visitor_run stored procedure
   const query = `CALL search_visitor_run(${rut})`;
 
-  // Encabezados CORS
+  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
 
-  // Hacer llamado a la BBDD
+  // Execute the query (call to the database)
   connection.query(query, (err, results, fields) => {
+    // Query failed
     if (err) {
-      console.error('Error al ejecutar la consulta:', err);
-      res.status(500).json({ err: 'Ocurrió un error al procesar la solicitud.' });
+      console.error('There was an error executing the query:', err);
+      res.status(500).json({ err: 'An error occurred when trying to process the request.' });
       return;
-    } else {
-      // Conseguir id por RUT
+    }
+    // Query success (Visitor exists)
+    else {
       if (results[0].length > 0) {
-        // Consegir id
+        // Fetch visitor's ID
         const visitorId = results[0][0].id;
-        // Agregar vehiculo
+        // Add the vehicle with the add_visitor_vehicle stored procedure
         const query = `CALL add_visitor_vehicle(${visitorId}, "${license_plate}", "${parket_at}", "${parket_since}")`;
         connection.query(query, (error, results, fields) => {
+          // Query failed
           if (error) {
-            console.error('Error al agregar el vehículo:', error);
-            res.status(500).json({ error: 'Ocurrió un error al procesar la solicitud.' });
+            console.error('An error occurred when adding the vehicle:', error);
+            res.status(500).json({ error: 'An error occured when trying to process the request.' });
             return;
-          } else {
-            res.status(200).json({ message: 'Se agregó el vehículo correctamente.' });
+          }
+          // Query success
+          else {
+            res.status(200).json({ message: 'Vehicle added successfully.' });
             return;
           }
         });
-      console.log('Se agregó el visitante correctamente.');
-      res.status(200).json({ message: 'Se agregó el visitante correctamente.' });
+      console.log('Visitor added successfully.');
+      res.status(200).json({ message: 'Visitor added successfully.' });
       return;
     }
     else {
-      res.status(404).json({ error: 'No se encontró ningún visitante con el RUN proporcionado.' });
+      res.status(404).json({ error: 'Error: No visitor found with the provided RUN.' });
       return;
     }
   }
   });
 });
 
-// Ruta para obtener datos de vehiculos estacionados
+// Route: Parked vehicles
 router.get('/parked', (req, res) => {
 
-  // Realizar Query
+  // Create query with the currently_parked_vehicles view
   const query = 'SELECT * FROM currently_parked_vehicles;';
 
-  // Encabezados CORS
+  // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
 
-  // Hacer llamado a la BBDD
+  // Execute the query (call to the database)
   connection.query(query, (err, rows) => {
+    // Query failed
     if (err) {
-      console.error('Error al ejecutar la consulta:', err);
-      res.status(500).send('Error al obtener datos desde la base de datos');
+      console.error('An error occurred when trying to execute the query:', err);
+      res.status(500).send('An error occurred when trying to fetch data from the database.');
       return;
-    } else {
-      res.json(rows); // Enviar los datos como JSON al cliente
+    }
+    // Query success
+    else {
+      res.json(rows); // Send data as .json to the client
       return;
     }
   });
 });
 
-// Ruta para eliminar vehiculo
+// Route: Delete vehicle
 router.get('/delete_vehicle/:plate', (req, res) => {
 
-  // Conseguir patente
+  // Fetch license plate
   const plate = req.params.plate;
 
-  // Realizar Query
+  // Create query with the delete_vehicle stored procedure
   const query = `CALL delete_vehicle("${plate}")`;
 
-  // Encabezados CORS
+  // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
 
-  // Hacer llamado a la BBDD
+  // Execute the query (call to the database)
   connection.query(query, (err, rows) => {
+    // Query failed
     if (err) {
-      console.error('Error al ejecutar la consulta:', err);
-      res.status(500).send('Error al obtener datos desde la base de datos');
+      console.error('An error occurred when trying to execute the query:', err);
+      res.status(500).send('An error occurred when trying to manipulate data from the database.');
       return;
     }
+    // Query success
     else {
-      res.status(200).json({ message: 'Se elimino el vehiculo correctamente.'});
+      res.status(200).json({ message: 'Vehicle deleted successfully.'});
       return;
     }
   });
 });
 
-// Ruta para agregar correspondencia
-// Link ejemplo: /add_mail/101/1/Letters//:i_notified
+// Route: Add correspondence
+// Example: /add_mail/101/1/Letters//:i_notified
 router.get('/add_mail/:apt_recipient/:hu_recipient/:m_type/:a_time/:i_notified', (req, res) => {
 
-  // Conseguir parametros desde el link
+  // Fetch the parameters from the previous link
   const { apt_recipient, hu_recipient, m_type, a_time, i_notified } = req.params;
 
-  // Realizar Query
+  // Create the query with the add_mail stored procedure
   const query = `CALL add_mail(${apt_recipient}, ${hu_recipient}, "${m_type}", "${a_time}", ${i_notified})`;
 
-  // Encabezados CORS
+  // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
 
-  // Hacer llamado a la BBDD
+  // Execute the query (call to the database)
   connection.query(query, (err, results, fields) => {
+    // Query failed
     if (err) {
-      console.error('Error al ejecutar la consulta:', err);
-      res.status(500).json({ err: 'Ocurrió un error al procesar la solicitud.' });
+      console.error('An error occurred when trying to execute the query:', err);
+      res.status(500).json({ err: 'An error occurred when trying to manipulate data onto the database.' });
       return;
-    } else {
-      console.log('Se agregó el visitante correctamente.');
-      res.status(200).json({ message: 'Se agregó el visitante correctamente.' });
+    }
+    // Query success
+    else {
+      console.log('Correspondence added succesfully.');
+      res.status(200).json({ message: 'Correspondence added succesfully.' });
       return;
     }
   });
 });
 
-// Ruta para obtener datos de correspondencia sin reclamar
+// Route: Unclaimed Correspondence
 router.get('/unclaimed_correspondence', (req, res) => {
 
-  // Realizar Query
+  // Create query with the unclaimed_correspondence view
   const query = 'SELECT * FROM unclaimed_correspondence;';
 
-  // Encabezados CORS
+  // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
 
-  // Hacer llamado a la BBDD
+  // Execute the query (call to the database)
   connection.query(query, (err, rows) => {
+    // Query failed
     if (err) {
-      console.error('Error al ejecutar la consulta:', err);
-      res.status(500).send('Error al obtener datos desde la base de datos');
+      console.error('An error occurred when trying to execute the query:', err);
+      res.status(500).send('An error occurred when trying to fetch data from the database.');
       return;
-    } else {
-      res.json(rows); // Enviar los datos como JSON al cliente
+    }
+    // Query success
+    else {
+      res.json(rows); // Send data as .json to the client
       return;
     }
   });
 });
 
-// Ruta para marcar correspondencia como reclamada 
+// Route: Mark correspondence as claimed 
 router.get('/is_claimed/:id', (req, res) => {
 
-  // Conseguir parametros desde el link
+  // Fetch parameters from the previous link
   const {id} = req.params;
 
-  // Realizar Query
+  // Create the query calling the update_mail_to_claimed stored procedure
   const query = `CALL update_mail_to_claimed(${id})`;
 
-  // Encabezados CORS
+  // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
 
-  // Hacer llamado a la BBDD
+  // Execute the query (call to the database)
   connection.query(query, [id], (err, rows) => {
+    // Query failed
     if (err) {
-      res.status(500).send('Error al actualizar los datos en la base de datos');
+      res.status(500).send('An error occurred when trying to update the data from the database.');
       return;
     }
-    // Verificar si se actualizó correctamente
+    // Verify if update was successful
     if (res.affectedRows === 0) {
-      res.status(404).send(`No se encontró la correspondencia con el ID ${id}`);
+      res.status(404).send(`No correspondence found under the ID ${id}`);
       return;
     } else {
-      // Envía una respuesta exitosa
-      res.status(200).send(`Se marcó la correspondencia con el ID ${id} como reclamada`);
+      // Send a success response
+      res.status(200).send(`Correspondence under the ID ${id} marked as claimed.`);
       return;
     }
   });
 });
 
-// Ruta para el login
+// Route: Login
 router.get('/login/:username', (req, res) => {
-  // Obtener username
+  // Fetch the username
   const username = req.params.username;
 
-  // Realizar la consulta para verificar si el usuario es valido y conseguir los datos
+  // Create the query to verify if the username is valid & fetch the data associated
   const query = 'SELECT * FROM login_system WHERE username = ?';
 
-  // Encabezados CORS
+  // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
 
-  // Hacer llamado a la BBDD
+  // Execute query (call to the database)
   connection.query(query, username, (err, rows) => {
+    // Query failed
     if (err) {
-      console.error('Error al ejecutar la consulta:', err);
-      res.status(500).send('Error al autenticar al usuario');
+      console.error('An error occurred when trying to execute the query:', err);
+      res.status(500).send('An error occurred when trying to authenticate the user.');
       return;
-    } else {
-      res.json(rows); // Enviar los datos como JSON al cliente
+    }
+    // Query success
+    else {
+      res.json(rows); // Send data as .json to the client
       return;
     }
     }
   );
 });
 
-// Ruta para cerrar sesión
+// Route: Logout
 router.get('/logout', (req, res) => {
-  res.clearCookie('token'); // Ejemplo para borrar una cookie llamada 'token'
-  res.status(200).send('Sesión cerrada exitosamente');
+  res.clearCookie('token'); // Example: Delete cookie 'token'
+  res.status(200).send('You have logged out successfully.');
 });
 
 
-// Ruta para conseguir el token
+// Route: Retrieve token
 router.get('/token/:username', (req, res) => {
 
-  // Obtener username y password
+  // Fetch username and password
   const username = req.params.username;
 
-  // Encabezados CORS
+  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
 
-  // Crear y firmar token
+  // Create and sign token
   const token = jwt.sign({username}, "Stack", {
-    expiresIn: '6m' // Tiempo de expiracion
+    expiresIn: '6m' // Expires after...
   });
 
-  // Enviar token
-  res.cookie('token', token, { httpOnly: true }); // HttpOnly para entregar mayor seguridad
+  // Send token (HttpOnly for extra security)
+  res.cookie('token', token, { httpOnly: true });
   res.send({token});
 });
 
-// Iniciar el servidor
+// Start the server
 app.use('/.netlify/functions/api', router);
 module.exports.handler = serverless(app);

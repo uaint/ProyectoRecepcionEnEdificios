@@ -5,12 +5,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import i18n from '../i18n';
 import '../App.css';
 
-// Estilo de la Navbar
+// Navbar style
 const navbarStyle = {
   textAlign: 'center',
 }
 
-// Boton para cambiar el idioma
+// Button to change language (i18n package)
 const NavbarConcierge = () => {
   const { t } = useTranslation();
   const handleLanguageChange = (newLanguage) => {
@@ -18,7 +18,7 @@ const NavbarConcierge = () => {
   };
 
 
-  // Cerrar sesión y liminar el token del almacenamiento local y redirigir a la página de inicio de sesión
+  // Logout and delete token from local storage. Afterwards, redirect to login page.
   const handleSignOut = () => {
     localStorage.removeItem('token');
     window.location.href = '/login';
