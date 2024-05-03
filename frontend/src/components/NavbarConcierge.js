@@ -25,8 +25,8 @@ const NavbarConcierge = () => {
   };
 
   return (
-    <nav class="navbar navbar-expand-lg bg-body-tertiary mb-3 fixed-top" style={navbarStyle}>
-      <div class="container-fluid">
+    <nav className="navbar navbar-expand-lg bg-body-tertiary mb-3 fixed-top" style={navbarStyle}>
+      <div className="container-fluid">
         <div className="btn-group navbar-brand" role="group" style={navbarStyle}>
           <button
               type="button"
@@ -43,47 +43,47 @@ const NavbarConcierge = () => {
               EN
           </button>
         </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-          <ul class="navbar-nav">
-          <li class="nav-item dropdown me-4">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <div className="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+          <ul className="navbar-nav">
+          <li className="nav-item dropdown me-4">
+              <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {t('navbarConcierge.admin')}
               </a>
-              <ul class="dropdown-menu" style={navbarStyle}>
-              <Link class="nav-link" to="/admincorrespondence">{t('navbarConcierge.adminCorrespondence')}</Link>
-              <Link class="nav-link" to="/adminfrequentvisits">{t('navbarConcierge.adminFrequentVisits')}</Link>
-              <Link class="nav-link" to="/adminparking">{t('navbarConcierge.adminParking')}</Link>
+              <ul className="dropdown-menu" style={navbarStyle}>
+              <Link className="nav-link" to="/admincorrespondence">{t('navbarConcierge.adminCorrespondence')}</Link>
+              <Link className="nav-link" to="/adminfrequentvisits">{t('navbarConcierge.adminFrequentVisits')}</Link>
+              <Link className="nav-link" to="/adminparking">{t('navbarConcierge.adminParking')}</Link>
               </ul>
             </li>
-            <li class="nav-item dropdown me-4">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <li className="nav-item dropdown me-4">
+              <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {t('navbarConcierge.searchPerson')}
               </a>
-              <ul class="dropdown-menu" style={navbarStyle}>
-                <li><Link class="dropdown-item" to="/searchpersonbyrut">{t('navbarConcierge.searchByRut')}</Link></li>
-                <li><Link class="dropdown-item" to="/scanid">{t('navbarConcierge.scanID')}</Link></li>
+              <ul className="dropdown-menu" style={navbarStyle}>
+                <li><Link className="dropdown-item" to="/searchpersonbyrut">{t('navbarConcierge.searchByRut')}</Link></li>
+                <li><Link className="dropdown-item" to="/scanid">{t('navbarConcierge.scanID')}</Link></li>
               </ul>
             </li>
-            <li class="nav-item dropdown me-4">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <li className="nav-item dropdown me-4">
+              <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {t('navbarConcierge.new')}
               </a>
-              <ul class="dropdown-menu" style={navbarStyle}>
-              <Link class="nav-link" to="/newvisitform">{t('navbarConcierge.newVisit')}</Link>
-              <Link class="nav-link" to="/newvehicleform">{t('navbarConcierge.newVehicle')}</Link>
+              <ul className="dropdown-menu" style={navbarStyle}>
+              <Link className="nav-link" to="/newvisitform">{t('navbarConcierge.newVisit')}</Link>
+              <Link className="nav-link" to="/newvehicleform">{t('navbarConcierge.newVehicle')}</Link>
               </ul>
             </li>
-            <li class="nav-item me-4">
-              <Link class="nav-link" to="/adminmessages">{t('navbarConcierge.messages')}</Link>
+            <li className="nav-item me-4">
+              <Link className="nav-link" to="/adminmessages">{t('navbarConcierge.messages')}</Link>
             </li>
-            <li class="nav-item me-4">
-              <Link class="nav-link" to="/configadmin">{t('navbarConcierge.config')}</Link>
+            <li className="nav-item me-4">
+              <Link className="nav-link" to="/configadmin">{t('navbarConcierge.config')}</Link>
             </li>
-            <li class="nav-item me-4">
-              <Link class="nav-link" to="/login" onClick={handleSignOut}>{t('navbarConcierge.signOut')}</Link>
+            <li className="nav-item me-4">
+              <Link className="nav-link" to="/login" onClick={handleSignOut}>{t('navbarConcierge.signOut')}</Link>
             </li>
             <li>
             </li>
