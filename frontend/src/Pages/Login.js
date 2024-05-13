@@ -39,7 +39,7 @@ const Login = (props) => {
             return;
         }
         // Message for short password
-        if (password.length < 8) {
+        if (password.length < 4) {
             setPasswordError(t('login.shortPasswordError'));
             return;
         }

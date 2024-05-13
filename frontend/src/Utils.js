@@ -124,4 +124,31 @@ function WhatsAppMsg(data, inhabitants) {
   return error
 }
 
-export { parseJwt, formatDateLarge, formatDate, timeAlerts, whatsAppDate, WhatsAppMsg };
+function EmailMsg(data, inhabitants) {
+
+  const fechamsg = whatsAppDate(data.timeOfArrival);
+
+  for (let i = 0; i < inhabitants.length; i++) {
+
+    const inhabitant = inhabitants[i];
+    const name = inhabitant.first_name;
+    const last_name = inhabitant.last_name;
+    const email = inhabitant.email;
+
+    const data = {
+      service_id: "default_service",
+      template_id: "template_fphdsb6",
+      user_id: "KjPIPF-_UblYm5q8y",
+      template_params: {
+        emailjs_name: name,
+        emailjs_last_name: last_name,
+        emailjs_date: fechamsg,
+        emailjs_email: email
+      }
+    };
+    const url = "https://api.emailjs.com/api/v1.0/email/send";
+    axios.post(url, data);
+  }
+}
+
+export { parseJwt, formatDateLarge, formatDate, timeAlerts, whatsAppDate, WhatsAppMsg, EmailMsg };
