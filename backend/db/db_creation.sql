@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS `roentgenium`.`inhabitants` (
   `run` INT NOT NULL,
   `run_vd` TINYINT(1) NOT NULL,
   `contact_number` VARCHAR(15) NOT NULL,
+  `email` VARCHAR(63) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `run_UNIQUE` (`run` ASC) VISIBLE)
 ENGINE = InnoDB
@@ -309,6 +310,36 @@ USE `roentgenium`$$
 CREATE PROCEDURE `search_visitor_run`(IN search_run INT)
 BEGIN
     SELECT * FROM visitors WHERE run = search_run;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- function calculate_age_visitor
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE FUNCTION calculate_age_visitor(person_id INT) RETURNS INT
+BEGIN
+    DECLARE dob DATE;
+    SELECT birth_date INTO dob FROM visitors WHERE id = person_id;
+    RETURN YEAR(CURDATE()) - YEAR(dob) - (DATE_FORMAT(CURDATE(), '%m%d') < DATE_FORMAT(dob, '%m%d'));
+END;$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- function count_unclaimed_mails_by_unit_apartment
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE FUNCTION count_unclaimed_mails_by_unit_apartment(housing_unit_id INT, apartment_id INT) RETURNS INT
+BEGIN
+    DECLARE unclaimed_count INT;
+    SELECT COUNT(*) INTO unclaimed_count FROM mail WHERE is_claimed = 0 AND housing_unit_recipient = housing_unit_id AND apartment_recipient = apartment_id;
+    RETURN unclaimed_count;
 END$$
 
 DELIMITER ;
