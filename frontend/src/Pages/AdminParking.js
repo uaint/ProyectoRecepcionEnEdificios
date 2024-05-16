@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FormParking from '../components/FormParking';
 import InfoParking from '../components/InfoParking';
-import { formatDate } from '../Utils.js';
 
 const AdminParking = () => {
 
   // General configurations
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
   // Initiate/Create parked vehicles
   const [parking, setParking] = useState([]);
