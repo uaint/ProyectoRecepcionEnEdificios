@@ -195,6 +195,12 @@
       "personArrival": "The person 'PERSON' arrived at 'DATE'.",
       "parkingOccupied": "The parking spot 'PARKING' is occupied by 'VISITOR_NAME'. It must be vacated in 'REMAINING_TIME'."
     },
+    "ScanID": {
+      "title": "Scan ID",
+      "uploadbutton": "Upload",
+      "noFileChosen": "No file chosen",
+      "uploadedInfo": "File uploaded"
+    },
     "SearchPersonByRut": {
       "searchByRut": "Search Person by RUT",
       "rutLabel": "RUT:",

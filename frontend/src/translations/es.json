@@ -195,6 +195,12 @@
     "personArrival": "La persona 'PERSONA' llegó a las 'FECHA'.",
     "parkingOccupied": "El estacionamiento 'ESTACIONAMIENTO está ocupado por 'NOMBRE_VISITA'. Debe ser desocupado en 'REMAINING_TIME'."
   },
+  "ScanID": {
+    "title": "Escanear Carnet",
+    "uploadbutton": "Subir Imagen",
+    "noFileChosen": "Ningún archivo seleccionado",
+    "uploadedInfo": "Imagen subida correctamente"
+  },
   "SearchPersonByRut": {
     "searchByRut": "Buscar Persona por RUT",
     "rutLabel": "RUT:",

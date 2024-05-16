@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import '../App.css'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-/* to be developed */
+// to be developed
 const SearchPersonByRut = () => {
   const { t } = useTranslation();
   const [rut, setRut] = useState('');
   const [personData, setPersonData] = useState(null);
+  const [showData, setShowData] = useState(false);
 
   const handleSearch = () => {
-    // Simulando una respuesta con datos de la persona encontrada
     const mockPersonData = {
       rut: rut,
       firstName: 'John',
@@ -23,38 +21,45 @@ const SearchPersonByRut = () => {
       Quantity_of_visits: 2,
     };
     setPersonData(mockPersonData);
+    setShowData(true); 
   };
 
   return (
-    <div className="formContainer">
-      <h2>{t('SearchPersonByRut.searchByRut')}</h2>
-      <div className="formGroup">
-        <label htmlFor="rut">{t('SearchPersonByRut.rutLabel')}</label>
-        <input
-          type="text"
-          id="rut"
-          name="rut"
-          value={rut}
-          onChange={(e) => setRut(e.target.value)}
-          required
-          className="inputField"
-        />
-      </div>
-      <button type="button" onClick={handleSearch} className="submitButton">
-        {t('SearchPersonByRut.searchButton')}
-      </button>
-      {personData && (
-        <div className="personInfo">
-          <h3>{t('SearchPersonByRut.personFound')}</h3>
-          <p><strong>{t('SearchPersonByRut.rut')}:</strong> {personData.rut}</p>
-          <p><strong>{t('SearchPersonByRut.name')}:</strong> {personData.firstName} {personData.lastName}</p>
-          <p><strong>{t('SearchPersonByRut.birthDate')}:</strong> {personData.birthDate}</p>
-          <p><strong>{t('SearchPersonByRut.address')}:</strong> {personData.address}</p>
-          <p><strong>{t('SearchPersonByRut.phone')}:</strong> {personData.phone}</p>
-          <p><strong>{t('SearchPersonByRut.apartmentsVisited')}:</strong> {personData.apartments_visited}</p>
-          <p><strong>{t('SearchPersonByRut.quantity')}:</strong> {personData.Quantity_of_visits}</p>
+    <div className="formContainer d-flex align-items-center justify-content-center vh-100">
+      <div className="card p-4">
+        <h3 className="mb-4 text-center">{t('SearchPersonByRut.searchByRut')}</h3>
+        <div className="form-group row justify-content-center">
+          <label htmlFor="rut" className="col-auto col-form-label">{t('SearchPersonByRut.rutLabel')}</label>
+          <div className="col-auto">
+            <input
+              type="text"
+              id="rut"
+              name="rut"
+              value={rut}
+              onChange={(e) => setRut(e.target.value)}
+              required
+              className="form-control"
+            />
+          </div>
         </div>
-      )}
+        <div className="mt-4 text-center">
+          <button type="button" onClick={handleSearch} className="btn btn-primary">
+            {t('SearchPersonByRut.searchButton')}
+          </button>
+        </div>
+        {showData && personData && (
+          <div className="personInfo mt-4 border p-4">
+            <h3>{t('SearchPersonByRut.personFound')}</h3>
+            <p><strong>{t('SearchPersonByRut.rut')}:</strong> {personData.rut}</p>
+            <p><strong>{t('SearchPersonByRut.name')}:</strong> {personData.firstName} {personData.lastName}</p>
+            <p><strong>{t('SearchPersonByRut.birthDate')}:</strong> {personData.birthDate}</p>
+            <p><strong>{t('SearchPersonByRut.address')}:</strong> {personData.address}</p>
+            <p><strong>{t('SearchPersonByRut.phone')}:</strong> {personData.phone}</p>
+            <p><strong>{t('SearchPersonByRut.apartmentsVisited')}:</strong> {personData.apartments_visited}</p>
+            <p><strong>{t('SearchPersonByRut.quantity')}:</strong> {personData.Quantity_of_visits}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

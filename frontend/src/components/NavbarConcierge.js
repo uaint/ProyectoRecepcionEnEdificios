@@ -25,7 +25,7 @@ const NavbarConcierge = () => {
   };
 
   return (
-    <nav class="navbar navbar-expand-lg bg-body-tertiary mb-3 fixed-top" style={navbarStyle}>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary mb-5 fixed-top">
       <div class="container-fluid">
         <div className="btn-group navbar-brand" role="group" style={navbarStyle}>
           <button
