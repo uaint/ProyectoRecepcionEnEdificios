@@ -4,7 +4,7 @@ import { formatDate } from '../Utils.js';
 // Suponiendo que tienes esta función definida en algún lugar de tu proyecto
 function freeparking(license_plate) {
 
-    fetch(`https://dduhalde.online/.netlify/functions/api/delete_vehicle/${license_plate}`)
+    fetch(`https://dduhalde.online/.netlify/functions/api/free_parking/${license_plate}`)
         .then(response => {
         if (!response.ok) {
             throw new Error('An error occured trying to remove a vehicle.');

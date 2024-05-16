@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 
 const FormParking = ({ parkingId }) => {
-    const [RUT, setRUT] = useState('');
     const [licensePlate, setLicensePlate] = useState('');
-    const [parkedSince, setParkedSince] = useState('');
     const handleSubmit = (e) => {
         e.preventDefault();
 
         // Call API to add visitor
-        fetch(`https://dduhalde.online/.netlify/functions/api/add_vehicle/${RUT}/${licensePlate}/${parkingId}/${parkedSince}`)
+        fetch(`https://dduhalde.online/.netlify/functions/api/assing_parking/${licensePlate}/${parkingId}`)
         .then(response => {
         if (!response.ok) {
             throw new Error('An error occured trying to add a vehicle.');
@@ -29,18 +27,6 @@ const FormParking = ({ parkingId }) => {
                             <h2 className="card-title">Add Car to Parking {parkingId}</h2>
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
-                                    <label htmlFor="RUT" className="form-label">RUT</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="RUT"
-                                        name="RUT"
-                                        value={RUT}
-                                        onChange={(e) => setRUT(e.target.value)}
-                                        required
-                                    />
-                                </div>
-                                <div className="mb-3">
                                     <label htmlFor="license_plate" className="form-label">License Plate</label>
                                     <input
                                         type="text"
@@ -49,18 +35,6 @@ const FormParking = ({ parkingId }) => {
                                         name="license_plate"
                                         value={licensePlate}
                                         onChange={(e) => setLicensePlate(e.target.value)}
-                                        required
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="parked_since" className="form-label">Parked Since</label>
-                                    <input
-                                        type="datetime-local"
-                                        className="form-control"
-                                        id="parked_since"
-                                        name="parked_since"
-                                        value={parkedSince}
-                                        onChange={(e) => setParkedSince(e.target.value)}
                                         required
                                     />
                                 </div>

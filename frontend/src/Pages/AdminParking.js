@@ -27,12 +27,16 @@ const AdminParking = () => {
   // Función para inicializar los colores de los botones según los estacionamientos utilizados
   useEffect(() => {
     parking.forEach(parking_ => {
-        const button = document.getElementById(parking_.parked_at);
-        if (button) {
-            button.classList.remove('btn-success');
-            button.classList.add('btn-danger');
-            button.addEventListener("click", () => showInfo(parking_));
-          };
+      const button = document.getElementById(parking_.parked_at);
+      if (button) {
+        const newButton = document.createElement("button");
+        newButton.id = parking_.parked_at;
+        newButton.type = "button";
+        newButton.className = "btn btn-danger p-5 fs-1 m-0 border-4 border-warning";
+        newButton.textContent = parking_.parked_at;
+        newButton.addEventListener("click", () => HandleShowInfo(parking_));
+        button.parentNode.replaceChild(newButton, button);
+      }
     });
   }, [parking]);
 
@@ -40,46 +44,18 @@ const AdminParking = () => {
   const [selectedParkingId, setSelectedParkingId] = useState(null);
 
   const HandleShowForm = (parkingId) => {
-        setShowForm(true);
-        setSelectedParkingId(parkingId);
+      setShowInfo(false);
+      setSelectedParkingId(parkingId);
+      setShowForm(true);
   };
 
-  // Funcion para el boton de mostrar informacion
-  function showInfo(data) {
-      // Mostrar la información adicional en algún lugar de la página
-      const infoContainer = document.getElementById('info-container');
-      infoContainer.innerHTML = `
-          <div class="container">
-              <div class="row justify-content-center">
-                  <div class="col-md-6">
-                      <div class="card">
-                          <div class="card-body">
-                              <h2 class="card-title mb-3">${data.full_name}</h2>
-                              <p class="card-text">License Plate: ${data.license_plate}</p>
-                              <p class="card-text">Parked Since: ${formatDate(data.parked_since)}</p>
-                              <div class="d-grid gap-1">
-                                  <button type="submit" class="btn btn-warning" onclick="freeparking(${data.parked_at})">Free Parking</button>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      `;
-  }
+  const [showInfo, setShowInfo] = useState(false);
+  const [selectedParkingData, setSelectedParkingData] = useState(null);
 
-  function freeparking(parked_at) {
-      console.log("bait", parked_at)
-  }
-
-  const handleDelete = (plate) => {
-    // Realizar la solicitud DELETE al servidor, para eliminar vehiculo con su pantente
-    fetch(`https://dduhalde.online/.netlify/functions/api/delete_vehicle/${plate}`)
-    }
-
-  // Boton para redireccionar a agregar nuevo vehiculo
-  const handleButtonClick = () => {
-      navigate('/newVehicleForm');
+  const HandleShowInfo = (parking_) => {
+    setShowForm(false);
+    setSelectedParkingData(parking_);
+    setShowInfo(true);
   };
 
   return (
@@ -103,7 +79,8 @@ const AdminParking = () => {
               </div>
           </div>
           <div id="info-container" class="container mt-2 mb-5">
-          {showForm && <FormParking parkingId={selectedParkingId} />} {/* Mostrar el formulario solo si showForm es true */}
+            { showForm && <FormParking parkingId={selectedParkingId} /> }
+            { showInfo && <InfoParking data={selectedParkingData} /> }
           </div>
       </div>
   );
