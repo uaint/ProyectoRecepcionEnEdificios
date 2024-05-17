@@ -1,66 +1,55 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Collapse } from 'react-bootstrap';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // TODO
 const ConfigAdmin = () => {
   const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState(null);
 
-  // Create panels
-  const [showCreateNewUser, setShowCreateNewUser] = useState(false);
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showAdminUsersRoles, setShowAdminUsersRoles] = useState(false);
-
-  // Create the handle for each pannel
-  const handleCreateNewUser = () => {
-    setShowCreateNewUser(!showCreateNewUser);
-    setShowNotifications(false);
-    setShowAdminUsersRoles(false);
-  };
-  const handleToggleNotifications = () => {
-    setShowNotifications(!showNotifications);
-    setShowCreateNewUser(false);
-    setShowAdminUsersRoles(false);
-  };
-  const handleToggleAdminUsersRoles = () => {
-    setShowAdminUsersRoles(!showAdminUsersRoles);
-    setShowCreateNewUser(false);
-    setShowNotifications(false);
+  const handleToggleTab = (tabName) => {
+    setActiveTab(activeTab === tabName ? null : tabName);
   };
 
   return (
-    <div class="container">
-      <h1 class="text-center">{t('configAdmin.configuration')}</h1>
-      <div class="d-grid gap-2 d-md-block">
-        <button class="btn btn-primary config-button" onClick={handleToggleAdminUsersRoles}>{t('configAdmin.adminUsersRoles')}</button>
-        <button class="btn btn-primary config-button" onClick={handleCreateNewUser}>{t('configAdmin.newUser')}</button>
-        <button class="btn btn-primary config-button" onClick={handleToggleNotifications}>{t('configAdmin.notifications')}</button>
+    <div className="container d-flex justify-content-center align-items-center vh-100">
+      <div className="text-center">
+        <h1>{t('configAdmin.configuration')}</h1>
+        <button className="btn btn-primary config-button ms-3" onClick={() => handleToggleTab('adminUsersRoles')}>
+          {t('configAdmin.adminUsersRoles')}
+        </button>
+        <button className="btn btn-primary config-button ms-3" onClick={() => handleToggleTab('createNewUser')}>
+          {t('configAdmin.newUser')}
+        </button>
+        <button className="btn btn-primary config-button ms-3" onClick={() => handleToggleTab('notifications')}>
+          {t('configAdmin.notifications')}
+        </button>
+
+        <div className="mt-3">
+          <Collapse in={activeTab === 'adminUsersRoles'}>
+            <div className="card">
+              <h2>{t('configAdmin.adminUsersRolesTitle')}</h2>
+              {/* administración de usuarios y roles aquí, tbd */}
+            </div>
+          </Collapse>
+
+          <Collapse in={activeTab === 'createNewUser'}>
+            <div className="card">
+              <h2>{t('configAdmin.createNewUserTitle')}</h2>
+              {/* info nuevo usuario, tbd */}
+            </div>
+          </Collapse>
+
+          <Collapse in={activeTab === 'notifications'}>
+            <div className="card">
+              <h2>{t('configAdmin.notificationsTitle')}</h2>
+              {/* notificaciones, tbd */}
+            </div>
+          </Collapse>
+        </div>
       </div>
-
-      {/* Show create new user panel */}
-      {showCreateNewUser && (
-        <div class="card mt-3">
-          <h2>{t('configAdmin.createNewUserTitle')}</h2>
-          {/* TODO new user fields */}
-        </div>
-      )}
-
-      {/* Show notifications panel */}
-      {showNotifications && (
-        <div class="card mt-3">
-          <h2>{t('configAdmin.notificationsTitle')}</h2>
-          {/* TODO notifications field */}
-        </div>
-      )}
-
-      {/* Show panel for managing users & roles */}
-      {showAdminUsersRoles && (
-        <div class="card mt-3">
-          <h2>{t('configAdmin.adminUsersRolesTitle')}</h2>
-          {/* TODO managing fields */}
-        </div>
-      )}
     </div>
   );
 };

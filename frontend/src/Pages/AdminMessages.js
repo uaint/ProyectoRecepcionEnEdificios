@@ -1,9 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// TODO
 const AdminMessages = () => {
   const { t } = useTranslation();
 
@@ -28,24 +26,38 @@ const AdminMessages = () => {
       contact: '987654321',
       message: t('adminMessages.message2'),
     },
+    {
+      id: 3,
+      name: 'Ignacio',
+      lastName: 'Perez',
+      rut: '22.136.789-K',
+      building: 'Building B',
+      apartment: '7B',
+      contact: '944755869',
+      message: t('adminMessages.message2'),
+    },
   ];
 
   return (
-    <div className="admin-messages-container">
-      <h1>{t('adminMessages.adminMessages')}</h1>
-      {messages.map((user) => (
-        <div key={user.id} className="user-container">
-          <div className="user-info">
-            <p><span className="label">{t('adminMessages.labelName')}</span> {user.name}</p>
-            <p><span className="label">{t('adminMessages.labelLastName')}</span> {user.lastName}</p>
-            <p><span className="label">{t('adminMessages.labelRut')}</span> {user.rut}</p>
-            <p><span className="label">{t('adminMessages.labelBuilding')}</span> {user.building}</p>
-            <p><span className="label">{t('adminMessages.labelApartment')}</span> {user.apartment}</p>
-            <p><span className="label">{t('adminMessages.labelContact')}</span> {user.contact}</p>
+    <div className="container mt-5">
+      <h1 className="mt-5 mb-4">{t('adminMessages.adminMessages')}</h1>
+      <div className="row">
+        {messages.map((user) => (
+          <div key={user.id} className="col-md-6 mb-4">
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">{user.name} {user.lastName}</h5>
+                <p className="card-text"><strong>{t('adminMessages.labelRut')}</strong> {user.rut}</p>
+                <p className="card-text"><strong>{t('adminMessages.labelBuilding')}</strong> {user.building}</p>
+                <p className="card-text"><strong>{t('adminMessages.labelApartment')}</strong> {user.apartment}</p>
+                <p className="card-text"><strong>{t('adminMessages.labelContact')}</strong> {user.contact}</p>
+                <hr />
+                <p className="card-text">{user.message}</p>
+              </div>
+            </div>
           </div>
-          <div className="user-message">{user.message}</div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
