@@ -616,3 +616,15 @@ a:hover {
     margin-top: 80px;
   }
 }
+
+/* Hide arrows on number input (Chrome & Chromium, Safari) */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide arrows on number input (Firefox) */
+input[type=number] {
+  -moz-appearance: textfield;
+}

@@ -173,11 +173,11 @@ const NewCorrespondenceForm = () => {
               <form onSubmit={handleSearch}>
                 <div className="mb-3">
                   <label htmlFor="apartment" className="form-label">{t('correspondenceForm.selectApartment')}</label>
-                  <input type="text" className="form-control" id="apartment" name="apartment" value={formData.apartment} onChange={handleChange} required placeholder={t('correspondenceForm.selectApartment')}/>
+                  <input type="number" className="form-control" id="apartment" name="apartment" value={formData.apartment} onChange={handleChange} required placeholder={t('correspondenceForm.selectApartment')}/>
                 </div>
                 <div className="mb-3">
                   <label htmlFor="build" className="form-label">{t('correspondenceForm.selectTower')}</label>
-                  <input type="text" className="form-control" id="build" name="build" value={formData.build} onChange={handleChange} required placeholder={t('correspondenceForm.selectTower')}/>
+                  <input type="number" className="form-control" id="build" name="build" value={formData.build} onChange={handleChange} required placeholder={t('correspondenceForm.selectTower')}/>
                 </div>
                 <div className="d-grid gap-1">
                   <button type="submit" className="btn btn-primary mt-3">{t('correspondenceForm.searchresident')}</button>
