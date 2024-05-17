@@ -218,59 +218,35 @@ router.get('/delete_visitor/:id', (req, res) => {
   });
 });
 
-// Route: Add vehicle
-// Example: /add_vehicle/21123456/ABC123/5/1999-09-09
-router.get('/add_vehicle/:rut/:license_plate/:parket_at/:parket_since', (req, res) => {
+// Route: Assing Parking
+// Example: /add_vehicle/ABC123/5
+router.get('/assing_parking/:license_plate/:parket_at/', (req, res) => {
+  // Fetch license plate
+  const license_plate = req.params.license_plate;
+  const parket_at = req.params.parket_at;
 
-  // Fetch the parameters from the previous link
-  const { rut, license_plate, parket_at, parket_since} = req.params;
+  // Create query with the delete_vehicle stored procedure
+  const query = `CALL assign_parking_spot ("${license_plate}", ${parket_at})`;
 
-  // Create query for searching the visitor's RUN with the help of search_visitor_run stored procedure
-  const query = `CALL search_visitor_run(${rut})`;
-
-  // CORS headers
+  // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
 
   // Execute the query (call to the database)
-  connection.query(query, (err, results, fields) => {
+  connection.query(query, (err, rows) => {
     // Query failed
     if (err) {
-      console.error('There was an error executing the query:', err);
-      res.status(500).json({ err: 'An error occurred when trying to process the request.' });
+      console.error('An error occurred when trying to execute the query:', err);
+      res.status(500).send('An error occurred when trying to manipulate data from the database.');
       return;
     }
-    // Query success (Visitor exists)
+    // Query success
     else {
-      if (results[0].length > 0) {
-        // Fetch visitor's ID
-        const visitorId = results[0][0].id;
-        // Add the vehicle with the add_visitor_vehicle stored procedure
-        const query = `CALL add_visitor_vehicle(${visitorId}, "${license_plate}", "${parket_at}", "${parket_since}")`;
-        connection.query(query, (error, results, fields) => {
-          // Query failed
-          if (error) {
-            console.error('An error occurred when adding the vehicle:', error);
-            res.status(500).json({ error: 'An error occured when trying to process the request.' });
-            return;
-          }
-          // Query success
-          else {
-            res.status(200).json({ message: 'Vehicle added successfully.' });
-            return;
-          }
-        });
-      console.log('Visitor added successfully.');
-      res.status(200).json({ message: 'Visitor added successfully.' });
+      res.status(200).json({ message: 'Vehicle deleted successfully.'});
       return;
     }
-    else {
-      res.status(404).json({ error: 'Error: No visitor found with the provided RUN.' });
-      return;
-    }
-  }
   });
 });
 
@@ -303,13 +279,13 @@ router.get('/parked', (req, res) => {
 });
 
 // Route: Delete vehicle
-router.get('/delete_vehicle/:plate', (req, res) => {
+router.get('/free_parking/:plate', (req, res) => {
 
   // Fetch license plate
   const plate = req.params.plate;
 
   // Create query with the delete_vehicle stored procedure
-  const query = `CALL delete_vehicle("${plate}")`;
+  const query = `CALL free_parking_spot("${plate}")`;
 
   // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -480,7 +456,7 @@ router.get('/token/:username', (req, res) => {
 
   // Create and sign token
   const token = jwt.sign({username}, "Stack", {
-    expiresIn: '6m' // Expires after...
+    expiresIn: '1h' // Expires after...
   });
 
   // Send token (HttpOnly for extra security)
