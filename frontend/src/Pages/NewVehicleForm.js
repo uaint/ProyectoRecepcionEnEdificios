@@ -70,7 +70,7 @@ const NewVehicleForm = () => {
               <form onSubmit={handleSubmit}>
                 <div class="mb-3">
                   <label for="run" class="form-label">{t('vehicleForm.run')}</label>
-                  <input type="text" class="form-control" id="run" name="run" value={formData.run} onChange={handleChange} required placeholder={t('vehicleForm.rutPlaceholder')}/>
+                  <input type="number" class="form-control" id="run" name="run" value={formData.run} onChange={handleChange} required placeholder={t('vehicleForm.rutPlaceholder')}/>
                 </div>
                 <div class="mb-3">
                   <label for="license_plate" class="form-label">{t('vehicleForm.licensePlate')}</label>
@@ -78,7 +78,7 @@ const NewVehicleForm = () => {
                 </div>
                 <div class="mb-3">
                   <label for="parket_at" class="form-label">{t('vehicleForm.parking')}</label>
-                  <input type="text" class="form-control" id="parket_at" name="parket_at" value={formData.parket_at} onChange={handleChange} required/>
+                  <input type="number" class="form-control" id="parket_at" name="parket_at" value={formData.parket_at} onChange={handleChange} required/>
                 </div>
                 <div class="mb-3">
                   <label for="parket_since" class="form-label">{t('vehicleForm.parkedSince')}</label>
