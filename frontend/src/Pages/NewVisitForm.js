@@ -63,6 +63,14 @@ const NewVisitForm = () => {
     });
   };
 
+  // Check for certain characters
+  const handleKeyPress = (e) => {
+    const admittedChars = /^[a-zA-Z\s]+$/;
+    if (!admittedChars.test(e.key)) {
+      e.preventDefault();
+    }
+  }
+
   return (
     <div id="change" className="container">
       <div className="row justify-content-center">
@@ -73,31 +81,31 @@ const NewVisitForm = () => {
               <form onSubmit={handleSubmit}>
                 <div class="mb-3">
                   <label for="firstName" class="form-label">{t('visitForm.firstName')}</label>
-                  <input type="text" class="form-control" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} required />
+                  <input type="text" class="form-control" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} onKeyDown={handleKeyPress} required />
                 </div>
                 <div class="mb-3">
-                  <label for="firstName" class="form-label">{t('visitForm.lastName')}</label>
-                  <input type="text" class="form-control" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} required />
+                  <label for="lastName" class="form-label">{t('visitForm.lastName')}</label>
+                  <input type="text" class="form-control" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} onKeyDown={handleKeyPress} required />
                 </div>
                 <div class="mb-3">
                   <label for="run" class="form-label">{t('visitForm.run')}</label>
-                  <input type="text" class="form-control" id="run" name="run" value={formData.run} onChange={handleChange} required placeholder={t('visitForm.rutPlaceholder')}/>
+                  <input type="number" class="form-control" id="run" name="run" value={formData.run} onChange={handleChange} required placeholder={t('visitForm.rutPlaceholder')}/>
                 </div>
                 <div class="mb-3">
                   <label for="dv" class="form-label">{t('visitForm.dv')}</label>
-                  <input type="text" class="form-control" id="dv" name="dv" value={formData.dv} onChange={handleChange} required placeholder={t('visitForm.dvPlaceholder')}/>
+                  <input type="number" min="0" max="9" class="form-control" id="dv" name="dv" value={formData.dv} onChange={handleChange} required placeholder={t('visitForm.dvPlaceholder')}/>
                 </div>
                 <div class="mb-3">
                   <label for="birthDate" class="form-label">{t('visitForm.birthDate')}</label>
                   <input type="date" class="form-control" id="birthDate" name="birthDate" value={formData.birthDate} onChange={handleChange} required/>
                 </div>
                 <div class="mb-3">
-                  <label for="birthDate" class="form-label">{t('visitForm.apartmentToVisit')}</label>
-                  <input type="text" class="form-control" id="apartmentToVisit" name="apartmentToVisit" value={formData.apartmentToVisit} onChange={handleChange} required/>
+                  <label for="apartmentToVisit" class="form-label">{t('visitForm.apartmentToVisit')}</label>
+                  <input type="number" class="form-control" id="apartmentToVisit" name="apartmentToVisit" value={formData.apartmentToVisit} onChange={handleChange} required/>
                 </div>
                 <div class="mb-3">
                   <label for="buildToVisit" class="form-label">{t('visitForm.buildToVisit')}</label>
-                  <input type="text" class="form-control" id="buildToVisit" name="buildToVisit" value={formData.buildToVisit} onChange={handleChange} required/>
+                  <input type="number" class="form-control" id="buildToVisit" name="buildToVisit" value={formData.buildToVisit} onChange={handleChange} required/>
                 </div>
                 <label for="type" class="form-label">{t('visitForm.type')}</label>
                 <select class="form-select" aria-label="Default select example" value={selectedOption} onChange={handleOptionChange}>
