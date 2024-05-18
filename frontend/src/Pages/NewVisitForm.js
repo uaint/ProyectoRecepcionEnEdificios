@@ -65,8 +65,9 @@ const NewVisitForm = () => {
 
   // Check for certain characters
   const handleKeyPress = (e) => {
-    const admittedChars = /^[a-zA-Z\s]+$/;
-    if (!admittedChars.test(e.key)) {
+    const admittedChars = /^[a-zA-Z\s]+$/.test(e.key);
+    const isBackspace = e.key === 'Backspace'; // Backspace
+    if (!admittedChars && !isBackspace) {
       e.preventDefault();
     }
   }

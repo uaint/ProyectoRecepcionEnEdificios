@@ -29,6 +29,16 @@ const SearchPersonByRut = () => {
     setShowData(true); 
   };
 
+  const handleKeyPress = (e) => {
+    const isAdmittedChar = /^[0-9.-]$/.test(e.key); // Number, dot or dash
+    const isBackspace = e.key === 'Backspace'; // Backspace
+  
+    // Only allow backspace and the allowed characters
+    if (!isAdmittedChar && !isBackspace) {
+      e.preventDefault();
+    }
+  }
+
   return (
     <div className="formContainer d-flex align-items-center justify-content-center vh-100">
       <div className="card p-4">
@@ -42,6 +52,7 @@ const SearchPersonByRut = () => {
               name="rut"
               value={rut}
               onChange={(e) => setRut(e.target.value)}
+              onKeyDown={handleKeyPress}
               required
               className="form-control"
             />
