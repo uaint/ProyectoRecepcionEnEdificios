@@ -352,7 +352,12 @@ DELIMITER $$
 USE `roentgenium`$$
 CREATE PROCEDURE `delete_visitor`(IN v_id INT)
 BEGIN
-	DELETE FROM visitors_log WHERE visitor_id = v_id;
+	IF EXISTS (SELECT 1 FROM vehicles_visitors WHERE visitor_id = v_id) THEN
+        DELETE FROM vehicles_visitors WHERE visitor_id = v_id;
+    END IF;
+	IF EXISTS (SELECT 1 FROM visitors_log WHERE visitor_id = v_id) THEN
+        DELETE FROM visitors_log WHERE visitor_id = v_id;
+    END IF;
 	DELETE FROM visitors WHERE visitors.id = v_id;
 END$$
 
