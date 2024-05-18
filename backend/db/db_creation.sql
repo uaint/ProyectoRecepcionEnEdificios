@@ -345,6 +345,20 @@ END$$
 DELIMITER ;
 
 -- -----------------------------------------------------
+-- procedure delete_visitor
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium`$$
+CREATE PROCEDURE `delete_visitor`(IN v_id INT)
+BEGIN
+	DELETE FROM visitors_log WHERE visitor_id = v_id;
+	DELETE FROM visitors WHERE visitors.id = v_id;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
 -- View `roentgenium`.`vehicle_owners`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `roentgenium`.`vehicle_owners`;

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { formatDate } from '../Utils.js';
+import { formatDate, formatDateLarge } from '../Utils.js';
 
 const AdminFrequentVisits = () => {
 
@@ -66,7 +66,7 @@ const AdminFrequentVisits = () => {
               <td>{formatDate(visitor.birth_date)}</td>
               <td>{visitor.unit_apartment_visited}</td>
               <td>{visitor.visit_type}</td>
-              <td>{formatDate(visitor.last_visit)}</td>
+              <td>{formatDateLarge(visitor.visit_date)}</td>
               <td>
                 <button class="btn btn-danger btn-sm" onClick={() => handleDelete(visitor.visitor_id)}>{t('adminFrequentVisits.delete')}</button>
               </td>
