@@ -151,4 +151,38 @@ function EmailMsg(data, inhabitants) {
   }
 }
 
-export { parseJwt, formatDateLarge, formatDate, timeAlerts, whatsAppDate, WhatsAppMsg, EmailMsg };
+function fistUpper(cadena) {
+  return cadena.charAt(0).toUpperCase() + cadena.slice(1).toLowerCase();
+}
+
+function extractInfo(data) {
+  const apellidoRegex = /APELLIDOS\s+([A-Z]+)/;
+  const nombreRegex = /NOMBRES\s+([A-Z]+)\s+([A-Z]+)/;
+  const runRegex = /RUN\s+([\d\.]+-\w)/;
+  const apellidoMatch = data.match(apellidoRegex);
+  const nombreMatch = data.match(nombreRegex);
+  const runMatch = data.match(runRegex);
+
+  let apellido = apellidoMatch ? `${apellidoMatch[1]}` : null;
+  let nombre = nombreMatch ? nombreMatch[1].trim() : null;
+  let run = runMatch ? runMatch[1] : null;
+  let dv = '';
+
+  apellido = fistUpper(apellido);
+  nombre = fistUpper(nombre);
+
+  if (run !== '') {
+    const runWithoutDots = run.replace(/\./g, '');
+    [run, dv] = runWithoutDots.split('-');
+    dv = dv === 'K' ? '0' : dv;
+  }
+
+  return {
+      apellido,
+      nombre,
+      run,
+      dv
+  };
+}
+
+export { parseJwt, formatDateLarge, formatDate, timeAlerts, whatsAppDate, WhatsAppMsg, EmailMsg, extractInfo };

@@ -5,7 +5,7 @@ import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { formatDate } from '../Utils.js';
 
-const AdminFrequentVisits = () => {
+const AdminVisits = () => {
 
   // General configurations
   const { t } = useTranslation();
@@ -43,19 +43,19 @@ const AdminFrequentVisits = () => {
 
   return (
     <div id="change" class="container">
-          <h1 class="text-center mb-4">{t('adminFrequentVisits.adminFrequentVisits')}</h1>  
+          <h1 class="text-center mb-4">{t('adminVisits.adminVisits')}</h1>  
           <hr class="mb-4"/> 
           <div class="table-responsive">
           <table class="table table-striped table-bordered text-center">
           <thead>
             <tr>
-            <th scope="col">{t('adminFrequentVisits.name')}</th>
-            <th scope="col">{t('adminFrequentVisits.rut')}</th>
-            <th scope="col">{t('adminFrequentVisits.birthDate')}</th>
-            <th scope="col">{t('adminFrequentVisits.apartment')}</th>
-            <th scope="col">{t('adminFrequentVisits.visitType')}</th>
-            <th scope="col">{t('adminFrequentVisits.lastVisit')}</th>
-            <th scope="col">{t('adminFrequentVisits.delete')}</th>
+            <th scope="col">{t('adminVisits.name')}</th>
+            <th scope="col">{t('adminVisits.rut')}</th>
+            <th scope="col">{t('adminVisits.birthDate')}</th>
+            <th scope="col">{t('adminVisits.apartment')}</th>
+            <th scope="col">{t('adminVisits.visitType')}</th>
+            <th scope="col">{t('adminVisits.lastVisit')}</th>
+            <th scope="col">{t('adminVisits.delete')}</th>
           </tr>
         </thead>
         <tbody>
@@ -68,7 +68,7 @@ const AdminFrequentVisits = () => {
               <td>{visitor.visit_type}</td>
               <td>{formatDate(visitor.last_visit)}</td>
               <td>
-                <button class="btn btn-danger btn-sm" onClick={() => handleDelete(visitor.visitor_id)}>{t('adminFrequentVisits.delete')}</button>
+                <button class="btn btn-danger btn-sm" onClick={() => handleDelete(visitor.visitor_id)}>{t('adminVisits.delete')}</button>
               </td>
             </tr>
           ))}
@@ -76,10 +76,10 @@ const AdminFrequentVisits = () => {
       </table>
       </div>
       <div class="text-center mt-4 mb-5">
-        <button class="btn btn-primary" onClick={handleButtonClick}>{t('adminFrequentVisits.addFrequentVisit')}</button>
+        <button class="btn btn-primary" onClick={handleButtonClick}>{t('adminVisits.addVisit')}</button>
       </div>
       </div>
   );
 };
 
-export default AdminFrequentVisits;
+export default AdminVisits;

@@ -309,6 +309,93 @@ router.get('/free_parking/:plate', (req, res) => {
   });
 });
 
+// Route: Add vehicle
+// Example: /add_vehicle/21123456/ABC123/5/1999-09-09
+router.get('/add_vehicle/:rut/:license_plate/:parket_at/:parket_since', (req, res) => {
+
+  // Fetch the parameters from the previous link
+  const { rut, license_plate, parket_at, parket_since} = req.params;
+
+  // Create query for searching the visitor's RUN with the help of search_visitor_run stored procedure
+  const query = `CALL search_visitor_run(${rut})`;
+
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Execute the query (call to the database)
+  connection.query(query, (err, results, fields) => {
+    // Query failed
+    if (err) {
+      console.error('There was an error executing the query:', err);
+      res.status(500).json({ err: 'An error occurred when trying to process the request.' });
+      return;
+    }
+    // Query success (Visitor exists)
+    else {
+      if (results[0].length > 0) {
+        // Fetch visitor's ID
+        const visitorId = results[0][0].id;
+        // Add the vehicle with the add_visitor_vehicle stored procedure
+        const query = `CALL add_visitor_vehicle(${visitorId}, "${license_plate}", "${parket_at}", "${parket_since}")`;
+        connection.query(query, (error, results, fields) => {
+          // Query failed
+          if (error) {
+            console.error('An error occurred when adding the vehicle:', error);
+            res.status(500).json({ error: 'An error occured when trying to process the request.' });
+            return;
+          }
+          // Query success
+          else {
+            res.status(200).json({ message: 'Vehicle added successfully.' });
+            return;
+          }
+        });
+      console.log('Visitor added successfully.');
+      res.status(200).json({ message: 'Visitor added successfully.' });
+      return;
+    }
+    else {
+      res.status(404).json({ error: 'Error: No visitor found with the provided RUN.' });
+      return;
+    }
+  }
+  });
+});
+
+// Route: Delete vehicle
+// Example: /delete_vehicle/ABC123
+router.get('/delete_vehicle/:plate', (req, res) => {
+
+  // Fetch license plate
+  const plate = req.params.plate;
+
+  // Create query with the delete_vehicle stored procedure
+  const query = `CALL delete_vehicle("${plate}")`;
+
+  // CORS Headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  // Execute the query (call to the database)
+  connection.query(query, (err, rows) => {
+    // Query failed
+    if (err) {
+      console.error('An error occurred when trying to execute the query:', err);
+      res.status(500).send('An error occurred when trying to manipulate data from the database.');
+      return;
+    }
+    // Query success
+    else {
+      res.status(200).json({ message: 'Vehicle deleted successfully.'});
+      return;
+    }
+  });
+});
+
 // Route: Add correspondence
 // Example: /add_mail/101/1/Letters//:i_notified
 router.get('/add_mail/:apt_recipient/:hu_recipient/:m_type/:a_time/:i_notified', (req, res) => {

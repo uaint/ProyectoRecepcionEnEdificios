@@ -46,7 +46,7 @@ const NavbarResident = () => {
               <Link class="nav-link" to="/notifications">{t('navbarResident.notifications')}</Link>
             </li>
             <li class="nav-item">
-              <Link class="nav-link" to="/adminfrequentvisits">{t('navbarResident.adminFrequentVisits')}</Link>
+              <Link class="nav-link" to="/adminvisits">{t('navbarResident.adminVisits')}</Link>
             </li>
             <li class="nav-item">
               <Link class="nav-link" to="/messages">{t('navbarResident.messages')}</Link>

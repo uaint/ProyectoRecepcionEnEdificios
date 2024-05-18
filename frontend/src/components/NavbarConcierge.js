@@ -54,7 +54,7 @@ const NavbarConcierge = () => {
               </a>
               <ul className="dropdown-menu" style={navbarStyle}>
               <Link className="nav-link" to="/admincorrespondence">{t('navbarConcierge.adminCorrespondence')}</Link>
-              <Link className="nav-link" to="/adminfrequentvisits">{t('navbarConcierge.adminFrequentVisits')}</Link>
+              <Link className="nav-link" to="/adminvisits">{t('navbarConcierge.adminVisits')}</Link>
               <Link className="nav-link" to="/adminparking">{t('navbarConcierge.adminParking')}</Link>
               </ul>
             </li>
