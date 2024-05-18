@@ -1,7 +1,7 @@
 {
   "navbarConcierge": {
     "adminCorrespondence": "Correspondencia",
-    "adminFrequentVisits": "Visitas Frecuentes",
+    "adminVisits": "Visitas",
     "searchPerson": "Buscar Persona",
     "newVisit": "Nueva Visita",
     "newVehicle": "Nuevo Vehículo",
@@ -16,7 +16,7 @@
   },
   "navbarResident": {
     "notifications": "Notificaciones",
-    "adminFrequentVisits": "Administrar Visitas Frecuentes",
+    "adminVisits": "Administrar Visitas",
     "messages": "Mensajes",
     "config": "Configuración",
     "signOut": "Cerrar Sesión"
@@ -37,8 +37,8 @@
     "calimedFailAlert": "Error al cambiar estado de correspondencia",
     "correspondenceAlert": "Problema al cargar datos"
   },
-  "adminFrequentVisits": {
-    "adminFrequentVisits": "Administrar Visitas Frecuentes",
+  "adminVisits": {
+    "adminVisits": "Administrar Visitas",
     "name": "Nombre",
     "birthDate": "Fecha de Nacimiento",
     "rut": "RUN",
@@ -46,7 +46,7 @@
     "visitType": "Tipo de Visita",
     "lastVisit": "Fecha Visita",
     "delete": "Eliminar",
-    "addFrequentVisit": "Agregar Visita Frecuente"
+    "addVisit": "Agregar Visita Frecuente"
   },
   "adminMessages": {
     "adminMessages": "Mensajes de Administración",

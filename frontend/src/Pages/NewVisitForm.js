@@ -2,18 +2,30 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../App.css'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useLocation } from 'react-router-dom';
 
 const NewVisitForm = () => {
 
   // General configurations
   const { t } = useTranslation();
-
+  
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  
+  // Obtener los parámetros de la URL
+  const scannedData = {
+    firstName: queryParams.get('firstName') || '',
+    lastName: queryParams.get('lastName') || '',
+    run: queryParams.get('run') || '',
+    dv: queryParams.get('dv') || '',
+  };
+  
   // Initiate formData, only default value for Type
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    run: '',
-    dv: '',
+    firstName: scannedData.firstName,
+    lastName: scannedData.lastName,
+    run: scannedData.run,
+    dv: scannedData.dv,
     birthDate: '',
     buildToVisit: '',
     apartmentToVisit: '',
