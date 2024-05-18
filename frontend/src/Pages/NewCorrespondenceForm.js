@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { WhatsAppMsg, timeAlerts } from '../Utils.js';
+import { WhatsAppMsg, timeAlerts, EmailMsg } from '../Utils.js';
 
 const NewCorrespondenceForm = () => {
 
@@ -38,7 +38,8 @@ const NewCorrespondenceForm = () => {
   const [showCorrespondenceForm, setShowCorrespondenceForm] = useState(false);
 
   // Search people with the API according to building and apartment, to check to whom send messages
-  const [selectedInhabitants, setSelectedInhabitants] = useState([]);
+  const [selectedInhabitantsWhatsApp, setSelectedInhabitantsWhatsApp] = useState([]);
+  const [selectedInhabitantsEmail, setSelectedInhabitantsEmail] = useState([]);
   const [inhabitants, setInhabitants] = useState([]);
 
   // Show alerts
@@ -74,13 +75,16 @@ const NewCorrespondenceForm = () => {
   const handleSubmit = (e) => {
     
     // If sent to one or more people = 1, otherwise = 0
-    const notified = selectedInhabitants.length !== 0 ? 1 : 0
+    const notifiedWhatsApp = selectedInhabitantsWhatsApp.length !== 0 ? 1 : 0
 
     // Filtered array with whatever we want them to receive on the message
-    const filteredArray = inhabitants.filter(obj => selectedInhabitants.includes(obj.id));
+    const filteredArrayWhatsApp = inhabitants.filter(obj => selectedInhabitantsWhatsApp.includes(obj.id));
+
+    // Filtered array with whatever we want them to receive on the message
+    const filteredArrayEmail = inhabitants.filter(obj => selectedInhabitantsEmail.includes(obj.id));
 
     // Do the ADD request to the server according to the parameters
-    fetch(`https://dduhalde.online/.netlify/functions/api/add_mail/${formData.build}/${formData.apartment}/${formData.type}/${formData.timeOfArrival}/${notified}`)
+    fetch(`https://dduhalde.online/.netlify/functions/api/add_mail/${formData.build}/${formData.apartment}/${formData.type}/${formData.timeOfArrival}/${notifiedWhatsApp}`)
     .then(response => {
       if (!response.ok) {
         throw new Error('An error occurred trying to add correspondence.');
@@ -91,7 +95,9 @@ const NewCorrespondenceForm = () => {
       console.error('An error occurred trying to add correspondence:', error);
     });
 
-    const error = WhatsAppMsg(formData, filteredArray)
+    const error = WhatsAppMsg(formData, filteredArrayWhatsApp);
+    EmailMsg(formData, filteredArrayEmail);
+
     if (error) {
       // Alert: Message failed to be sent
       setShowMsgFaildAlert(true);
@@ -118,27 +124,43 @@ const NewCorrespondenceForm = () => {
   }
 
   const redirectUser = () => {
-    // Verify if all required fields are filled
+    // Verificar si todos los campos requeridos están completos
     const { apartment, build, type, timeOfArrival } = formData;
-  if (apartment && build && type && timeOfArrival) {
-      window.location.href = '/admincorrespondence';
+    if (apartment && build && type && timeOfArrival) {
+      // Esperar 3000 ms (3 segundos) antes de redirigir al usuario
+      setTimeout(() => {
+        window.location.href = '/admincorrespondence';
+      }, 3000);
     } else {
-      alert('Please fill all the fields required before adding the correspondence.');
+      alert('Por favor, complete todos los campos requeridos antes de agregar la correspondencia.');
     }
   };
   
+  
 
-  const handleSelectInhabitant = (inhabitantId) => {
+  const handleSelectInhabitantWhatsApp = (inhabitantId) => {
   // Verify if the inhabitant has been selected
-  const isSelected = selectedInhabitants.includes(inhabitantId);
+  const isSelected = selectedInhabitantsWhatsApp.includes(inhabitantId);
 
   // If selected, delete it from the selected list
   if (isSelected) {
-    setSelectedInhabitants(selectedInhabitants.filter(id => id !== inhabitantId));
+    setSelectedInhabitantsWhatsApp(selectedInhabitantsWhatsApp.filter(id => id !== inhabitantId));
     } else { // Else, add it to the list
-      setSelectedInhabitants([...selectedInhabitants, inhabitantId]);
+      setSelectedInhabitantsWhatsApp([...selectedInhabitantsWhatsApp, inhabitantId]);
     }
   };
+
+  const handleSelectInhabitantEmail = (inhabitantId) => {
+    // Verify if the inhabitant has been selected
+    const isSelected = selectedInhabitantsEmail.includes(inhabitantId);
+  
+    // If selected, delete it from the selected list
+    if (isSelected) {
+      setSelectedInhabitantsEmail(selectedInhabitantsEmail.filter(id => id !== inhabitantId));
+      } else { // Else, add it to the list
+        setSelectedInhabitantsEmail([...selectedInhabitantsEmail, inhabitantId]);
+      }
+    };
 
   return (
     <div id="change" className="container">
@@ -171,10 +193,15 @@ const NewCorrespondenceForm = () => {
                     <ul className="form-check">
                       {inhabitants.map(inhabitant => (
                         <li key={inhabitant.id}>
-                          <label className="form-check-label" htmlFor="flexCheckDefault">
-                            <input className="form-check-input" type="checkbox"checked={selectedInhabitants.includes(inhabitant.id)} onChange={() => handleSelectInhabitant(inhabitant.id)}/>
-                            {' '}{inhabitant.first_name} {inhabitant.last_name}
-                          </label>
+                          <div class="form-check form-check-inline">
+                            <label className="form-check-label" htmlFor="flexCheckDefault"></label>
+                            <input className="form-check-input" type="checkbox" id={`flexCheckDefault-${inhabitant.id}`} checked={selectedInhabitantsWhatsApp.includes(inhabitant.id)} onChange={() => handleSelectInhabitantWhatsApp(inhabitant.id)}/>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <label className="form-check-label" htmlFor="flexCheckDefault"></label>
+                            <input className="form-check-input" type="checkbox" id={`flexCheckDefault-2-${inhabitant.id}`} checked={selectedInhabitantsEmail.includes(inhabitant.id)} onChange={() => handleSelectInhabitantEmail(inhabitant.id)}/>
+                          </div>
+                          <div class="form-check form-check-inline">{inhabitant.first_name} {inhabitant.last_name}</div>
                         </li>
                       ))}
                     </ul>
