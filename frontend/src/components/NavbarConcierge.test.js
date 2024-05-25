@@ -45,8 +45,8 @@ expect(getByText('Admin')).toBeInTheDocument();
 // Verifica que el texto "Manage Correspondence" esté presente en el navbar
 expect(getByText('Manage Correspondence')).toBeInTheDocument();
 
-// Verifica que el texto "Manage Frequent Visits" esté presente en el navbar
-expect(getByText('Manage Frequent Visits')).toBeInTheDocument();
+// Verifica que el texto "Manage Visits" esté presente en el navbar
+expect(getByText('Manage Visits')).toBeInTheDocument();
 
 // Verifica que el texto "Manage Parking" esté presente en el navbar
 expect(getByText('Manage Parking')).toBeInTheDocument();

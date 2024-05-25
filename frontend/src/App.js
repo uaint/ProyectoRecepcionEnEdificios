@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
@@ -7,8 +7,6 @@ import './App.css';
 
 
 // Importa los componentes
-import NavbarConcierge from './components/NavbarConcierge';
-import NavbarResident from './components/NavbarResident';
 import NavbarVisible from './components/NavbarVisible'; // Considera NavbarConcierge
 import NavbarNotVisible from './components/NavbarNotVisible'; // Considera Outlet
 
@@ -24,7 +22,7 @@ import NewVisitForm from './Pages/NewVisitForm';
 import Notifications from './Pages/notifications';
 import SearchPersonByRut from './Pages/SearchPersonByRut';
 import ScanID from './Pages/ScanID';
-import AdminFrequentVisits from './Pages/AdminFrequentVisits';
+import AdminVisits from './Pages/AdminVisits';
 import Messages from './Pages/Messages';
 import Config from './Pages/config';
 import AdminCorrespondence from './Pages/AdminCorrespondence';
@@ -85,7 +83,7 @@ function App() {
               <Route path="/configadmin" element={<ConfigAdmin />} />
               <Route path="/admincorrespondence" element={<AdminCorrespondence />} />
               <Route path="/adminmessages" element={<AdminMessages />} />
-              <Route path="/adminfrequentvisits" element={<AdminFrequentVisits />} />
+              <Route path="/adminvisits" element={<AdminVisits />} />
               <Route path="/adminparking" element={<AdminParking />} />
               <Route path="*" element={<Navigate to="/home" replace />} /> {/* Redireccionar desde cualquier ruta inválida a /home */}
             </Route>

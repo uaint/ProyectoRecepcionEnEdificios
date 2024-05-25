@@ -1,7 +1,7 @@
 {
   "navbarConcierge": {
     "adminCorrespondence": "Manage Correspondence",
-    "adminFrequentVisits": "Manage Frequent Visits",
+    "adminVisits": "Manage Visits",
     "searchPerson": "Search Person",
     "newVisit": "New Visit",
     "newVehicle": "New Vehicle",
@@ -16,7 +16,7 @@
   },
   "navbarResident": {
     "notifications": "Notifications",
-    "adminFrequentVisits": "Manage Frequent Visits",
+    "adminVisits": "Manage Visits",
     "messages": "Messages",
     "config": "Configuration",
     "signOut": "Sign Out"
@@ -37,8 +37,8 @@
     "calimedFailAlert": "Error when changing correspondence claimed status.",
     "correspondenceAlert": "Error occurred when trying to load corresponde data."
   },
-  "adminFrequentVisits": {
-    "adminFrequentVisits": "Manage Frequent Visits",
+  "adminVisits": {
+    "adminVisits": "Manage Visits",
     "name": "First Name",
     "birthDate": "Birth Date",
     "rut": "RUN",
@@ -46,7 +46,7 @@
     "visitType": "Visit Type",
     "lastVisit": "Visit Date",
     "delete": "Delete",
-    "addFrequentVisit": "Add Frequent Visit"
+    "addVisit": "Add Visit"
   },
   "adminMessages": {
     "adminMessages": "Manage Messages",

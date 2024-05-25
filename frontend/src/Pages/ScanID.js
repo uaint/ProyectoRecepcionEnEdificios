@@ -1,46 +1,80 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
+import { extractInfo } from '../Utils.js';
 
 const ScanID = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const { t } = useTranslation();
-  const [showData, setShowData] = useState(false);
+  const [imageSrc, setImageSrc] = useState(null);
 
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageSrc(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
-  const handleUpload = () => {
-    // Aquí se implementará la lógica para subir la fotografía del carnet
-    setShowData(true); 
+  const scanImage = async () => {
+    try {
+      if (!imageSrc) {
+        alert("Select IMG");
+        return;
+      }
+
+      const scan = process.env.REACT_APP_SCAN;
+      const url = `https://vision.googleapis.com/v1/images:annotate?key=${scan}`;
+
+      const base64ImageData = imageSrc.split(',')[1];
+
+      const requestData = {
+        requests: [
+          {
+            image: {
+              content: base64ImageData,
+            },
+            features: [{ type: 'DOCUMENT_TEXT_DETECTION', model: "builtin/latest", maxResults: 50 }],
+          },
+        ],
+      };
+
+      const apiResponse = await axios.post(url, requestData);
+      const data = apiResponse.data.responses[0].textAnnotations[0].description;
+      const info = extractInfo(data);
+      const url_to_redirect = `/newvisitform?firstName=${info.nombre}&lastName=${info.apellido}&run=${info.run}&dv=${info.dv}`;
+      window.location.href = url_to_redirect;
+    } catch (error) {
+      console.log("Error Analyzing Img", error);
+      alert("Error Analyzing Img");
+    } 
   };
 
   return (
-    <div className="formContainer d-flex align-items-center justify-content-center vh-100">
-      <div className="card p-4">
-        <div className="uploadContainer text-center">
-          <input
-            type="file"
-            onChange={handleFileChange}
-            className="form-control-file fileInput"
-          />
-          <span className="fileInputLabel">
-            {selectedFile ? selectedFile.name : t('ScanID.noFileChosen')}
-          </span>
+    <div id="change" className="container">
+      <h1 className="text-center mb-4">SCAN ID</h1>
+      <hr className="mb-4"/>
+    <div className="mb-3">
+      <label htmlFor="formFile" className="form-label">Ingresa una imagen o tomala en el momento</label>
+      <input 
+        className="form-control" 
+        type="file" 
+        id="formFile" 
+        accept="image/*" 
+        capture="camera" 
+        onChange={handleFileChange} 
+      />
+      {imageSrc && (
+        <>
+        <div className='text-center'>
+          <img src={imageSrc} alt="Selected" className="img-thumbnail mt-3" />
         </div>
-        <div className="mt-4 text-center">
-          <button onClick={handleUpload} className="btn btn-primary uploadButton">
-            {t('ScanID.uploadbutton')}
-          </button>
+        <div className='text-center'>
+          <button onClick={scanImage} className="btn btn-primary mt-3">Scan Image</button>
         </div>
-        {showData && (
-          <div className="personInfo mt-4 border p-4">
-            <h3>{t('ScanID.uploadedInfo')}</h3>
-            {/* Info despues de cargar imagen */}
-          </div>
-        )}
-      </div>
+        </>
+      )}
+    </div>
     </div>
   );
 };

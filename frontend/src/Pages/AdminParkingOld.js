@@ -66,7 +66,7 @@ const AdminParkingOld = () => {
                 <td>{park.parked_at}</td>
                 <td>{formatDate(park.parked_since)}</td>
                 <td>
-                  <button class="btn btn-danger btn-sm" onClick={() => handleDelete(park.license_plate)}>{t('adminFrequentVisits.delete')}</button>
+                  <button class="btn btn-danger btn-sm" onClick={() => handleDelete(park.license_plate)}>{t('adminVisits.delete')}</button>
                 </td>
               </tr>
             ))}
