@@ -64,7 +64,7 @@ const Login = (props) => {
             .then(data => {
                 // There's data retrieved (non-null)
                 if (data[0] != null) {
-                    const salt = data[0].salt;
+                    const salt = data[0].password_salt;
                     const password_hashed = data[0].password_hashed;
                     const password_hashed_input = generateHash(password, salt);
                     if (password_hashed === password_hashed_input) {

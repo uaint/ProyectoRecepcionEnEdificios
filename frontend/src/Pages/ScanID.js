@@ -42,8 +42,23 @@ const ScanID = () => {
       const apiResponse = await axios.post(url, requestData);
       const data = apiResponse.data.responses[0].textAnnotations[0].description;
       const info = extractInfo(data);
-      const url_to_redirect = `/newvisitform?firstName=${info.nombre}&lastName=${info.apellido}&run=${info.run}&dv=${info.dv}`;
-      window.location.href = url_to_redirect;
+      const url_frequent = `https://dduhalde.online/.netlify/functions/api/frequent_visit/${info.run}`;
+      fetch(url_frequent)
+      .then(response => response.json())
+      .then(data)
+      .then(data => {
+        // Verificar el valor de affectedRows
+        if (data.affectedRows === 0) {
+          const url_to_redirect = `/newvisitform?firstName=${info.nombre}&lastName=${info.apellido}&run=${info.run}&dv=${info.dv}`;
+          window.location.href = url_to_redirect;
+        } else {
+          const url_to_redirect = `/adminvisits`;
+          window.location.href = url_to_redirect;
+        }
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
     } catch (error) {
       console.log("Error Analyzing Img", error);
       alert("Error Analyzing Img");

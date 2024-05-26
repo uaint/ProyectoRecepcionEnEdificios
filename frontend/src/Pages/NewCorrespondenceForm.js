@@ -78,10 +78,10 @@ const NewCorrespondenceForm = () => {
     const notifiedWhatsApp = selectedInhabitantsWhatsApp.length !== 0 ? 1 : 0
 
     // Filtered array with whatever we want them to receive on the message
-    const filteredArrayWhatsApp = inhabitants.filter(obj => selectedInhabitantsWhatsApp.includes(obj.id));
+    const filteredArrayWhatsApp = inhabitants.filter(obj => selectedInhabitantsWhatsApp.includes(obj.person_id));
 
     // Filtered array with whatever we want them to receive on the message
-    const filteredArrayEmail = inhabitants.filter(obj => selectedInhabitantsEmail.includes(obj.id));
+    const filteredArrayEmail = inhabitants.filter(obj => selectedInhabitantsEmail.includes(obj.person_id));
 
     // Do the ADD request to the server according to the parameters
     fetch(`https://dduhalde.online/.netlify/functions/api/add_mail/${formData.build}/${formData.apartment}/${formData.type}/${formData.timeOfArrival}/${notifiedWhatsApp}`)
@@ -144,7 +144,7 @@ const NewCorrespondenceForm = () => {
 
   // If selected, delete it from the selected list
   if (isSelected) {
-    setSelectedInhabitantsWhatsApp(selectedInhabitantsWhatsApp.filter(id => id !== inhabitantId));
+    setSelectedInhabitantsWhatsApp(selectedInhabitantsWhatsApp.filter(person_id => person_id !== inhabitantId));
     } else { // Else, add it to the list
       setSelectedInhabitantsWhatsApp([...selectedInhabitantsWhatsApp, inhabitantId]);
     }
@@ -156,7 +156,7 @@ const NewCorrespondenceForm = () => {
   
     // If selected, delete it from the selected list
     if (isSelected) {
-      setSelectedInhabitantsEmail(selectedInhabitantsEmail.filter(id => id !== inhabitantId));
+      setSelectedInhabitantsEmail(selectedInhabitantsEmail.filter(person_id => person_id !== inhabitantId));
       } else { // Else, add it to the list
         setSelectedInhabitantsEmail([...selectedInhabitantsEmail, inhabitantId]);
       }
@@ -195,11 +195,11 @@ const NewCorrespondenceForm = () => {
                         <li key={inhabitant.id}>
                           <div class="form-check form-check-inline">
                             <label className="form-check-label" htmlFor="flexCheckDefault"></label>
-                            <input className="form-check-input" type="checkbox" id={`flexCheckDefault-${inhabitant.id}`} checked={selectedInhabitantsWhatsApp.includes(inhabitant.id)} onChange={() => handleSelectInhabitantWhatsApp(inhabitant.id)}/>
+                            <input className="form-check-input" type="checkbox" id={`flexCheckDefault-${inhabitant.person_id}`} checked={selectedInhabitantsWhatsApp.includes(inhabitant.person_id)} onChange={() => handleSelectInhabitantWhatsApp(inhabitant.person_id)}/>
                           </div>
                           <div class="form-check form-check-inline">
                             <label className="form-check-label" htmlFor="flexCheckDefault"></label>
-                            <input className="form-check-input" type="checkbox" id={`flexCheckDefault-2-${inhabitant.id}`} checked={selectedInhabitantsEmail.includes(inhabitant.id)} onChange={() => handleSelectInhabitantEmail(inhabitant.id)}/>
+                            <input className="form-check-input" type="checkbox" id={`flexCheckDefault-2-${inhabitant.person_id}`} checked={selectedInhabitantsEmail.includes(inhabitant.person_id)} onChange={() => handleSelectInhabitantEmail(inhabitant.person_id)}/>
                           </div>
                           <div class="form-check form-check-inline">{inhabitant.first_name} {inhabitant.last_name}</div>
                         </li>

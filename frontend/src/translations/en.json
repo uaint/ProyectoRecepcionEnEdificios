@@ -35,7 +35,8 @@
     "addNewCorrespondence": "Add New Correspondence",
     "calimedSuccessAlert": "Mail marked as claimed!",
     "calimedFailAlert": "Error when changing correspondence claimed status.",
-    "correspondenceAlert": "Error occurred when trying to load corresponde data."
+    "correspondenceAlert": "Error occurred when trying to load corresponde data.",
+    "allCorrespondence": "All Correspondence"
   },
   "adminVisits": {
     "adminVisits": "Manage Visits",
@@ -46,7 +47,10 @@
     "visitType": "Visit Type",
     "lastVisit": "Visit Date",
     "delete": "Delete",
-    "addVisit": "Add Visit"
+    "addVisit": "Add Visit",
+    "deleteSuccessAlert": "Record deleted successfully!",
+    "deleteFailAlert": "Error deleting record",
+    "visitAlert": "Error occurred when trying to load visits data."
   },
   "adminMessages": {
     "adminMessages": "Manage Messages",
@@ -184,7 +188,7 @@
       "dvPlaceholder": "If the check digit ends with a K, replace it with a 0",
       "buildToVisit": "Tower being visited:",
       "type": "Visit Type:",
-      "frequent": "Frequent",
+      "casual": "Casual",
       "regular": "Regular",
       "social": "Social",
       "delivery": "Delivery",
