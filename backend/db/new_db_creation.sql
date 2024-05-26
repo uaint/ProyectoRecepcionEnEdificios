@@ -224,6 +224,16 @@ CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`unclaimed_correspondence` (`id
 CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`currently_parked_vehicles` (`visitor_id` INT, `full_name` INT, `license_plate` INT, `parked_at` INT, `parked_since` INT);
 
 -- -----------------------------------------------------
+-- Placeholder table for view `roentgenium_new_eer`.`all_correspondence`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`all_correspondence` (`id` INT, `recipient` INT, `mail_type` INT, `arrival_time` INT, `is_notified` INT, `is_claimed` INT);
+
+-- -----------------------------------------------------
+-- Placeholder table for view `roentgenium_new_eer`.`all_vehicles`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`all_vehicles` (`visitor_id` INT, `full_name` INT, `license_plates` INT);
+
+-- -----------------------------------------------------
 -- procedure add_inhabitant
 -- -----------------------------------------------------
 
@@ -314,7 +324,7 @@ DELIMITER $$
 USE `roentgenium_new_eer`$$
 CREATE PROCEDURE delete_vehicle(IN l_plate VARCHAR(8))
 BEGIN
-	DELETE FROM vehicles_visitors WHERE (license_plate = l_plate AND id > 0);
+	DELETE FROM vehicle_visitors WHERE (license_plate = l_plate AND id > 0);
 END$$
 
 DELIMITER ;
@@ -654,6 +664,43 @@ CREATE  OR REPLACE VIEW `currently_parked_vehicles` AS
 		person p ON p.id = v.person_id
     WHERE
         vv.parking_spot IS NOT NULL;
+
+-- -----------------------------------------------------
+-- View `roentgenium_new_eer`.`all_correspondence`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `roentgenium_new_eer`.`all_correspondence`;
+USE `roentgenium_new_eer`;
+CREATE  OR REPLACE VIEW `all_correspondence` AS
+SELECT 
+		m.id,
+        CONCAT(apt.number_identifier, '-', apt.tower_id) AS recipient,
+        m.mail_type,
+        m.arrival_time,
+        m.is_notified,
+        m.is_claimed
+    FROM
+        mail m
+	LEFT JOIN
+		apartment apt ON m.apartment_id = apt.id;
+
+-- -----------------------------------------------------
+-- View `roentgenium_new_eer`.`all_vehicles`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `roentgenium_new_eer`.`all_vehicles`;
+USE `roentgenium_new_eer`;
+CREATE  OR REPLACE VIEW `all_vehicles` AS
+	SELECT 
+        v.id AS visitor_id,
+        CONCAT(p.first_name, ' ', p.last_name) AS full_name,
+        GROUP_CONCAT(vv.license_plate SEPARATOR ', ') AS license_plates
+    FROM
+        vehicle_visitors vv
+	LEFT JOIN
+		visitor v ON v.id = vv.visitor_id
+	LEFT JOIN
+		person p ON p.id = v.person_id
+	GROUP BY
+        v.id, p.first_name, p.last_name;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
