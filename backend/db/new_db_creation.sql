@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`mail` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `apartment_id` INT NOT NULL,
   `arrival_time` DATETIME NOT NULL,
-  `mail_type` TINYINT NOT NULL,
+  `mail_type` VARCHAR(31) NOT NULL,
   `is_notified` TINYINT(1) NOT NULL,
   `is_claimed` TINYINT(1) NOT NULL,
   PRIMARY KEY (`id`, `apartment_id`),
@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`visitor_log` (
   `visitor_id` INT NOT NULL,
   `apartment_id` INT NOT NULL,
   `visit_date` DATETIME NOT NULL,
-  `visit_type` TINYINT NOT NULL,
+  `visit_type` VARCHAR(31) NOT NULL,
   PRIMARY KEY (`id`, `visitor_id`, `apartment_id`),
   INDEX `fk_visitor_log_visitor1_idx` (`visitor_id` ASC) VISIBLE,
   INDEX `fk_visitor_log_apartment1_idx` (`apartment_id` ASC) VISIBLE,
@@ -211,7 +211,7 @@ USE `roentgenium_new_eer` ;
 -- -----------------------------------------------------
 -- Placeholder table for view `roentgenium_new_eer`.`visitors_information`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`visitors_information` (`visitor_id` INT, `full_name` INT, `run` INT, `birth_date` INT, `apartment_visited` INT, `is_frequent_visitor` INT, `visit_motive` INT, `visit_date` INT);
+CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`visitors_information` (`visitor_id` INT, `log_id` INT, `full_name` INT, `run` INT, `birth_date` INT, `apartment_visited` INT, `is_frequent_visitor` INT, `visit_motive` INT, `visit_date` INT);
 
 -- -----------------------------------------------------
 -- Placeholder table for view `roentgenium_new_eer`.`unclaimed_correspondence`
@@ -222,37 +222,6 @@ CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`unclaimed_correspondence` (`id
 -- Placeholder table for view `roentgenium_new_eer`.`currently_parked_vehicles`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`currently_parked_vehicles` (`visitor_id` INT, `full_name` INT, `license_plate` INT, `parked_at` INT, `parked_since` INT);
-
--- -----------------------------------------------------
--- procedure add_visitor
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium_new_eer`$$
-CREATE PROCEDURE add_visitor(
-    IN p_visitor_id INT,
-    IN p_apartment_id INT,
-    IN p_visit_type TINYINT
-)
-BEGIN
-    DECLARE person_exists INT;
-
-    -- Check if person already exists in visitor table
-    SELECT COUNT(*) INTO person_exists
-    FROM visitor
-    WHERE person_id = p_visitor_id;
-
-    -- If does not exist, INSERT
-    IF person_exists = 0 THEN
-        INSERT INTO visitor (person_id) VALUES (p_visitor_id);
-    END IF;
-
-    -- INSERT in the log
-    INSERT INTO visitor_log (visitor_id, apartment_id, visit_date, visit_type)
-    VALUES (p_visitor_id, p_apartment_id, NOW(), p_visit_type);
-END$$
-
-DELIMITER ;
 
 -- -----------------------------------------------------
 -- procedure add_inhabitant
@@ -273,9 +242,14 @@ DELIMITER ;
 
 DELIMITER $$
 USE `roentgenium_new_eer`$$
-CREATE PROCEDURE add_mail(IN m_type TINYINT, IN a_time DATETIME, IN apt_id INT, IN i_notified TINYINT)
+CREATE PROCEDURE add_mail(IN m_type VARCHAR(31), IN a_time DATETIME, IN tower_id INT, IN number_identifier INT, IN i_notified TINYINT)
 BEGIN
-	INSERT INTO mail (mail_type, arrival_time, apartment_id, is_notified, is_claimed) VALUES (m_type, a_time, apt_id, i_notified, 0);
+    DECLARE apt_id INT;
+    
+    SET apt_id = obtain_apartment_id(tower_id, number_identifier);
+    
+    INSERT INTO mail (mail_type, arrival_time, apartment_id, is_notified, is_claimed) 
+    VALUES (m_type, a_time, apt_id, i_notified, 0);
 END$$
 
 DELIMITER ;
@@ -286,9 +260,9 @@ DELIMITER ;
 
 DELIMITER $$
 USE `roentgenium_new_eer`$$
-CREATE PROCEDURE add_user_login(IN usrnm VARCHAR(127), IN psswrd CHAR(64), IN slt CHAR(32), IN u_role TINYINT)
+CREATE PROCEDURE add_user_login(IN p_id INT, IN usrnm VARCHAR(127), IN psswrd CHAR(64), IN slt CHAR(32), IN u_role TINYINT)
 BEGIN
-	INSERT INTO login_sys (username, password_hashed, password_salt, user_role, last_access) VALUES (usrnm, psswrd, slt, u_role, NOW());
+	INSERT INTO login_sys (person_id, username, password_hashed, password_salt, user_role, last_access) VALUES (p_id, usrnm, psswrd, slt, u_role, NOW());
 END$$
 
 DELIMITER ;
@@ -466,6 +440,151 @@ END$$
 DELIMITER ;
 
 -- -----------------------------------------------------
+-- procedure obtain_inhabitants_by_apartment
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium_new_eer`$$
+CREATE PROCEDURE obtain_inhabitants_by_apartment(IN tower_id INT, IN number_identifier INT)
+BEGIN
+    SELECT 
+        p.id AS person_id,
+        i.id AS inhabitant_id,
+        p.first_name,
+        p.last_name,
+        p.run,
+        p.run_vd,
+        p.birth_date,
+        p.contact_phone_number,
+        p.contact_email
+    FROM 
+        apartment a
+        INNER JOIN inhabitant i ON a.id = i.apartment_id
+        INNER JOIN person p ON i.person_id = p.id
+    WHERE 
+        a.tower_id = tower_id
+        AND a.number_identifier = number_identifier;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- function obtain_apartment_id
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium_new_eer`$$
+CREATE FUNCTION obtain_apartment_id(t_id INT, num_identifier INT) RETURNS INT DETERMINISTIC
+BEGIN
+    DECLARE apartment_id INT;
+    
+    SELECT id INTO apartment_id 
+    FROM apartment 
+    WHERE tower_id = t_id AND number_identifier = num_identifier;
+    
+    RETURN apartment_id;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure add_new_visitor
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium_new_eer`$$
+CREATE PROCEDURE add_new_visitor(IN p_id INT)
+BEGIN
+	INSERT INTO visitor (person_id) VALUES (p_id);
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure add_visit_from_visitor
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium_new_eer`$$
+CREATE PROCEDURE add_visit_from_visitor(IN v_id INT, IN apt_id INT, IN v_type VARCHAR(31))
+BEGIN
+	INSERT INTO visitor_log (visitor_id, apartment_id, visit_date, visit_type) VALUES (v_id, apt_id, NOW(), v_type);
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure check_and_add_visitor
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium_new_eer`$$
+CREATE PROCEDURE check_and_add_visitor(
+    IN run_search INT
+)
+BEGIN
+    DECLARE v_id INT;
+    DECLARE apt_id INT;
+
+    -- Obtener el ID de la persona usando su RUT
+    SET v_id = obtain_visitor_id_by_run(run_search);
+    
+    -- Verificar si el visitor_id existe en la tabla frequent_visitor
+    IF v_id IS NOT NULL THEN
+		SELECT apartment_id INTO apt_id
+		FROM frequent_visitor
+		WHERE visitor_id = v_id;
+        IF apt_id IS NOT NULL THEN
+			CALL add_visit_from_visitor(v_id, apt_id, "Frequent");
+		ELSE
+			SELECT 'Not a frequent visitor.';
+		END IF;
+    END IF;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure check_and_add_non_frequent_visitor
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium_new_eer`$$
+CREATE PROCEDURE check_and_add_non_frequent_visitor(IN f_name VARCHAR(31), IN l_name VARCHAR(31), IN run_visitor INT, IN run_visitor_dv TINYINT, IN b_date DATE, IN tower_visited INT,
+IN apt_into_tower_visited INT, IN v_type VARCHAR(31))
+BEGIN
+	DECLARE p_id INT;
+    DECLARE v_id INT;
+    DECLARE apt_id INT;
+    SET p_id = obtain_person_id_by_run(run_visitor);
+    SET v_id = obtain_visitor_id_by_run(run_visitor);
+    SET apt_id = obtain_apartment_id(tower_visited, apt_into_tower_visited);
+    
+    -- Best Case Scenario: Person ID exists
+    IF p_id IS NOT NULL THEN
+		-- Case 1: Visitor ID exists
+		IF v_id IS NOT NULL THEN
+			CALL add_visit_from_visitor(v_id, apt_id, v_type);
+		-- Case 2: Person exists, but is not registered as a Visitor
+		ELSE
+			CALL add_new_visitor(p_id);
+            SET v_id = obtain_visitor_id_by_run(run_visitor);
+            CALL add_visit_from_visitor(v_id, apt_id, v_type);
+		END IF;
+        
+	-- Worst Case Scenario: Person ID does not exists (and because of that, neither does Visitor ID)
+    ELSE
+		CALL add_person(f_name, l_name, run_visitor, run_visitor_dv, b_date, NULL, NULL);
+		SET p_id = obtain_person_id_by_run(run_visitor);
+        CALL add_new_visitor(p_id);
+        SET v_id = obtain_visitor_id_by_run(run_visitor);
+        CALL add_visit_from_visitor(v_id, apt_id, v_type);
+    END IF;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
 -- View `roentgenium_new_eer`.`visitors_information`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `roentgenium_new_eer`.`visitors_information`;
@@ -473,6 +592,7 @@ USE `roentgenium_new_eer`;
 CREATE  OR REPLACE VIEW `visitors_information` AS
     SELECT 
         v.id AS visitor_id,
+        vl.id AS log_id,
         CONCAT(p.first_name, ' ', p.last_name) AS full_name,
         CONCAT(p.run, '-', p.run_vd) AS run,
         p.birth_date,
@@ -490,6 +610,8 @@ CREATE  OR REPLACE VIEW `visitors_information` AS
 		frequent_visitor fv ON v.id = fv.visitor_id
 	LEFT JOIN
 		apartment apt ON vl.apartment_id = apt.id
+	WHERE
+        vl.id IS NOT NULL
 	ORDER BY vl.visit_date DESC;
 
 -- -----------------------------------------------------
