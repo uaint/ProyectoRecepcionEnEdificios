@@ -35,7 +35,8 @@
     "addNewCorrespondence": "Agregar Nueva Correspondencia",
     "calimedSuccessAlert": "¡Correspondencia marcada como reclamada!",
     "calimedFailAlert": "Error al cambiar estado de correspondencia",
-    "correspondenceAlert": "Problema al cargar datos"
+    "correspondenceAlert": "Problema al cargar datos",
+    "allCorrespondence": "Toda la correspondencia"
   },
   "adminVisits": {
     "adminVisits": "Administrar Visitas",
@@ -46,7 +47,10 @@
     "visitType": "Tipo de Visita",
     "lastVisit": "Fecha Visita",
     "delete": "Eliminar",
-    "addVisit": "Agregar Visita Frecuente"
+    "addVisit": "Agregar Visita",
+    "deleteSuccessAlert": "¡Registro eliminado correctamente!",
+    "deleteFailAlert": "Error al eliminar registro",
+    "visitAlert": "Problema al cargar datos"
   },
   "adminMessages": {
     "adminMessages": "Mensajes de Administración",
@@ -184,7 +188,7 @@
     "dvPlaceholder": "Si termina con K, remplazar con 0",
     "buildToVisit": "Torre a Visitar:",
     "type": "Tipo de Visita:",
-    "frequent": "Frecuente",
+    "casual": "Casual",
     "regular": "Regular",
     "social": "Social",
     "delivery": "Delivery",

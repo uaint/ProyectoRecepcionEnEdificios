@@ -71,7 +71,7 @@ const NewVisitForm = () => {
       birthDate: '',
       buildToVisit: '',
       apartmentToVisit: '',
-      type: 'Frequent',
+      type: 'Casual',
     });
   };
 
@@ -122,7 +122,7 @@ const NewVisitForm = () => {
                 </div>
                 <label for="type" class="form-label">{t('visitForm.type')}</label>
                 <select class="form-select" aria-label="Default select example" value={selectedOption} onChange={handleOptionChange}>
-                  <option value="Frequent">{t('visitForm.frequent')}</option>
+                  <option value="Casual">{t('visitForm.casual')}</option>
                   <option value="Regular">{t('visitForm.regular')}</option>
                   <option value="Social">{t('visitForm.social')}</option>
                   <option value="Delivery">{t('visitForm.delivery')}</option>
