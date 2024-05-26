@@ -208,9 +208,8 @@
     },
     "ScanID": {
       "title": "Scan ID",
-      "uploadbutton": "Upload",
-      "noFileChosen": "No file chosen",
-      "uploadedInfo": "File uploaded"
+      "scanimg": "ID Scanned",
+      "uploadimg": "Upload ID Image"
     },
     "SearchPersonByRut": {
       "searchByRut": "Search Person by RUN",

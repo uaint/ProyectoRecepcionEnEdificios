@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import { extractInfo } from '../Utils.js';
+import '../App.css';
 
 const ScanID = () => {
+  // General configurations
+  const { t } = useTranslation();
+
   const [imageSrc, setImageSrc] = useState(null);
 
   const handleFileChange = async (event) => {
@@ -67,10 +72,11 @@ const ScanID = () => {
 
   return (
     <div id="change" className="container">
-      <h1 className="text-center mb-4">SCAN ID</h1>
+      <h1 className="text-center mb-4">{t('ScanID.title')}</h1>
       <hr className="mb-4"/>
     <div className="mb-3">
-      <label htmlFor="formFile" className="form-label">Ingresa una imagen o tomala en el momento</label>
+      <div className='input-group custom-file-button'>
+      <label class="input-group-text" for="inputGroupFile">{t('ScanID.uploadimg')}</label>
       <input 
         className="form-control" 
         type="file" 
@@ -85,10 +91,11 @@ const ScanID = () => {
           <img src={imageSrc} alt="Selected" className="img-thumbnail mt-3" />
         </div>
         <div className='text-center'>
-          <button onClick={scanImage} className="btn btn-primary mt-3">Scan Image</button>
+          <button onClick={scanImage} className="btn btn-primary mt-3">{t('ScanID.scanimg')}</button>
         </div>
         </>
       )}
+    </div>
     </div>
     </div>
   );

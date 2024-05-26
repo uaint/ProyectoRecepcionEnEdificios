@@ -273,6 +273,28 @@ router.get('/parked', (req, res) => {
   });
 });
 
+// Route: vehicles
+router.get('/vehicles', (req, res) => {
+
+  // Create query with the mail table
+  const query = 'SELECT * FROM all_vehicles;';
+
+  // Execute the query (call to the database)
+  connection.query(query, (err, rows) => {
+    // Query failed
+    if (err) {
+      console.error('An error occurred when trying to execute the query:', err);
+      res.status(500).send('An error occurred when trying to fetch data from the database.');
+      return;
+    }
+    // Query success
+    else {
+      res.json(rows); // Send data as .json to the client
+      return;
+    }
+  });
+});
+
 // Route: Delete vehicle
 router.get('/free_parking/:plate', (req, res) => {
 

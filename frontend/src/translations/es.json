@@ -208,9 +208,8 @@
   },
   "ScanID": {
     "title": "Escanear Carnet",
-    "uploadbutton": "Subir Imagen",
-    "noFileChosen": "Ningún archivo seleccionado",
-    "uploadedInfo": "Imagen subida correctamente"
+    "scanimg": "Carnet Escaneado",
+    "uploadimg": "Subir Imagen de Carnet"
   },
   "SearchPersonByRut": {
     "searchByRut": "Buscar Persona por RUN",
