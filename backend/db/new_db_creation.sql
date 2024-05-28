@@ -546,8 +546,6 @@ BEGIN
 		WHERE visitor_id = v_id;
         IF apt_id IS NOT NULL THEN
 			CALL add_visit_from_visitor(v_id, apt_id, "Frequent");
-		ELSE
-			SELECT 'Not a frequent visitor.';
 		END IF;
     END IF;
 END$$
