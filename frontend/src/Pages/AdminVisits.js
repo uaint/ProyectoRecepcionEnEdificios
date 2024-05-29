@@ -55,7 +55,7 @@ const AdminVisits = () => {
 
   // Button to redirect to the new visit form
   const handleButtonClick = () => {
-    navigate('/newvisitform');
+    navigate('/scanid');
   };
 
   return (

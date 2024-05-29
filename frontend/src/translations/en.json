@@ -77,7 +77,9 @@
     "parket_at": "Parket At",
     "arrivingTime": "Time of arrival",
     "delete": "Delete",
-    "addParked": "Add New Parked Vehicle"
+    "addParked": "Add New Parked Vehicle",
+    "freeParking": "Free Parking",
+    "parkedNumber": "Parking N°"
   },
   "config": {
     "configuration": "Configuration",
@@ -198,7 +200,9 @@
       "birthDate": "Birth Date:",
       "apartmentToVisit": "Apartment being visited:",
       "addVisit": "Add Visit",
-      "selectApartment": "Select Apartment"
+      "selectApartment": "Select Apartment",
+      "SuccessAlert": "Succed Add Visit",
+      "FailAlert": "Fail Add Visit"
     },
     "notifications": {
       "title": "Notifications",
@@ -208,9 +212,8 @@
     },
     "ScanID": {
       "title": "Scan ID",
-      "uploadbutton": "Upload",
-      "noFileChosen": "No file chosen",
-      "uploadedInfo": "File uploaded"
+      "scanimg": "ID Scanned",
+      "uploadimg": "Upload ID Image"
     },
     "SearchPersonByRut": {
       "searchByRut": "Search Person by RUN",
