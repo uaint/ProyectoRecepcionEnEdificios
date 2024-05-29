@@ -47,6 +47,12 @@ function timeAlerts(funcion) {
     }, 3000);
   }
 
+function timeRedirect(path) {
+    setTimeout(() => {
+      window.location.href = path;
+    }, 3000);
+  }
+
 // Obtener fecha actual y comparar con otra fecha
 function whatsAppDate(fecha) {
 
@@ -185,4 +191,4 @@ function extractInfo(data) {
   };
 }
 
-export { parseJwt, formatDateLarge, formatDate, timeAlerts, whatsAppDate, WhatsAppMsg, EmailMsg, extractInfo };
+export { parseJwt, formatDateLarge, formatDate, timeAlerts, whatsAppDate, WhatsAppMsg, EmailMsg, extractInfo, timeRedirect };

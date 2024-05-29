@@ -77,7 +77,9 @@
     "parket_at": "Estacionado en",
     "arrivingTime": "Estacionado desde",
     "delete": "Eliminar",
-    "addParked": "Agregar Vehículo Estacionado"
+    "addParked": "Agregar Vehículo Estacionado",
+    "freeParking": "Liberar Estacionamiento",
+    "parkedNumber": "Estacionamiento N°"
   },
   "config": {
     "configuration": "Configuración",
@@ -198,7 +200,9 @@
     "birthDate": "Fecha de nacimiento:",
     "apartmentToVisit": "Apartamento a visitar:",
     "addVisit": "Agregar Visita",
-    "selectApartment": "Seleccionar Apartamento"
+    "selectApartment": "Seleccionar Apartamento",
+    "SuccessAlert": "Visita Agregada",
+    "FailAlert": "Error al agregar visita"
   },
   "notifications": {
     "title": "Notificaciones",

@@ -66,7 +66,8 @@ const ScanID = () => {
       });
     } catch (error) {
       console.log("Error Analyzing Img", error);
-      alert("Error Analyzing Img");
+      const url_to_redirect = `/newvisitform`;
+      window.location.href = url_to_redirect;
     } 
   };
 
@@ -75,8 +76,7 @@ const ScanID = () => {
       <h1 className="text-center mb-4">{t('ScanID.title')}</h1>
       <hr className="mb-4"/>
     <div className="mb-3">
-      <div className='input-group custom-file-button'>
-      <label class="input-group-text" for="inputGroupFile">{t('ScanID.uploadimg')}</label>
+      <label className="formFile mb-1" for="form-label">{t('ScanID.uploadimg')}</label>
       <input 
         className="form-control" 
         type="file" 
@@ -95,7 +95,6 @@ const ScanID = () => {
         </div>
         </>
       )}
-    </div>
     </div>
     </div>
   );

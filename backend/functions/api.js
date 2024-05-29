@@ -2,7 +2,6 @@ import express from 'express';
 import mysql from 'mysql';
 import env from 'dotenv';
 import serverless from 'serverless-http';
-import cors from 'cors';
 import jwt from 'jsonwebtoken';
 
 // Start app & router with Express
@@ -19,6 +18,7 @@ const portdb = process.env.DB_PORT;
 const timezonedb = process.env.DB_TIMEZONE;
 
 // DB connection configuration
+/*
 const connection = mysql.createConnection({
   host: hostdb,
   user: userdb,
@@ -26,9 +26,24 @@ const connection = mysql.createConnection({
   database: namedb,
   port: portdb,
   timezone: timezonedb,
+}); 
+*/
+
+// Create a connection pool
+const connection = mysql.createPool({
+  connectionLimit: 10, // Adjust based on your needs
+  host: hostdb,
+  user: userdb,
+  password: passwordbd,
+  database: namedb,
+  port: portdb,
+  timezone: timezonedb,
+  connectTimeout: 10000, // 10 seconds
+  acquireTimeout: 10000 // 10 seconds
 });
 
 // Establish a connection with the database
+/*
 connection.connect((err) => {
 
   // No connection was established
@@ -43,6 +58,7 @@ connection.connect((err) => {
     return;
   }
 });
+*/
 
 // Middleware for CORS
 router.use((req, res, next) => {
@@ -65,7 +81,7 @@ router.get('/inhabitants/:tower_id/:number_identifier', (req, res) => {
   const { tower_id, number_identifier} = req.params;
 
   // Create the query
-  const query = `CALL obtain_inhabitants_by_apartment(${tower_id}, ${number_identifier});`;
+  const query = `CALL obtain_inhabitants_by_apartment(?, ?);`;
 
   // Execute the query (call to the database)
   connection.query(query, [tower_id, number_identifier], (err, rows) => {
@@ -113,10 +129,10 @@ router.get('/add_visitor/:name/:last_name/:rut/:dv/:birthdate/:tower/:apartment/
   const { name, last_name, rut, dv, birthdate, tower, apartment, visit_type } = req.params;
 
   // Create the query using the check_and_add_non_frequent_visitor stored procedure
-  const query = `CALL check_and_add_non_frequent_visitor("${name}", "${last_name}", ${rut}, ${dv}, "${birthdate}", ${tower}, ${apartment}, "${visit_type}")`;
+  const query = `CALL check_and_add_non_frequent_visitor(?, ?, ?, ?, ?, ?, ?, ?)`;
 
   // Execute the query (call to the database)
-  connection.query(query, (err, results, fields) => {
+  connection.query(query, [name, last_name, rut, dv, birthdate, tower, apartment, visit_type], (err, results, fields) => {
     // Query failed
     if (err) {
       console.error('There was an error executing the query:', err);
@@ -229,14 +245,13 @@ router.get('/delete_visitor/:id', (req, res) => {
 // Example: /add_vehicle/ABC123/5
 router.get('/assing_parking/:license_plate/:parket_at/', (req, res) => {
   // Fetch license plate
-  const license_plate = req.params.license_plate;
-  const parket_at = req.params.parket_at;
+  const { license_plate, parket_at } = req.params;
 
   // Create query with the delete_vehicle stored procedure
-  const query = `CALL assign_parking_spot ("${license_plate}", ${parket_at})`;
+  const query = `CALL assign_parking_spot (?, ?)`;
 
   // Execute the query (call to the database)
-  connection.query(query, (err, rows) => {
+  connection.query(query, [license_plate, parket_at], (err, rows) => {
     // Query failed
     if (err) {
       console.error('An error occurred when trying to execute the query:', err);
@@ -302,10 +317,10 @@ router.get('/free_parking/:plate', (req, res) => {
   const plate = req.params.plate;
 
   // Create query with the delete_vehicle stored procedure
-  const query = `CALL free_parking_spot("${plate}")`;
+  const query = `CALL free_parking_spot(?)`;
 
   // Execute the query (call to the database)
-  connection.query(query, (err, rows) => {
+  connection.query(query, [plate], (err, rows) => {
     // Query failed
     if (err) {
       console.error('An error occurred when trying to execute the query:', err);
@@ -328,10 +343,10 @@ router.get('/add_vehicle/:rut/:license_plate', (req, res) => {
   const { rut, license_plate } = req.params;
 
   // Create query for searching the visitor's RUN with the help of add_visitor_vehicle stored procedure
-  const query = `CALL add_visitor_vehicle(obtain_visitor_id_by_run(${rut}), "${license_plate}")`;
+  const query = `CALL add_visitor_vehicle(obtain_visitor_id_by_run(?), ?)`;
 
   // Execute the query (call to the database)
-  connection.query(query, (err, rows) => {
+  connection.query(query, [rut, license_plate], (err, rows) => {
     // Query failed
     if (err) {
       console.error('An error occurred when trying to execute the query:', err);
@@ -354,10 +369,10 @@ router.get('/delete_vehicle/:plate', (req, res) => {
   const plate = req.params.plate;
 
   // Create query with the delete_vehicle stored procedure
-  const query = `CALL delete_vehicle("${plate}")`;
+  const query = `CALL delete_vehicle(?)`;
 
   // Execute the query (call to the database)
-  connection.query(query, (err, rows) => {
+  connection.query(query, [plate], (err, rows) => {
     // Query failed
     if (err) {
       console.error('An error occurred when trying to execute the query:', err);
@@ -380,10 +395,10 @@ router.get('/add_mail/:apt_recipient/:hu_recipient/:m_type/:a_time/:i_notified',
   const { apt_recipient, hu_recipient, m_type, a_time, i_notified } = req.params;
 
   // Create the query with the add_mail stored procedure
-  const query = `CALL add_mail("${m_type}", "${a_time}", ${apt_recipient}, ${hu_recipient}, ${i_notified})`;
+  const query = `CALL add_mail(?, ?, ?, ?, ?)`;
 
   // Execute the query (call to the database)
-  connection.query(query, (err, results, fields) => {
+  connection.query(query, [m_type, a_time, apt_recipient, hu_recipient, i_notified], (err, results, fields) => {
     // Query failed
     if (err) {
       console.error('An error occurred when trying to execute the query:', err);
@@ -450,7 +465,7 @@ router.get('/is_claimed/:id', (req, res) => {
   const {id} = req.params;
 
   // Create the query calling the update_mail_to_claimed stored procedure
-  const query = `CALL update_mail_to_claimed(${id})`;
+  const query = `CALL update_mail_to_claimed(?)`;
 
   // Execute the query (call to the database)
   connection.query(query, [id], (err, rows) => {
@@ -461,11 +476,11 @@ router.get('/is_claimed/:id', (req, res) => {
     }
     // Verify if update was successful
     if (res.affectedRows === 0) {
-      res.status(404).send(`No correspondence found under the ID ${id}`);
+      res.status(404).send(`No correspondence found`);
       return;
     } else {
       // Send a success response
-      res.status(200).send(`Correspondence under the ID ${id} marked as claimed.`);
+      res.status(200).send(`Correspondence marked as claimed.`);
       return;
     }
   });
@@ -478,7 +493,7 @@ router.get('/frequent_visit/:run', (req, res) => {
   const {run} = req.params;
 
   // Create the query calling the update_mail_to_claimed stored procedure
-  const query = `CALL check_and_add_visitor(${run})`;
+  const query = `CALL check_and_add_visitor(?)`;
 
   // Execute the query (call to the database)
   connection.query(query, [run], (err, rows) => {
@@ -510,7 +525,7 @@ router.get('/login/:username', (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', true);
 
   // Execute query (call to the database)
-  connection.query(query, username, (err, rows) => {
+  connection.query(query, [username], (err, rows) => {
     // Query failed
     if (err) {
       console.error('An error occurred when trying to execute the query:', err);
