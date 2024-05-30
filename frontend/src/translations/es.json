@@ -12,7 +12,8 @@
     "searchByRut":"Buscar por RUN",
     "scanID":"Escanear Carnet",
     "admin": "Administrador",
-    "new": "Agregar nuevo elemento"
+    "new": "Agregar nuevo elemento",
+    "adminVehicles": "Administrar Vehiculos"
   },
   "navbarResident": {
     "notifications": "Notificaciones",
@@ -80,6 +81,19 @@
     "addParked": "Agregar Vehículo Estacionado",
     "freeParking": "Liberar Estacionamiento",
     "parkedNumber": "Estacionamiento N°"
+  },
+  "adminVehicles": {
+    "adminVehiclesTitle": "Administrar Vehiculos",
+    "visitor_id": "RUT Visita",
+    "full_name":"Nombre Completo",
+    "license_plate": "Patente",
+    "deleteVehicle": "Borrar vehiculo",
+    "allVehicles": "Mostrar todos los vehiculos",
+    "deleteButton": "Borrar",
+    "addNewVehicles": "Agregar nuevo vehiculo",
+    "SuccessAlert": "Vehiculo eliminado correctamente",
+    "FailAlert": "Error al eliminar vehiculo",
+    "vehiclesAlert": "Problema al cargar datos"
   },
   "config": {
     "configuration": "Configuración",
@@ -178,7 +192,9 @@
     "licensePlate": "Patente",
     "parking": "Estacionamiento:",
     "parkedSince": "Estacionado desde:",
-    "addVehicle": "Agregar Vehículo"
+    "addVehicle": "Agregar Vehículo",
+    "SuccessAlert": "Vehiculo Agregado",
+    "FailAlert": "Error al agregar vehiculo"
   },
   "visitForm": {
     "addNewVisit": "Agregar Nueva Visita",
