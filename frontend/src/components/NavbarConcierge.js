@@ -56,6 +56,7 @@ const NavbarConcierge = () => {
               <Link className="nav-link" to="/admincorrespondence">{t('navbarConcierge.adminCorrespondence')}</Link>
               <Link className="nav-link" to="/adminvisits">{t('navbarConcierge.adminVisits')}</Link>
               <Link className="nav-link" to="/adminparking">{t('navbarConcierge.adminParking')}</Link>
+              <Link className="nav-link" to="/adminvehicles">{t('navbarConcierge.adminVehicles')}</Link>
               </ul>
             </li>
             {/*
