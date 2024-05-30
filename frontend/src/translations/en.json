@@ -99,13 +99,11 @@
   },
   "configAdmin": {
     "configuration": "Configuration",
-    "adminUsersRoles": "Manage Users & Roles",
-    "newUser": "New User",
-    "notifications": "Notifications",
-    "createNewUser": "Create New User",
-    "createNewUserTitle": "Create New User",
-    "notificationsTitle": "Notifications",
-    "adminUsersRolesTitle": "Manage Users & Roles"
+    "changePassword":"Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "newPasswordConfirmed": "Confirm New Password",
+    "submitButton": "Update Password"
   },
   "home": {
     "welcome": "Welcome!",
