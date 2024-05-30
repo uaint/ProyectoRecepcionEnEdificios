@@ -56,8 +56,10 @@ const NavbarConcierge = () => {
               <Link className="nav-link" to="/admincorrespondence">{t('navbarConcierge.adminCorrespondence')}</Link>
               <Link className="nav-link" to="/adminvisits">{t('navbarConcierge.adminVisits')}</Link>
               <Link className="nav-link" to="/adminparking">{t('navbarConcierge.adminParking')}</Link>
+              <Link className="nav-link" to="/adminvehicles">{t('navbarConcierge.adminVehicles')}</Link>
               </ul>
             </li>
+            {/*
             <li className="nav-item dropdown me-4">
               <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {t('navbarConcierge.searchPerson')}
@@ -67,12 +69,13 @@ const NavbarConcierge = () => {
                 <li><Link className="dropdown-item" to="/scanid">{t('navbarConcierge.scanID')}</Link></li>
               </ul>
             </li>
+            */}
             <li className="nav-item dropdown me-4">
               <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {t('navbarConcierge.new')}
               </a>
               <ul className="dropdown-menu" style={navbarStyle}>
-              <Link className="nav-link" to="/newvisitform">{t('navbarConcierge.newVisit')}</Link>
+              <Link className="nav-link" to="/scanid">{t('navbarConcierge.newVisit')}</Link>
               <Link className="nav-link" to="/newvehicleform">{t('navbarConcierge.newVehicle')}</Link>
               </ul>
             </li>
@@ -82,13 +85,13 @@ const NavbarConcierge = () => {
             <li className="nav-item me-4">
               <Link className="nav-link" to="/configadmin">{t('navbarConcierge.config')}</Link>
             </li>
-            <li className="nav-item me-4">
-              <Link className="nav-link" to="/login" onClick={handleSignOut}>{t('navbarConcierge.signOut')}</Link>
-            </li>
-            <li>
-            </li>
           </ul>
         </div>
+        <ul className="navbar-nav">
+          <li className="nav-item me-4 pull-right">
+            <Link className="nav-link" to="/login" onClick={handleSignOut}>{t('navbarConcierge.signOut')}</Link>
+          </li>
+          </ul>
       </div>
     </nav>
   );

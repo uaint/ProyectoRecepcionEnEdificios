@@ -4,8 +4,6 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 import './App.css';
 
-
-
 // Importa los componentes
 import NavbarVisible from './components/NavbarVisible'; // Considera NavbarConcierge
 import NavbarNotVisible from './components/NavbarNotVisible'; // Considera Outlet
@@ -26,15 +24,15 @@ import AdminVisits from './Pages/AdminVisits';
 import Messages from './Pages/Messages';
 import Config from './Pages/config';
 import AdminCorrespondence from './Pages/AdminCorrespondence';
+import AllCorrespondence from './Pages/AllCorrespondence';
 import AdminMessages from './Pages/AdminMessages';
 import ConfigAdmin from './Pages/ConfigAdmin';
 import NewVehicleForm from './Pages/NewVehicleForm';
 import AdminParking from './Pages/AdminParking';
+import AdminVehicles from './Pages/AdminVehicles';
 
 //Importar funcion de verificacion token
 import { parseJwt } from './Utils';
-
-
 
 
 function App() {
@@ -82,9 +80,11 @@ function App() {
               <Route path="/config" element={<Config />} />
               <Route path="/configadmin" element={<ConfigAdmin />} />
               <Route path="/admincorrespondence" element={<AdminCorrespondence />} />
+              <Route path="/allcorrespondence" element={<AllCorrespondence />} />
               <Route path="/adminmessages" element={<AdminMessages />} />
               <Route path="/adminvisits" element={<AdminVisits />} />
               <Route path="/adminparking" element={<AdminParking />} />
+              <Route path="/adminvehicles" element={<AdminVehicles />} />
               <Route path="*" element={<Navigate to="/home" replace />} /> {/* Redireccionar desde cualquier ruta inválida a /home */}
             </Route>
             <Route element={<NavbarNotVisible />}>

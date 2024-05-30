@@ -48,6 +48,12 @@ function timeAlerts(funcion) {
     }, 3000);
   }
 
+function timeRedirect(path) {
+    setTimeout(() => {
+      window.location.href = path;
+    }, 3000);
+  }
+
 // Obtener fecha actual y comparar con otra fecha
 function whatsAppDate(fecha) {
 
@@ -186,6 +192,7 @@ function extractInfo(data) {
   };
 }
 
+
 function generateSalt() {
   const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let resultado = '';
@@ -204,4 +211,4 @@ return secondHash;
 }
 
 
-export { parseJwt, formatDateLarge, formatDate, timeAlerts, whatsAppDate, WhatsAppMsg, EmailMsg, extractInfo, generateSalt, passwordHashed };
+export { parseJwt, formatDateLarge, formatDate, timeAlerts, whatsAppDate, WhatsAppMsg, EmailMsg, extractInfo, timeRedirect, generateSalt, passwordHashed };

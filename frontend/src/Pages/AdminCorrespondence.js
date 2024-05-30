@@ -58,6 +58,11 @@ const AdminCorrespondence = () => {
     navigate('/newcorrespondenceform');
   };
 
+  // Button to redirect to all correspondence
+  const ButtonClick = () => {
+    navigate('/allcorrespondence');
+  };
+
   return (
     <div id="change" className="container">
       <h1 className="text-center mb-4">{t('adminCorrespondence.adminCorrespondence')}</h1>
@@ -79,7 +84,7 @@ const AdminCorrespondence = () => {
               {correspondence.map((pkg, index) => (
               <tr key={index + 1}>
                 <td>{pkg.id}</td>
-                <td>{pkg.housing_unit_apartment}</td>
+                <td>{pkg.recipient}</td>
                 <td>{pkg.mail_type}</td>
                 <td >{formatDateLarge(pkg.arrival_time)}</td>
                 <td>{pkg.is_notified === 1 ? <span>&#10004;</span> : <span>&#10060;</span>}</td>
@@ -91,6 +96,9 @@ const AdminCorrespondence = () => {
             </tbody>
           </table>
         </div>
+      </div>
+      <div className="text-center mt-0 pt-0">
+        <a className="link-secondary link-underline-opacity-25 link-underline-opacity-100-hover" style = {{cursor: 'pointer'}} onClick={ButtonClick}>{t('adminCorrespondence.allCorrespondence')}</a>
       </div>
       <div className="text-center mt-4 mb-5">
         <button className="btn btn-primary" onClick={handleButtonClick}>{t('adminCorrespondence.addNewCorrespondence')}</button>
