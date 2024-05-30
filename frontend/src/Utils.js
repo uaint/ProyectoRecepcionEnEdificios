@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { sha256 } from 'js-sha256';
 
 // Funcion para obtener informacion del JWT
 function parseJwt(token) {
@@ -191,4 +192,23 @@ function extractInfo(data) {
   };
 }
 
-export { parseJwt, formatDateLarge, formatDate, timeAlerts, whatsAppDate, WhatsAppMsg, EmailMsg, extractInfo, timeRedirect };
+
+function generateSalt() {
+  const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let resultado = '';
+  const caracteresLength = caracteres.length;
+  for (let i = 0; i < 32; i++) {
+      resultado += caracteres.charAt(Math.floor(Math.random() * caracteresLength));
+  }
+  return resultado;
+}
+
+function passwordHashed(password, salt) {
+  const combinedString = salt + password;
+  const firstHash = sha256(combinedString);
+  const secondHash = sha256(firstHash);
+return secondHash;
+}
+
+
+export { parseJwt, formatDateLarge, formatDate, timeAlerts, whatsAppDate, WhatsAppMsg, EmailMsg, extractInfo, timeRedirect, generateSalt, passwordHashed };

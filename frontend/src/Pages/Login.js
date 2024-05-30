@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from 'react-i18next'; 
 import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { sha256 } from 'js-sha256';
+import { passwordHashed } from '../Utils';
 
 const Login = (props) => {
     const { t } = useTranslation(); // useTranslation: Access translations (EN & ES)
@@ -16,8 +16,8 @@ const Login = (props) => {
     1) Receive user input
     2) Pass username to the database (usernname should already exist in the database)
     3) Receive data from the API (username + salt + password_hashed)
-    4) Retrieve password given by user. Do salt + password on ReactJS (generatehash func)
-    5) generateHash is done. Compare secondHash with password_hashed (db)
+    4) Retrieve password given by user. Do salt + password on ReactJS (passwordHashed func)
+    5) passwordHashed is done. Compare secondHash with password_hashed (db)
     6) If password_hashed == secondHash, then login is successful. Else, login fails. */
 
     // Backend function when clicking the login button
@@ -47,13 +47,6 @@ const Login = (props) => {
         logIn();
     }
 
-    // Function to generate a hashed password using a salt & double SHA-256
-    function generateHash(password, salt) {
-        const combinedString = salt + password;
-        const firstHash = sha256(combinedString);
-        const secondHash = sha256(firstHash);
-    return secondHash;
-    }
 
     // Call to the API (logging of the user)
     const logIn = () => {
@@ -66,7 +59,7 @@ const Login = (props) => {
                 if (data[0] != null) {
                     const salt = data[0].password_salt;
                     const password_hashed = data[0].password_hashed;
-                    const password_hashed_input = generateHash(password, salt);
+                    const password_hashed_input = passwordHashed(password, salt);
                     if (password_hashed === password_hashed_input) {
                         fetch(url_api_token) // Retrieve the token from the specific API
                             .then(response => response.json())

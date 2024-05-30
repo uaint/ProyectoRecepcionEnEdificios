@@ -555,7 +555,8 @@ router.get('/token/:username', (req, res) => {
   const username = req.params.username;
 
   // Create and sign token
-  const token = jwt.sign({username}, "Stack", {
+  const customTime = Math.floor(Date.now() / 1000) + (60 * 60 * 2); // 2 hours por default
+  const token = jwt.sign({username, customTime}, "Stack", {
     expiresIn: '1h' // Expires after...
   });
 
@@ -563,6 +564,35 @@ router.get('/token/:username', (req, res) => {
   res.cookie('token', token, { httpOnly: true });
   res.send({token});
 });
+
+
+
+// Route: UpdatePassword
+router.get('/updatepassword/:username/:newpassword', (req, res) => {
+  // Fetch the username and newpassword
+  const username = req.params.username;
+  const newpassword = req.params.newpassword;
+
+  // Create the query to get username and newpassword
+  const query = 'UPDATE login_sys SET password_hashed = ? WHERE username = ?';
+
+  // Execute query (call to the database)
+  connection.query(query, [newpassword, username], (err, rows) => {
+    // Query failed
+    if (err) {
+      console.error('An error occurred when trying to execute the query:', err);
+      res.status(500).send('An error occurred when trying to authenticate the user.');
+      return;
+    }
+    // Query success
+    else {
+      res.status(200).json({ message: 'Password updated successfully.'});
+      return;
+    }
+    }
+  );
+});
+
 
 // Start the server
 app.use('/.netlify/functions/api', router);

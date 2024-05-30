@@ -119,13 +119,11 @@
   },
   "configAdmin": {
     "configuration": "Configuración",
-    "adminUsersRoles": "Usuarios y Roles de Administración",
-    "newUser": "Nuevo Usuario",
-    "notifications": "Notificaciones",
-    "createNewUser": "Crear Nuevo Usuario",
-    "createNewUserTitle": "Crear Nuevo Usuario",
-    "notificationsTitle": "Notificaciones",
-    "adminUsersRolesTitle": "Usuarios y Roles de Administración"
+    "changePassword":"Cambiar Contraseña",
+    "currentPassword": "Contraseña Actual",
+    "newPassword": "Nueva Contraseña",
+    "newPasswordConfirmed": "Confirmar Nueva Contraseña",
+    "submitButton": "Actualizar Contraseña"
   },
   "home": {
     "welcome": "¡Bienvenido!",
