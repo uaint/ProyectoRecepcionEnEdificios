@@ -206,6 +206,19 @@ CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`frequent_visitor` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `roentgenium_new_eer`.`logs`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`logs` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `log_level` VARCHAR(10) NOT NULL,
+  `log_message` TEXT NOT NULL,
+  `log_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `context` VARCHAR(255) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
 USE `roentgenium_new_eer` ;
 
 -- -----------------------------------------------------
@@ -408,7 +421,26 @@ DELIMITER $$
 USE `roentgenium_new_eer`$$
 CREATE PROCEDURE add_person(IN f_name VARCHAR(31), IN l_name VARCHAR(31), IN r_num INT, IN r_vd TINYINT(1), IN b_date DATE, IN phone_num VARCHAR(15), IN email VARCHAR(127))
 BEGIN
-	INSERT INTO person (first_name, last_name, run, run_vd, birth_date, contact_phone_number, contact_email) VALUES (f_name, l_name, r_num, r_vd, b_date, phone_num, email);
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        -- Log the error
+        CALL log_error('An error occured trying to add a new person: The RUN is already in our records.', 'add_person');
+    END;
+
+    START TRANSACTION;
+
+    -- Try to insert the new person
+    CALL log_debug(CONCAT('Adding new person: ', f_name, ' ', l_name, ', RUN: ', r_num, '-', r_vd), 'add_person');
+    INSERT INTO person (
+        first_name, last_name, run, run_vd, birth_date, contact_phone_number, contact_email
+    ) VALUES (
+        f_name, l_name, r_num, r_vd, b_date, phone_num, email
+    );
+
+    -- Log the success of the insertion
+    CALL log_info(CONCAT('Successfully added a new person: ', f_name, ' ', l_name, ', RUN: ', r_num, '-', r_vd), 'add_person');
+
+    COMMIT;
 END$$
 
 DELIMITER ;
@@ -588,6 +620,45 @@ BEGIN
         SET v_id = obtain_visitor_id_by_run(run_visitor);
         CALL add_visit_from_visitor(v_id, apt_id, v_type);
     END IF;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure log_info
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium_new_eer`$$
+CREATE PROCEDURE `log_info`(IN p_message TEXT, IN p_context VARCHAR(255))
+BEGIN
+    INSERT INTO `logs` (`log_level`, `log_message`, `context`) VALUES ('INFO', p_message, p_context);
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure log_error
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium_new_eer`$$
+CREATE PROCEDURE `log_error`(IN p_message TEXT, IN p_context VARCHAR(255))
+BEGIN
+    INSERT INTO `logs` (`log_level`, `log_message`, `context`) VALUES ('ERROR', p_message, p_context);
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure log_debug
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium_new_eer`$$
+CREATE PROCEDURE `log_debug`(IN p_message TEXT, IN p_context VARCHAR(255))
+BEGIN
+    INSERT INTO `logs` (`log_level`, `log_message`, `context`) VALUES ('DEBUG', p_message, p_context);
 END$$
 
 DELIMITER ;
