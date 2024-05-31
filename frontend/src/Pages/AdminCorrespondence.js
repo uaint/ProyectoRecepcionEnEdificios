@@ -4,6 +4,10 @@ import { useTranslation } from 'react-i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import { formatDateLarge, timeAlerts } from '../Utils.js';
+import log from 'loglevel';
+
+// Configurar el nivel de logging
+log.setLevel('DEBUG');
 
 const AdminCorrespondence = () => {
 
@@ -21,11 +25,18 @@ const AdminCorrespondence = () => {
 
   // Define the API call to the unclaimed_correspondence
   const fetchCorrespondenceData = () => {
+    log.debug('Fetching correspondence data...');
     fetch('https://dduhalde.online/.netlify/functions/api/unclaimed_correspondence')
-      .then(response => response.json())
-      .then(data => setCorrespondence(data))
+      .then(response => {
+        log.info('API response:', response);
+        return response.json();
+      })
+      .then(data => {
+        log.info('Correspondence data received:', data);
+        setCorrespondence(data);
+      })
       .catch(error => {
-        console.error('An error occurred when fetching the correspondence:', error);
+        log.error('An error occurred when fetching the correspondence:', error);
         setShowCorrespondenceAlert(true);
         timeAlerts(() => setShowCorrespondenceAlert(false));
       });
@@ -37,17 +48,20 @@ const AdminCorrespondence = () => {
   }, []);
 
   const handleDelete = (id) => {
+    log.debug(`Attempting to update correspondence status for ID: ${id}`);
     // Do the UPDATE request to the server (channge from "unclaimed/not claimed" to "claimed")
     fetch(`https://dduhalde.online/.netlify/functions/api/is_claimed/${id}`)
     .then(response => {
       if (!response.ok) {
         throw new Error('An error occurred when trying to update the correspondence status.');
       }
+      log.info(`Correspondence status updated successfully for ID: ${id}`);
       setShowClaimedAlert(true);
       timeAlerts(() => setShowClaimedAlert(false));
       fetchCorrespondenceData();
     })
     .catch(error => {
+      log.error('An error occurred when updating the correspondence status:', error);
       setShowClaimedFailAlert(true);
       timeAlerts(() => setShowClaimedFailAlert(false));
     });
