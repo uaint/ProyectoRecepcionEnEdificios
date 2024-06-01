@@ -486,6 +486,68 @@ router.get('/is_claimed/:id', (req, res) => {
   });
 });
 
+// Route: View Logs
+router.get('/view_logs', (req, res) => {
+
+  // Create the query calling the update_mail_to_claimed stored procedure
+  const query = `SELECT * FROM logs;`;
+
+  // Execute the query (call to the database)
+  connection.query(query, (err, rows) => {
+    // Query failed
+    if (err) {
+      console.error('An error occurred when trying to execute the query:', err);
+      res.status(500).send('An error occurred when trying to fetch data from the database.');
+      return;
+    }
+    // Query success
+    else {
+      res.json(rows); // Send data as .json to the client
+      return;
+    }
+  });
+});
+
+// Route: Add Log
+// Example: /add_log/DEBUG/Ejecucion Funcion X/Correspondencia
+router.get('/add_log/:log_level/:log_message/:context', (req, res) => {
+
+  // Fetch the parameters from the previous link
+  const { log_level, log_message, context } = req.params;
+
+  let query;
+
+  switch (log_level) {
+    case "DEBUG":
+      query = `CALL log_debug(?, ?);`;
+        break;
+    case "INFO":
+      query = `CALL log_info(?, ?);`;
+        break;
+    case "ERROR":
+      query = `CALL log_error(?, ?);`;
+        break;
+    default:
+      res.status(400).send('Invalid log level.');
+      return;
+  }
+
+  // Execute the query (call to the database)
+  connection.query(query, [log_message, context], (err, rows) => {
+    // Query failed
+    if (err) {
+      console.error('An error occurred when trying to execute the query:', err);
+      res.status(500).send('An error occurred when trying to manipulate data from the database.');
+      return;
+    }
+    // Query success
+    else {
+      res.status(200).json({ message: 'Log added successfully.'});
+      return;
+    }
+  });
+});
+
 // Route: Mark correspondence as claimed 
 router.get('/frequent_visit/:run', (req, res) => {
 
