@@ -169,6 +169,8 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`login_sys` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `person_id` INT NOT NULL,
+  `apartment_id_associated` INT NULL,
+  `tower_id_associated` INT NULL,
   `username` VARCHAR(127) NOT NULL,
   `password_hashed` CHAR(64) NOT NULL,
   `password_salt` CHAR(32) NOT NULL,
@@ -283,9 +285,9 @@ DELIMITER ;
 
 DELIMITER $$
 USE `roentgenium_new_eer`$$
-CREATE PROCEDURE add_user_login(IN p_id INT, IN usrnm VARCHAR(127), IN psswrd CHAR(64), IN slt CHAR(32), IN u_role TINYINT)
+CREATE PROCEDURE add_user_login(IN p_id INT, IN apt_id INT, IN t_id INT, IN usrnm VARCHAR(127), IN pass_hash CHAR(64), IN pass_salt CHAR(32), IN u_role TINYINT)
 BEGIN
-	INSERT INTO login_sys (person_id, username, password_hashed, password_salt, user_role, last_access) VALUES (p_id, usrnm, psswrd, slt, u_role, NOW());
+	INSERT INTO login_sys (person_id, apartment_id_associated, tower_id_associated, username, password_hashed, password_salt, user_role, last_access) VALUES (p_id, apt_id, t_id, usrnnm, pass_hash, pass_salt, u_role, NOW());
 END$$
 
 DELIMITER ;
@@ -659,6 +661,25 @@ USE `roentgenium_new_eer`$$
 CREATE PROCEDURE `log_debug`(IN p_message TEXT, IN p_context VARCHAR(255))
 BEGIN
     INSERT INTO `logs` (`log_level`, `log_message`, `context`) VALUES ('DEBUG', p_message, p_context);
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure get_visitors_info
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium_new_eer`$$
+CREATE PROCEDURE get_visitors_info(IN tower_param VARCHAR(255), IN apartment_identifier_param VARCHAR(255))
+BEGIN
+    IF tower_param IS NULL AND apartment_identifier_param IS NULL THEN
+        SELECT * FROM visitors_information;
+    ELSEIF tower_param IS NOT NULL AND apartment_identifier_param IS NULL THEN
+        SELECT * FROM visitors_information WHERE tower = tower_param;
+    ELSEIF tower_param IS NOT NULL AND apartment_identifier_param IS NOT NULL THEN
+        SELECT * FROM visitors_information WHERE tower = tower_param AND apartment_identifier = apartment_identifier_param;
+    END IF;
 END$$
 
 DELIMITER ;
