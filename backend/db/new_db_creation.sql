@@ -226,12 +226,12 @@ USE `roentgenium_new_eer` ;
 -- -----------------------------------------------------
 -- Placeholder table for view `roentgenium_new_eer`.`visitors_information`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`visitors_information` (`visitor_id` INT, `log_id` INT, `full_name` INT, `run` INT, `birth_date` INT, `apartment_visited` INT, `is_frequent_visitor` INT, `visit_motive` INT, `visit_date` INT);
+CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`visitors_information` (`visitor_id` INT, `log_id` INT, `full_name` INT, `run` INT, `birth_date` INT, `apartment_identifier` INT, `tower` INT, `is_frequent_visitor` INT, `visit_motive` INT, `visit_date` INT);
 
 -- -----------------------------------------------------
 -- Placeholder table for view `roentgenium_new_eer`.`unclaimed_correspondence`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`unclaimed_correspondence` (`id` INT, `recipient` INT, `mail_type` INT, `arrival_time` INT, `is_notified` INT, `is_claimed` INT);
+CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`unclaimed_correspondence` (`id` INT, `apartment_identifier` INT, `tower` INT, `mail_type` INT, `arrival_time` INT, `is_notified` INT, `is_claimed` INT);
 
 -- -----------------------------------------------------
 -- Placeholder table for view `roentgenium_new_eer`.`currently_parked_vehicles`
@@ -241,7 +241,7 @@ CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`currently_parked_vehicles` (`v
 -- -----------------------------------------------------
 -- Placeholder table for view `roentgenium_new_eer`.`all_correspondence`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`all_correspondence` (`id` INT, `recipient` INT, `mail_type` INT, `arrival_time` INT, `is_notified` INT, `is_claimed` INT);
+CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`all_correspondence` (`id` INT, `apartment_identifier` INT, `tower` INT, `mail_type` INT, `arrival_time` INT, `is_notified` INT, `is_claimed` INT);
 
 -- -----------------------------------------------------
 -- Placeholder table for view `roentgenium_new_eer`.`all_vehicles`
@@ -685,6 +685,44 @@ END$$
 DELIMITER ;
 
 -- -----------------------------------------------------
+-- procedure get_unclaimed_mail_info
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium_new_eer`$$
+CREATE PROCEDURE get_unclaimed_mail_info(IN tower_param VARCHAR(255), IN apartment_identifier_param VARCHAR(255))
+BEGIN
+    IF (tower_param IS NULL OR tower_param = 'null') AND (apartment_identifier_param IS NULL OR apartment_identifier_param = 'null') THEN
+        SELECT * FROM unclaimed_correspondence;
+    ELSEIF tower_param IS NOT NULL AND (apartment_identifier_param IS NULL OR apartment_identifier_param =  'null') THEN
+        SELECT * FROM unclaimed_correspondence WHERE tower = tower_param;
+    ELSEIF tower_param IS NOT NULL AND apartment_identifier_param IS NOT NULL THEN
+        SELECT * FROM unclaimed_correspondence WHERE tower = tower_param AND apartment_identifier = apartment_identifier_param;
+    END IF;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure get_all_mail_info
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium_new_eer`$$
+CREATE PROCEDURE get_all_mail_info(IN tower_param VARCHAR(255), IN apartment_identifier_param VARCHAR(255))
+BEGIN
+    IF (tower_param IS NULL OR tower_param = 'null') AND (apartment_identifier_param IS NULL OR apartment_identifier_param = 'null') THEN
+        SELECT * FROM all_correspondence;
+    ELSEIF tower_param IS NOT NULL AND (apartment_identifier_param IS NULL OR apartment_identifier_param =  'null') THEN
+        SELECT * FROM all_correspondence WHERE tower = tower_param;
+    ELSEIF tower_param IS NOT NULL AND apartment_identifier_param IS NOT NULL THEN
+        SELECT * FROM all_correspondence WHERE tower = tower_param AND apartment_identifier = apartment_identifier_param;
+    END IF;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
 -- View `roentgenium_new_eer`.`visitors_information`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `roentgenium_new_eer`.`visitors_information`;
@@ -696,7 +734,8 @@ CREATE  OR REPLACE VIEW `visitors_information` AS
         CONCAT(p.first_name, ' ', p.last_name) AS full_name,
         CONCAT(p.run, '-', p.run_vd) AS run,
         p.birth_date,
-        CONCAT(apt.number_identifier, '-', apt.tower_id) AS apartment_visited,
+        apt.number_identifier AS apartment_identifier,
+        apt.tower_id AS tower,
         IF(fv.id IS NOT NULL, 1, 0) AS is_frequent_visitor,
         vl.visit_type AS visit_motive,
         vl.visit_date
@@ -722,7 +761,8 @@ USE `roentgenium_new_eer`;
 CREATE  OR REPLACE VIEW `unclaimed_correspondence` AS
     SELECT 
 		m.id,
-        CONCAT(apt.number_identifier, '-', apt.tower_id) AS recipient,
+        apt.number_identifier AS apartment_identifier,
+        apt.tower_id AS tower,
         m.mail_type,
         m.arrival_time,
         m.is_notified,
@@ -763,7 +803,8 @@ USE `roentgenium_new_eer`;
 CREATE  OR REPLACE VIEW `all_correspondence` AS
 SELECT 
 		m.id,
-        CONCAT(apt.number_identifier, '-', apt.tower_id) AS recipient,
+        apt.number_identifier AS apartment_identifier,
+        apt.tower_id AS tower,
         m.mail_type,
         m.arrival_time,
         m.is_notified,
