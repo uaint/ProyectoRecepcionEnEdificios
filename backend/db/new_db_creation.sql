@@ -673,9 +673,9 @@ DELIMITER $$
 USE `roentgenium_new_eer`$$
 CREATE PROCEDURE get_visitors_info(IN tower_param VARCHAR(255), IN apartment_identifier_param VARCHAR(255))
 BEGIN
-    IF tower_param IS NULL AND apartment_identifier_param IS NULL THEN
+    IF (tower_param IS NULL OR tower_param = 'null') AND (apartment_identifier_param IS NULL OR apartment_identifier_param = 'null') THEN
         SELECT * FROM visitors_information;
-    ELSEIF tower_param IS NOT NULL AND apartment_identifier_param IS NULL THEN
+    ELSEIF tower_param IS NOT NULL AND (apartment_identifier_param IS NULL OR apartment_identifier_param =  'null') THEN
         SELECT * FROM visitors_information WHERE tower = tower_param;
     ELSEIF tower_param IS NOT NULL AND apartment_identifier_param IS NOT NULL THEN
         SELECT * FROM visitors_information WHERE tower = tower_param AND apartment_identifier = apartment_identifier_param;
