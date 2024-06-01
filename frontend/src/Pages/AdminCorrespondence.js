@@ -3,11 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
-import { formatDateLarge, timeAlerts } from '../Utils.js';
-import log from 'loglevel';
-
-// Configurar el nivel de logging
-log.setLevel('DEBUG');
+import { formatDateLarge, timeAlerts, logToDatabase } from '../Utils.js';
 
 const AdminCorrespondence = () => {
 
@@ -25,18 +21,18 @@ const AdminCorrespondence = () => {
 
   // Define the API call to the unclaimed_correspondence
   const fetchCorrespondenceData = () => {
-    log.debug('Fetching correspondence data...');
+    logToDatabase('DEBUG','Fetching correspondence data','fetchCorrespondenceData');
     fetch('https://dduhalde.online/.netlify/functions/api/unclaimed_correspondence')
       .then(response => {
-        log.info('API response:', response);
+        logToDatabase('INFO','API response','fetchCorrespondenceData');
         return response.json();
       })
       .then(data => {
-        log.info('Correspondence data received:', data);
+        logToDatabase('INFO','Correspondence data received','fetchCorrespondenceData');
         setCorrespondence(data);
       })
       .catch(error => {
-        log.error('An error occurred when fetching the correspondence:', error);
+        logToDatabase('ERROR','An error occurred when fetching the correspondence','fetchCorrespondenceData');
         setShowCorrespondenceAlert(true);
         timeAlerts(() => setShowCorrespondenceAlert(false));
       });
@@ -47,21 +43,21 @@ const AdminCorrespondence = () => {
     fetchCorrespondenceData();
   }, []);
 
-  const handleDelete = (id) => {
-    log.debug(`Attempting to update correspondence status for ID: ${id}`);
+  const handleMarkClaimed = (id) => {
+    logToDatabase('DEBUG',`Attempting to update correspondence status for ID: ${id}`,'handleMarkClaimed');
     // Do the UPDATE request to the server (channge from "unclaimed/not claimed" to "claimed")
     fetch(`https://dduhalde.online/.netlify/functions/api/is_claimed/${id}`)
     .then(response => {
       if (!response.ok) {
         throw new Error('An error occurred when trying to update the correspondence status.');
       }
-      log.info(`Correspondence status updated successfully for ID: ${id}`);
+      logToDatabase('INFO',`Correspondence status updated successfully for ID: ${id}`,'handleMarkClaimed');
       setShowClaimedAlert(true);
       timeAlerts(() => setShowClaimedAlert(false));
       fetchCorrespondenceData();
     })
     .catch(error => {
-      log.error('An error occurred when updating the correspondence status:', error);
+      logToDatabase('ERROR',`An error occurred when updating the correspondence status`,'handleMarkClaimed');
       setShowClaimedFailAlert(true);
       timeAlerts(() => setShowClaimedFailAlert(false));
     });
@@ -103,7 +99,7 @@ const AdminCorrespondence = () => {
                 <td >{formatDateLarge(pkg.arrival_time)}</td>
                 <td>{pkg.is_notified === 1 ? <span>&#10004;</span> : <span>&#10060;</span>}</td>
                 <td>
-                  <button className="btn btn-success btn-sm" onClick={() => handleDelete(pkg.id)}>{t('adminCorrespondence.claimed')}</button>
+                  <button className="btn btn-success btn-sm" onClick={() => handleMarkClaimed(pkg.id)}>{t('adminCorrespondence.claimed')}</button>
                 </td>
               </tr>
               ))}

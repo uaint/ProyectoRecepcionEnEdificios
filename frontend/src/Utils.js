@@ -158,6 +158,10 @@ function EmailMsg(data, inhabitants) {
   }
 }
 
+function logToDatabase(log_level, log_message, context) {
+  fetch(`https://dduhalde.online/.netlify/functions/api/add_log/${log_level}/${log_message}/${context}`)
+}
+
 function fistUpper(cadena) {
   return cadena.charAt(0).toUpperCase() + cadena.slice(1).toLowerCase();
 }
@@ -211,4 +215,4 @@ return secondHash;
 }
 
 
-export { parseJwt, formatDateLarge, formatDate, timeAlerts, whatsAppDate, WhatsAppMsg, EmailMsg, extractInfo, timeRedirect, generateSalt, passwordHashed };
+export { parseJwt, formatDateLarge, formatDate, timeAlerts, whatsAppDate, WhatsAppMsg, EmailMsg, extractInfo, timeRedirect, generateSalt, passwordHashed, logToDatabase };
