@@ -126,9 +126,6 @@ router.get('/visitors/:tower/:apartment', (req, res) => {
   // Create the query using get_visitors_info
   const query = `CALL get_visitors_info(?, ?)`;
 
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-
   // Execute the query (call to the database)
   connection.query(query, [tower, apartment], (err, rows) => {
     // Query failed
@@ -572,6 +569,78 @@ router.get('/new_frequent_visit/:name/:last_name/:rut/:dv/:birthdate/:apartment/
   });
 });
 
+// Route: Delete Msg
+router.get('/delete_msg/:id', (req, res) => {
+
+  // Fetch parameters from the previous link
+  const { id } = req.params;
+
+  // Create the query calling the update_mail_to_claimed stored procedure
+  const query = `DELETE FROM messaging WHERE id = ?;`;
+
+  // Execute the query (call to the database)
+  connection.query(query, [id], (err, rows) => {
+    // Query failed
+    if (err) {
+      res.status(500).send('An error occurred when trying to update the data from the database.');
+      return;
+    }
+
+    else {
+      res.json(rows); // Send data as .json to the client
+      return;
+    }
+  });
+});
+
+// Route: Delete Msg
+router.get('/get_msg/:tower', (req, res) => {
+
+  // Fetch parameters from the previous link
+  const { tower } = req.params;
+
+  // Create the query calling the get_messages stored procedure
+  const query = `CALL get_messages(?);`;
+
+  // Execute the query (call to the database)
+  connection.query(query, [tower], (err, rows) => {
+    // Query failed
+    if (err) {
+      res.status(500).send('An error occurred when trying to update the data from the database.');
+      return;
+    }
+
+    else {
+      res.json(rows); // Send data as .json to the client
+      return;
+    }
+  });
+});
+
+// Route: New Msg
+router.get('/new_msg/:id/:tower/:message', (req, res) => {
+
+  // Fetch parameters from the previous link
+  const { id, tower, message } = req.params;
+
+  // Create the query calling the send_message stored procedure
+  const query = `CALL send_message(?, ?, ?);`;
+
+  // Execute the query (call to the database)
+  connection.query(query, [id, tower, message], (err, rows) => {
+    // Query failed
+    if (err) {
+      res.status(500).send('An error occurred when trying to update the data from the database.');
+      return;
+    }
+
+    else {
+      res.json(rows); // Send data as .json to the client
+      return;
+    }
+  });
+});
+
 // Route: Login
 router.get('/login/:username', (req, res) => {
   // Fetch the username
@@ -579,12 +648,6 @@ router.get('/login/:username', (req, res) => {
 
   // Create the query to verify if the username is valid & fetch the data associated
   const query = 'SELECT * FROM login_sys WHERE username = ?';
-
-  // CORS Headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-  res.setHeader('Access-Control-Allow-Credentials', true);
 
   // Execute query (call to the database)
   connection.query(query, [username], (err, rows) => {
