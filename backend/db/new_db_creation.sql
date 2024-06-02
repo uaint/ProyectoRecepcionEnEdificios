@@ -943,6 +943,7 @@ CREATE  OR REPLACE VIEW `message_view` AS
         apartment apt ON sender_inhabitant.apartment_id = apt.id
     LEFT JOIN
         tower t ON apt.tower_id = t.id;
+	ORDER BY msg.message_timestamp DESC;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
