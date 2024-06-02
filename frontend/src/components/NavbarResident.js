@@ -5,7 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import i18n from '../i18n';
 import '../App.css';
 
-
 // Navbar style
 const navbarStyle = {
   textAlign: 'center',
@@ -18,8 +17,16 @@ const NavbarResident = () => {
     i18n.changeLanguage(newLanguage);
   };
 
+
+  // Logout and delete all from local and session storage. Afterwards, redirect to login page.
+  const handleSignOut = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.href = '/login';
+  };
+
   return (
-    <nav class="navbar navbar-expand-lg bg-body-tertiary mb-3 fixed-top" style={navbarStyle}>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary mb-5 fixed-top">
       <div class="container-fluid">
         <div className="btn-group navbar-brand" role="group" style={navbarStyle}>
           <button
@@ -37,30 +44,33 @@ const NavbarResident = () => {
               EN
           </button>
         </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <Link class="nav-link" to="/notifications">{t('navbarResident.notifications')}</Link>
+        <div className="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+          <ul className="navbar-nav">
+            <li className="nav-item me-4">
+              <Link className="nav-link" to="/adminvisits">{t('navbarResident.adminvisits')}</Link>
             </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="/adminvisits">{t('navbarResident.adminVisits')}</Link>
+            <li className="nav-item me-4">
+              <Link className="nav-link" to="/admincorrespondence">{t('navbarResident.adminCorrespondence')}</Link>
             </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="/messages">{t('navbarResident.messages')}</Link>
+            <li className="nav-item me-4">
+              <Link className="nav-link" to="/newfrequentvisitform">{t('navbarResident.newfrequentvisitform')}</Link>
             </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="/config">{t('navbarResident.config')}</Link>
+            <li className="nav-item me-4">
+              <Link className="nav-link" to="/adminmessages">{t('navbarResident.messages')}</Link>
             </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="/home">{t('navbarResident.signOut')}</Link>
-            </li>
-            <li>
+            <li className="nav-item me-4">
+              <Link className="nav-link" to="/configadmin">{t('navbarResident.config')}</Link>
             </li>
           </ul>
         </div>
+        <ul className="navbar-nav">
+          <li className="nav-item me-4 pull-right">
+            <Link className="nav-link" to="/login" onClick={handleSignOut}>{t('navbarResident.signOut')}</Link>
+          </li>
+          </ul>
       </div>
     </nav>
   );

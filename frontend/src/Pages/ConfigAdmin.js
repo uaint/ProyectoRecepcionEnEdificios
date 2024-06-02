@@ -85,10 +85,8 @@ const ConfigAdmin = () => {
                             console.error('Error updating password:', error);
                         })
                     } else {
-                        console.log('Incorrect password');
                     }
                   } else {
-                    console.log('Token error');
                   }
   });
 }

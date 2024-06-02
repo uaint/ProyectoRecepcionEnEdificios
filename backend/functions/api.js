@@ -548,6 +548,30 @@ router.get('/frequent_visit/:run', (req, res) => {
   });
 });
 
+// Route: Mark correspondence as claimed 
+router.get('/new_frequent_visit/:name/:last_name/:rut/:dv/:birthdate/:apartment/:tower', (req, res) => {
+
+  // Fetch parameters from the previous link
+  const { name, last_name, rut, dv, birthdate, apartment, tower } = req.params;
+
+  // Create the query calling the update_mail_to_claimed stored procedure
+  const query = `CALL add_frequent_visitor(?, ?, ?, ?, ?, ?, ?)`;
+
+  // Execute the query (call to the database)
+  connection.query(query, [name, last_name, rut, dv, birthdate, apartment, tower], (err, rows) => {
+    // Query failed
+    if (err) {
+      res.status(500).send('An error occurred when trying to update the data from the database.');
+      return;
+    }
+
+    else {
+      res.json(rows); // Send data as .json to the client
+      return;
+    }
+  });
+});
+
 // Route: Login
 router.get('/login/:username', (req, res) => {
   // Fetch the username

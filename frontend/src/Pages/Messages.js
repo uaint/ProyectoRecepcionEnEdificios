@@ -20,7 +20,6 @@ const Messages = () => {
   };
   const handleSendMessage = () => {
     // TODO logic to send message
-    console.log(`Message: ${message}, Type: ${selectedOption}`);
   };
 
   return (

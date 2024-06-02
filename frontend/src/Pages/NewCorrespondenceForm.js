@@ -93,7 +93,6 @@ const NewCorrespondenceForm = () => {
       if (!response.ok) {
         throw new Error('An error occurred trying to add correspondence.');
       }
-      console.log(`Correspondence added successfully.`);
     })
     .catch(error => {
       console.error('An error occurred trying to add correspondence:', error);

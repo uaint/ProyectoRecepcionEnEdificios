@@ -30,6 +30,7 @@ import ConfigAdmin from './Pages/ConfigAdmin';
 import NewVehicleForm from './Pages/NewVehicleForm';
 import AdminParking from './Pages/AdminParking';
 import AdminVehicles from './Pages/AdminVehicles';
+import NewFrequentVisitForm from './Pages/NewFrequentVisitForm';
 
 //Importar funcion de verificacion token
 import { parseJwt } from './Utils';
@@ -80,6 +81,7 @@ function App() {
               <Route path="/adminvisits" element={<AdminVisits />} />
               <Route path="/adminparking" element={<AdminParking />} />
               <Route path="/adminvehicles" element={<AdminVehicles />} />
+              <Route path="/newfrequentvisitform" element={<NewFrequentVisitForm />} />
               <Route path="*" element={<Navigate to="/home" replace />} /> {/* Redireccionar desde cualquier ruta inválida a /home */}
             </Route>
             <Route element={<NavbarNotVisible />}>

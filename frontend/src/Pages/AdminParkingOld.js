@@ -29,10 +29,8 @@ const AdminParkingOld = () => {
       if (!response.ok) {
         throw new Error('An error occurred trying to delete the vehicle.');
       }
-      console.log(`Vehicle under the license plate ${plate} deleted successfully.`);
     })
     .catch(error => {
-      console.error('An error occurred trying to delete the vehicle:', error);
     });
   };
 

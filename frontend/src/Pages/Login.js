@@ -51,7 +51,7 @@ const Login = (props) => {
 
     const handleCheckboxChange = (e) => {
         const isChecked = e.target.checked;
-        console.log(isChecked)
+
         SetNotExpire(isChecked);
     };
 
@@ -60,7 +60,6 @@ const Login = (props) => {
     const logIn = () => {
         const url_api = `https://dduhalde.online/.netlify/functions/api/login/${username}`;
         const url_api_token = `https://dduhalde.online/.netlify/functions/api/token/${username}/${notExpire}`;
-        console.log(url_api_token)
         fetch(url_api)
             .then(response => response.json())
             .then(data => {
@@ -77,7 +76,6 @@ const Login = (props) => {
                         fetch(url_api_token) // Retrieve the token from the specific API
                             .then(response => response.json())
                             .then(data2 => {
-                                console.log(data.token) // TEST TOKEN
                                 // If login is successful, save token into the localStorage of the browser
                                 localStorage.setItem('token', data2.token)
 
@@ -90,7 +88,9 @@ const Login = (props) => {
                                 console.error('Error fetching token data:', error);
                             });
                         // If login is successful, redirect user to main page
-                        navigate('/admincorrespondence');
+                        setTimeout(() => {
+                            navigate('/home'); //Timeout for time to charge
+                        }, 1000);
                     } else {
                         // If passwords do not match, show an error message
                         setPasswordError(t('login.passwordMissmatchError'));
