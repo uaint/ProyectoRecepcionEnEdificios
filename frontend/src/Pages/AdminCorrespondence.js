@@ -14,6 +14,11 @@ const AdminCorrespondence = () => {
   // Create correspondence
   const [correspondence, setCorrespondence] = useState([]);
 
+  // Read variables from sessionStorage
+  const storedTowerId = sessionStorage.getItem('tower_id_associated');
+  const storedApartmentId = sessionStorage.getItem('apartment_id_associated');
+  const user_role = sessionStorage.getItem('user_role');
+
   // Create alerts
   const [showClaimedAlert, setShowClaimedAlert] = useState(false);
   const [showClaimedFailAlert, setShowClaimedFailAlert] = useState(false);
@@ -22,14 +27,14 @@ const AdminCorrespondence = () => {
   // Define the API call to the unclaimed_correspondence
   const fetchCorrespondenceData = () => {
     logToDatabase('DEBUG','Fetching correspondence data','fetchCorrespondenceData');
-    fetch('https://dduhalde.online/.netlify/functions/api/unclaimed_correspondence')
+    fetch(`https://dduhalde.online/.netlify/functions/api/unclaimed_correspondence/${storedTowerId}/${storedApartmentId}`)
       .then(response => {
         logToDatabase('INFO','API response','fetchCorrespondenceData');
         return response.json();
       })
       .then(data => {
         logToDatabase('INFO','Correspondence data received','fetchCorrespondenceData');
-        setCorrespondence(data);
+        setCorrespondence(data[0]);
       })
       .catch(error => {
         logToDatabase('ERROR','An error occurred when fetching the correspondence','fetchCorrespondenceData');
@@ -87,20 +92,24 @@ const AdminCorrespondence = () => {
                 <th scope="col">{t('adminCorrespondence.type')}</th>
                 <th scope="col">{t('adminCorrespondence.date')}</th>
                 <th scope="col">{t('adminCorrespondence.notified')}</th>
+                {user_role !== '3' && (
                 <th scope="col">{t('adminCorrespondence.claimed')}</th>
+                )}
               </tr>
             </thead>
             <tbody>
               {correspondence.map((pkg, index) => (
               <tr key={index + 1}>
                 <td>{pkg.id}</td>
-                <td>{pkg.recipient}</td>
+                <td>{pkg.apartment_identifier}-{pkg.tower}</td>
                 <td>{pkg.mail_type}</td>
                 <td >{formatDateLarge(pkg.arrival_time)}</td>
                 <td>{pkg.is_notified === 1 ? <span>&#10004;</span> : <span>&#10060;</span>}</td>
+                {user_role !== '3' && (
                 <td>
                   <button className="btn btn-success btn-sm" onClick={() => handleMarkClaimed(pkg.id)}>{t('adminCorrespondence.claimed')}</button>
                 </td>
+                )}
               </tr>
               ))}
             </tbody>
@@ -110,9 +119,11 @@ const AdminCorrespondence = () => {
       <div className="text-center mt-0 pt-0">
         <a className="link-secondary link-underline-opacity-25 link-underline-opacity-100-hover" style = {{cursor: 'pointer'}} onClick={ButtonClick}>{t('adminCorrespondence.allCorrespondence')}</a>
       </div>
+      {user_role !== '3' && (
       <div className="text-center mt-4 mb-5">
         <button className="btn btn-primary" onClick={handleButtonClick}>{t('adminCorrespondence.addNewCorrespondence')}</button>
       </div>
+      )}
       <div className='row'>
         <div className='col-md-3 order-md-3 rounded-5'>
           {showClaimedAlert && (

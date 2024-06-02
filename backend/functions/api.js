@@ -17,18 +17,6 @@ const namedb = process.env.DB_NAME;
 const portdb = process.env.DB_PORT;
 const timezonedb = process.env.DB_TIMEZONE;
 
-// DB connection configuration
-/*
-const connection = mysql.createConnection({
-  host: hostdb,
-  user: userdb,
-  password: passwordbd,
-  database: namedb,
-  port: portdb,
-  timezone: timezonedb,
-}); 
-*/
-
 // Create a connection pool
 const connection = mysql.createPool({
   connectionLimit: 10, // Adjust based on your needs
@@ -41,24 +29,6 @@ const connection = mysql.createPool({
   connectTimeout: 10000, // 10 seconds
   acquireTimeout: 10000 // 10 seconds
 });
-
-// Establish a connection with the database
-/*
-connection.connect((err) => {
-
-  // No connection was established
-  if (err) {
-    console.error('An error occurred when attempting to connect to the database:', err);
-    return;
-  }
-  
-  // Connection successful
-  else {
-    console.log('Successful connection made to the database hosted in the Azure MySQL Flexible Server instance.');
-    return;
-  }
-});
-*/
 
 // Middleware for CORS
 router.use((req, res, next) => {
@@ -149,16 +119,18 @@ router.get('/add_visitor/:name/:last_name/:rut/:dv/:birthdate/:tower/:apartment/
 });
 
 // Route: Fetch data from visitors
-router.get('/visitors', (req, res) => {
+router.get('/visitors/:tower/:apartment', (req, res) => {
 
-  // Create the query using the visitors_information view
-  const query = 'SELECT * FROM visitors_information;';
+  const { tower, apartment } = req.params;
+
+  // Create the query using get_visitors_info
+  const query = `CALL get_visitors_info(?, ?)`;
 
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   // Execute the query (call to the database)
-  connection.query(query, (err, rows) => {
+  connection.query(query, [tower, apartment], (err, rows) => {
     // Query failed
     if (err) {
       console.error('There was an error executing the query:', err);
@@ -415,13 +387,15 @@ router.get('/add_mail/:apt_recipient/:hu_recipient/:m_type/:a_time/:i_notified',
 });
 
 // Route: Unclaimed Correspondence
-router.get('/unclaimed_correspondence', (req, res) => {
+router.get('/unclaimed_correspondence/:tower/:apartment', (req, res) => {
 
-  // Create query with the unclaimed_correspondence view
-  const query = 'SELECT * FROM unclaimed_correspondence;';
+  const { tower, apartment } = req.params;
+  
+  // Create the query using get_unclaimed_mail_info
+  const query = `CALL get_unclaimed_mail_info(?, ?)`;
 
   // Execute the query (call to the database)
-  connection.query(query, (err, rows) => {
+  connection.query(query, [tower, apartment], (err, rows) => {
     // Query failed
     if (err) {
       console.error('An error occurred when trying to execute the query:', err);
@@ -437,13 +411,15 @@ router.get('/unclaimed_correspondence', (req, res) => {
 });
 
 // Route: Correspondence
-router.get('/correspondence', (req, res) => {
+router.get('/correspondence/:tower/:apartment', (req, res) => {
 
-  // Create query with the mail table
-  const query = 'SELECT * FROM all_correspondence;';
+  const { tower, apartment } = req.params;
+  
+  // Create the query using get_all_mail_info
+  const query = `CALL get_all_mail_info(?, ?)`;
 
   // Execute the query (call to the database)
-  connection.query(query, (err, rows) => {
+  connection.query(query, [tower, apartment], (err, rows) => {
     // Query failed
     if (err) {
       console.error('An error occurred when trying to execute the query:', err);
@@ -609,25 +585,31 @@ router.get('/logout', (req, res) => {
   res.status(200).send('You have logged out successfully.');
 });
 
-
 // Route: Retrieve token
-router.get('/token/:username', (req, res) => {
+router.get('/token/:username/:notexpire', (req, res) => {
 
   // Fetch username and password
   const username = req.params.username;
+  const notexpire = req.params.notexpire;
 
   // Create and sign token
   const customTime = Math.floor(Date.now() / 1000) + (60 * 60 * 2); // 2 hours por default
-  const token = jwt.sign({username, customTime}, "Stack", {
-    expiresIn: '1h' // Expires after...
-  });
+  const payload = { username: username, customTime: customTime};
+  const secretKey = 'Stack';
+
+  let token;
+  if (notexpire === 'true') {
+    // Token sin expiración
+    token = jwt.sign(payload, secretKey);
+  } else {
+    // Token con expiración de 2 horas
+    token = jwt.sign(payload, secretKey, { expiresIn: '2h' });
+  }
 
   // Send token (HttpOnly for extra security)
   res.cookie('token', token, { httpOnly: true });
   res.send({token});
 });
-
-
 
 // Route: UpdatePassword
 router.get('/updatepassword/:username/:newpassword', (req, res) => {

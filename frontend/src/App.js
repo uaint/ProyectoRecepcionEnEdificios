@@ -34,34 +34,29 @@ import AdminVehicles from './Pages/AdminVehicles';
 //Importar funcion de verificacion token
 import { parseJwt } from './Utils';
 
-
 function App() {
-
+  
   useEffect(() => {
     const token = localStorage.getItem('token'); // Obtiene la data del token desde localStorage
     if (token) {
       // Parsea el token y verifica su caducacion (si esta expirado o vencido)
       const tokenExpiration = parseJwt(token).exp * 1000;
       if (tokenExpiration > Date.now()) {
-        console.log('Token válido');
       } else {
-        // Si token expira, redirigimos a la página de login, removemos el token del ambiente local y quitamos navbar
-        console.log('Token expirado');
-        localStorage.removeItem('token'); // removemos data del token del ambiente local
+        // Si token expira, removemos todo de el storage y si no nos encontramos en /login, nos redirigmios
+        localStorage.clear();
+        sessionStorage.clear();
         if (window.location.pathname !== '/login'){
           window.location.href = '/login';
         }
       }
     } else {
-      // Al no estar loggeado o caducar token, redirige a la página de login
-      console.log('No hay token');
+      // Al no existir token, redirigimos a /login
       if (window.location.pathname !== '/login') {
         window.location.href = '/login';
     }
   }
   }, []);
-
-
 
   return (
     <div className="App">
