@@ -71,6 +71,7 @@ const Login = (props) => {
                     const tower_id_associated = data[0].tower_id_associated;
                     const apartment_id_associated = data[0].apartment_id_associated;
                     const user_role = data[0].user_role;
+                    const person_id = data[0].person_id;
 
                     if (password_hashed === password_hashed_input) {
                         fetch(url_api_token) // Retrieve the token from the specific API
@@ -82,6 +83,7 @@ const Login = (props) => {
                                 sessionStorage.setItem('tower_id_associated', tower_id_associated);
                                 sessionStorage.setItem('apartment_id_associated', apartment_id_associated);
                                 sessionStorage.setItem('user_role', user_role);
+                                sessionStorage.setItem('person_id', person_id);
                                 
                             })
                             .catch(error => {

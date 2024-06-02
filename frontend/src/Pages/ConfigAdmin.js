@@ -35,7 +35,7 @@ const ConfigAdmin = () => {
         return;
     }
 
-    if (newPassword !== currentPassword) {
+    if (newPassword == currentPassword) {
       setPasswordError(t('configAdmin.passwordsMatch'));
       return;
   }
@@ -46,7 +46,7 @@ const ConfigAdmin = () => {
     }
     
     else {
-        updatePassword(newPassword);
+        updatePassword(newPassword, currentPassword);
     }}
 
   const handleToggleTab = (tabName) => {
@@ -61,7 +61,7 @@ const ConfigAdmin = () => {
   
 
   // Verify password
-  const updatePassword = (password) => {
+  const updatePassword = (newPassword, currentPassword) => {
     const token = getToken();
     const decodedToken = parseJwt(token);
     const url_api = `https://dduhalde.online/.netlify/functions/api/login/${decodedToken.username}`;
@@ -72,7 +72,7 @@ const ConfigAdmin = () => {
                 if (data[0] != null) {
                     const salt = data[0].password_salt;
                     const password_hashed = data[0].password_hashed;
-                    const password_hashed_input = passwordHashed(password, salt);
+                    const password_hashed_input = passwordHashed(currentPassword, salt);
                     if (password_hashed === password_hashed_input) {
                         const newPasswordHashed = passwordHashed(newPassword, salt);
                         // Update the password in the database (api.js)
