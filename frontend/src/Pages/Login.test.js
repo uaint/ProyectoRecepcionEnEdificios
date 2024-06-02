@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import Login from './Login';
 
-// Mock para useNavigate
+// Mock for useNavigate
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: jest.fn(),
@@ -53,6 +53,4 @@ describe('Login Component', () => {
       expect(screen.queryByText(/Incorrect username or password/i)).not.toBeInTheDocument();
 
   });
-
-  // Aquí podrías añadir más pruebas para validar el comportamiento de inicio de sesión correcto
 });

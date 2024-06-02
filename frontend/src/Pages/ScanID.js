@@ -8,8 +8,10 @@ const ScanID = () => {
   // General configurations
   const { t } = useTranslation();
 
+  // Image state
   const [imageSrc, setImageSrc] = useState(null);
 
+  // Handle file
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file && file.type.startsWith('image/')) {
@@ -21,6 +23,7 @@ const ScanID = () => {
     }
   };
 
+  // Scan the image with the Google Vision API
   const scanImage = async () => {
     try {
       if (!imageSrc) {
@@ -52,7 +55,7 @@ const ScanID = () => {
       .then(response => response.json())
       .then(data)
       .then(data => {
-        // Verificar el valor de affectedRows
+        // Verify affectedRows value
         if (data.affectedRows === 0) {
           const url_to_redirect = `/newvisitform?firstName=${info.nombre}&lastName=${info.apellido}&run=${info.run}&dv=${info.dv}`;
           window.location.href = url_to_redirect;

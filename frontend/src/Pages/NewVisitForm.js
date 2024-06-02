@@ -9,7 +9,6 @@ const NewVisitForm = () => {
 
   // General configurations
   const { t } = useTranslation();
-  
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
@@ -17,7 +16,7 @@ const NewVisitForm = () => {
   const storedTowerId = sessionStorage.getItem('tower_id_associated');
   const user_role = sessionStorage.getItem('user_role');
   
-  // Obtener los parámetros de la URL
+  // Obtain data from the URL
   const scannedData = {
     firstName: queryParams.get('firstName') || '',
     lastName: queryParams.get('lastName') || '',

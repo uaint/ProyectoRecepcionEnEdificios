@@ -626,10 +626,10 @@ BEGIN
     DECLARE v_id INT;
     DECLARE apt_id INT;
 
-    -- Obtener el ID de la persona usando su RUT
+    -- Obtain visitor ID by RUN
     SET v_id = obtain_visitor_id_by_run(run_search);
     
-    -- Verificar si el visitor_id existe en la tabla frequent_visitor
+    -- Verify if visitor_id exists in frequent_visitor table
     IF v_id IS NOT NULL THEN
 		SELECT apartment_id INTO apt_id
 		FROM frequent_visitor
@@ -942,7 +942,7 @@ CREATE  OR REPLACE VIEW `message_view` AS
 	LEFT JOIN
         apartment apt ON sender_inhabitant.apartment_id = apt.id
     LEFT JOIN
-        tower t ON apt.tower_id = t.id;
+        tower t ON apt.tower_id = t.id
 	ORDER BY msg.message_timestamp DESC;
 
 SET SQL_MODE=@OLD_SQL_MODE;

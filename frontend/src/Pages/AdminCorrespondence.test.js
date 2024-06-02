@@ -3,7 +3,7 @@ import { render, waitFor, fireEvent } from '@testing-library/react';
 import AdminCorrespondence from './AdminCorrespondence';
 import { formatDateLarge } from '../Utils.js';
 
-// Mock de las dependencias de react-router-dom y react-i18next
+// Mock dependencies react-router-dom, react-i18next
 jest.mock('react-router-dom', () => ({
   useNavigate: jest.fn(),
 }));
@@ -17,7 +17,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('AdminCorrespondence Component', () => {
   test('renders with correspondence data', async () => {
-    // Simular la respuesta de la API
+    // Simulate API response
     global.fetch = jest.fn().mockResolvedValueOnce({
       json: () => Promise.resolve([
         {
@@ -41,9 +41,9 @@ describe('AdminCorrespondence Component', () => {
 
     const { getByText, getAllByText } = render(<AdminCorrespondence />);
 
-    // Esperar a que la tabla y los datos de correspondencia se rendericen
+    // Wait for the table and correspondence data to renderize
     await waitFor(() => {
-        // Verificamos si se renderizaron los datos correctamente
+        // Verify if data was renderized as expected
         expect(getByText('66')).toBeInTheDocument();
         expect(getByText('67')).toBeInTheDocument();
         expect(getByText('101-1')).toBeInTheDocument();
@@ -66,7 +66,7 @@ describe('AdminCorrespondence Component', () => {
 
 describe('AdminCorrespondence Component', () => {
     test('calls navigate with correct argument when add new correspondence button is clicked', async () => {
-        // Simular la respuesta de la API
+        // Simulate API response
         global.fetch = jest.fn().mockResolvedValueOnce({
           json: () => Promise.resolve([
             {
@@ -89,17 +89,17 @@ describe('AdminCorrespondence Component', () => {
         });
       const { getByText } = render(<AdminCorrespondence />);
       
-      // Simula un clic en el botón
+      // Simulate click onto the button
       fireEvent.click(getByText('adminCorrespondence.addNewCorrespondence'));
       
-      // Verifica si la función navigate se llamó correctamente
+      // Verify if navigate function was called correctly
       expect(mockNavigate).toHaveBeenCalledWith('/newcorrespondenceform');
     });
   });
 
   describe('AdminCorrespondence Component', () => {
     test('test fetching data from API', async () => {
-        // Simular la respuesta de la API
+        // Simulate API response
         global.fetch = jest.fn().mockResolvedValueOnce({
           json: () => Promise.resolve([
             {
@@ -123,8 +123,8 @@ describe('AdminCorrespondence Component', () => {
       const { getAllByText } = render(<AdminCorrespondence />);
       
         await waitFor(() => {
-            // Verifica si la función fetch se llamó con la URL correcta
-            expect(global.fetch).toHaveBeenCalledWith('https://dduhalde.online/.netlify/functions/api/unclaimed_correspondence'); // Ajusta el id según tus necesidades
+            // Verify if fetch was called correctly with the correct URL
+            expect(global.fetch).toHaveBeenCalledWith('https://dduhalde.online/.netlify/functions/api/unclaimed_correspondence'); // You can adjust the URL to your preference
           });
     });
   });

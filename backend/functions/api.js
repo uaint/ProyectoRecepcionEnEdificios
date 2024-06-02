@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken';
 const app = express();
 const router = express.Router();
 
-// Call all the vars in .env
+// Call all the vars stored in .env
 env.config()
 const passwordbd = process.env.DB_PASSWORD;
 const hostdb = process.env.DB_HOST;
@@ -19,7 +19,7 @@ const timezonedb = process.env.DB_TIMEZONE;
 
 // Create a connection pool
 const connection = mysql.createPool({
-  connectionLimit: 10, // Adjust based on your needs
+  connectionLimit: 10,
   host: hostdb,
   user: userdb,
   password: passwordbd,
@@ -27,7 +27,7 @@ const connection = mysql.createPool({
   port: portdb,
   timezone: timezonedb,
   connectTimeout: 10000, // 10 seconds
-  acquireTimeout: 10000 // 10 seconds
+  acquireTimeout: 10000
 });
 
 // Middleware for CORS
@@ -43,7 +43,7 @@ router.use((req, res, next) => {
   }
 });
 
-// Route to obtain people data (apartment & housing_unit)
+// Route to obtain data related to inhabitants living in a given apartment
 // Example: /inhabitants/1/101
 router.get('/inhabitants/:tower_id/:number_identifier', (req, res) => {
 
@@ -58,7 +58,7 @@ router.get('/inhabitants/:tower_id/:number_identifier', (req, res) => {
     // Query failed
     if (err) {
       console.error('There was an error executing the query:', err);
-      res.status(500).send('There was an error trying to fetch data from the database.');
+      res.status(500).send('There was an error trying to fetch specific inhabitants data from the database.');
       return;
     }
     // Query success
@@ -69,7 +69,7 @@ router.get('/inhabitants/:tower_id/:number_identifier', (req, res) => {
   });
 });
 
-// Route: Obtain data from all the inhabitants of the building
+// Route: Obtain data from all the inhabitants in record
 router.get('/inhabitants', (req, res) => {
 
   // Create the query
@@ -80,7 +80,7 @@ router.get('/inhabitants', (req, res) => {
     // Query failed
     if (err) {
       console.error('There was an error executing the query:', err);
-      res.status(500).send('There was an error trying to fetch data from the database.');
+      res.status(500).send('There was an error trying to fetch inhabitants data from the database.');
       return;
     }
     // Query success
@@ -106,7 +106,7 @@ router.get('/add_visitor/:name/:last_name/:rut/:dv/:birthdate/:tower/:apartment/
     // Query failed
     if (err) {
       console.error('There was an error executing the query:', err);
-      res.status(500).send('There was an error trying to send data to the database.');
+      res.status(500).send('There was an error trying to send data related to non-frequent visitors to the database.');
       return;
     } 
     // Query success
@@ -121,6 +121,7 @@ router.get('/add_visitor/:name/:last_name/:rut/:dv/:birthdate/:tower/:apartment/
 // Route: Fetch data from visitors
 router.get('/visitors/:tower/:apartment', (req, res) => {
 
+  // Fetch parameters from the previous link
   const { tower, apartment } = req.params;
 
   // Create the query using get_visitors_info
@@ -131,7 +132,7 @@ router.get('/visitors/:tower/:apartment', (req, res) => {
     // Query failed
     if (err) {
       console.error('There was an error executing the query:', err);
-      res.status(500).send('There was an error trying to fetch data from the database.');
+      res.status(500).send('There was an error trying to fetch visitors related data from the database.');
       return;
     }
     // Query success
@@ -156,18 +157,18 @@ router.get('/delete_visit/:visit_id_log', (req, res) => {
     // Query failed
     if (err) {
       console.error('There was an error executing the query:', err);
-      res.status(500).send('There was an error trying to fetch data from the database.');
+      res.status(500).send('There was an error trying to delete data related to the visitor log from the database.');
       return;
     }
     // Query success
     else {
-      res.status(200).json({ message: 'The visit log has been deleted succesfully.'});
+      res.status(200).json({ message: `The visit log ${visit_id_log} has been deleted succesfully.`});
       return;
     }
   });
 });
 
-// Route: Delete visitor
+// Route: Delete vehicle + visitor
 // Example: /delete_visitor/1
 router.get('/delete_visitor/:id', (req, res) => {
 
@@ -183,12 +184,12 @@ router.get('/delete_visitor/:id', (req, res) => {
     if (err) {
       console.error('There was an error executing the query:', err);
       console.log(err);
-      res.status(500).send('There was an error trying to manipulate data from the database.');
+      res.status(500).send('There was an error trying to delete data related to vehicles from the database.');
       return;
     }
     // Query success
     else {
-      res.status(200).json({ message: 'Vehicle(s) deleted successfully.'});
+      res.status(200).json({ message: `Vehicle(s) under visitor ID ${visitorId} deleted successfully.`});
 
       // Create and execute the query to finally delete the visitor
       const query = `DELETE FROM visitor WHERE id = ?;`;
@@ -197,12 +198,12 @@ router.get('/delete_visitor/:id', (req, res) => {
         if (err) {
           console.error('There was an error executing the query:', err);
           console.log(err);
-          res.status(500).send('There was an error trying to manipulate data from the database.');
+          res.status(500).send('There was an error trying to delete data related to visitors from the database.');
           return;
         }
         // Query success
         else {
-          res.status(200).json({ message: 'The data from this visitor has been deleted succesfully.'});
+          res.status(200).json({ message: `The data from this visitor (ID ${visitorId}) has been deleted succesfully.`});
           return;
         }
       });
@@ -210,10 +211,11 @@ router.get('/delete_visitor/:id', (req, res) => {
   });
 });
 
-// Route: Assing Parking
-// Example: /add_vehicle/ABC123/5
-router.get('/assing_parking/:license_plate/:parket_at/', (req, res) => {
-  // Fetch license plate
+// Route: Assign Parking
+// Example: assign_parking/AABB12/1/
+router.get('/assign_parking/:license_plate/:parket_at/', (req, res) => {
+
+  // Fetch license plate and parking spot
   const { license_plate, parket_at } = req.params;
 
   // Create query with the delete_vehicle stored procedure
@@ -223,13 +225,13 @@ router.get('/assing_parking/:license_plate/:parket_at/', (req, res) => {
   connection.query(query, [license_plate, parket_at], (err, rows) => {
     // Query failed
     if (err) {
-      console.error('An error occurred when trying to execute the query:', err);
-      res.status(500).send('An error occurred when trying to manipulate data from the database.');
+      console.error('An error occurred while trying to execute the query:', err);
+      res.status(500).send('An error occurred while trying to manipulate data related to vehicles from the database.');
       return;
     }
     // Query success
     else {
-      res.status(200).json({ message: 'Vehicle deleted successfully.'});
+      res.status(200).json({ message: `The parking spot ${parked_at} has been successfully assigned to the vehicle with the license plate ${license_plate}.`});
       return;
     }
   });
@@ -245,12 +247,13 @@ router.get('/parked', (req, res) => {
   connection.query(query, (err, rows) => {
     // Query failed
     if (err) {
-      console.error('An error occurred when trying to execute the query:', err);
-      res.status(500).send('An error occurred when trying to fetch data from the database.');
+      console.error('An error occurred while trying to execute the query:', err);
+      res.status(500).send('An error occurred while trying to fetch data related to vehicles from the database.');
       return;
     }
     // Query success
     else {
+      res.status(200).json({ message: `Returning currently parked vehicles.`});
       res.json(rows); // Send data as .json to the client
       return;
     }
@@ -267,70 +270,71 @@ router.get('/vehicles', (req, res) => {
   connection.query(query, (err, rows) => {
     // Query failed
     if (err) {
-      console.error('An error occurred when trying to execute the query:', err);
-      res.status(500).send('An error occurred when trying to fetch data from the database.');
+      console.error('An error occurred while trying to execute the query:', err);
+      res.status(500).send('An error occurred while trying to fetch data related to vehicles from the database.');
       return;
     }
     // Query success
     else {
+      res.status(200).json({ message: `Returning all vehicles on the record.`});
       res.json(rows); // Send data as .json to the client
       return;
     }
   });
 });
 
-// Route: Delete vehicle
+// Route: Free parking spot
 router.get('/free_parking/:plate', (req, res) => {
 
   // Fetch license plate
   const plate = req.params.plate;
 
-  // Create query with the delete_vehicle stored procedure
+  // Create query with the free_parking_spot stored procedure
   const query = `CALL free_parking_spot(?)`;
 
   // Execute the query (call to the database)
   connection.query(query, [plate], (err, rows) => {
     // Query failed
     if (err) {
-      console.error('An error occurred when trying to execute the query:', err);
-      res.status(500).send('An error occurred when trying to manipulate data from the database.');
+      console.error('An error occurred while trying to execute the query:', err);
+      res.status(500).send('An error occurred while trying to manipulate data related to vehicles from the database.');
       return;
     }
     // Query success
     else {
-      res.status(200).json({ message: 'Vehicle deleted successfully.'});
+      res.status(200).json({ message: `The parking spot occupied by the vehicle ${plate} has been freed.`});
       return;
     }
   });
 });
 
-// Route: Add vehicle
-// Example: /add_vehicle/
+// Route: Add a new vehicle
+// Example: /add_vehicle/11222333/AABB12
 router.get('/add_vehicle/:rut/:license_plate', (req, res) => {
 
   // Fetch the parameters from the previous link
   const { rut, license_plate } = req.params;
 
-  // Create query for searching the visitor's RUN with the help of add_visitor_vehicle stored procedure
+  // Create query for searching the visitor's RUN with the help of add_visitor_vehicle stored procedure + obtain_visitor_id_by_run function
   const query = `CALL add_visitor_vehicle(obtain_visitor_id_by_run(?), ?)`;
 
   // Execute the query (call to the database)
   connection.query(query, [rut, license_plate], (err, rows) => {
     // Query failed
     if (err) {
-      console.error('An error occurred when trying to execute the query:', err);
-      res.status(500).send('An error occurred when trying to manipulate data from the database.');
+      console.error('An error occurred while trying to execute the query:', err);
+      res.status(500).send('An error occurred while trying to manipulate data related to vehicles from the database.');
       return;
     }
     // Query success
     else {
-      res.status(200).json({ message: 'Vehicle added successfully.'});
+      res.status(200).json({ message: `Vehicle ${license_plate} owned by the person under RUN ${rut} added successfully.`});
       return;
     }
   });
 });
 
-// Route: Delete vehicle
+// Route: Delete a vehicle
 // Example: /delete_vehicle/ABC123
 router.get('/delete_vehicle/:plate', (req, res) => {
 
@@ -344,20 +348,20 @@ router.get('/delete_vehicle/:plate', (req, res) => {
   connection.query(query, [plate], (err, rows) => {
     // Query failed
     if (err) {
-      console.error('An error occurred when trying to execute the query:', err);
-      res.status(500).send('An error occurred when trying to manipulate data from the database.');
+      console.error('An error occurred while trying to execute the query:', err);
+      res.status(500).send('An error occurred while trying to manipulate data related to vehicles from the database.');
       return;
     }
     // Query success
     else {
-      res.status(200).json({ message: 'Vehicle deleted successfully.'});
+      res.status(200).json({ message: `Vehicle ${plate} deleted successfully.`});
       return;
     }
   });
 });
 
-// Route: Add correspondence
-// Example: /add_mail/101/1/Letters//:i_notified
+// Route: Add correspondence or mail
+// Example: /add_mail/101/1/Letters/YYYY-MM-DD HH:MM:SS/0
 router.get('/add_mail/:apt_recipient/:hu_recipient/:m_type/:a_time/:i_notified', (req, res) => {
 
   // Fetch the parameters from the previous link
@@ -370,8 +374,8 @@ router.get('/add_mail/:apt_recipient/:hu_recipient/:m_type/:a_time/:i_notified',
   connection.query(query, [m_type, a_time, apt_recipient, hu_recipient, i_notified], (err, results, fields) => {
     // Query failed
     if (err) {
-      console.error('An error occurred when trying to execute the query:', err);
-      res.status(500).json({ err: 'An error occurred when trying to manipulate data onto the database.' });
+      console.error('An error occurred while trying to execute the query:', err);
+      res.status(500).json({ err: 'An error occurred while trying to manipulate data related to correspondence onto the database.' });
       return;
     }
     // Query success
@@ -383,9 +387,10 @@ router.get('/add_mail/:apt_recipient/:hu_recipient/:m_type/:a_time/:i_notified',
   });
 });
 
-// Route: Unclaimed Correspondence
+// Route: Unclaimed Correspondence View
 router.get('/unclaimed_correspondence/:tower/:apartment', (req, res) => {
 
+  // Fetch the parameters from the previous link
   const { tower, apartment } = req.params;
   
   // Create the query using get_unclaimed_mail_info
@@ -395,8 +400,8 @@ router.get('/unclaimed_correspondence/:tower/:apartment', (req, res) => {
   connection.query(query, [tower, apartment], (err, rows) => {
     // Query failed
     if (err) {
-      console.error('An error occurred when trying to execute the query:', err);
-      res.status(500).send('An error occurred when trying to fetch data from the database.');
+      console.error('An error occurred while trying to execute the query:', err);
+      res.status(500).send('An error occurred while trying to fetch data related to correspondence from the database.');
       return;
     }
     // Query success
@@ -407,7 +412,7 @@ router.get('/unclaimed_correspondence/:tower/:apartment', (req, res) => {
   });
 });
 
-// Route: Correspondence
+// Route: All Correspondence
 router.get('/correspondence/:tower/:apartment', (req, res) => {
 
   const { tower, apartment } = req.params;
@@ -419,8 +424,8 @@ router.get('/correspondence/:tower/:apartment', (req, res) => {
   connection.query(query, [tower, apartment], (err, rows) => {
     // Query failed
     if (err) {
-      console.error('An error occurred when trying to execute the query:', err);
-      res.status(500).send('An error occurred when trying to fetch data from the database.');
+      console.error('An error occurred while trying to execute the query:', err);
+      res.status(500).send('An error occurred while trying to fetch data related to correspondence from the database.');
       return;
     }
     // Query success
@@ -444,16 +449,16 @@ router.get('/is_claimed/:id', (req, res) => {
   connection.query(query, [id], (err, rows) => {
     // Query failed
     if (err) {
-      res.status(500).send('An error occurred when trying to update the data from the database.');
+      res.status(500).send('An error occurred while trying to update the information relating to the correspondence claimed status from the database.');
       return;
     }
     // Verify if update was successful
     if (res.affectedRows === 0) {
-      res.status(404).send(`No correspondence found`);
+      res.status(404).send(`No correspondence found.`);
       return;
     } else {
       // Send a success response
-      res.status(200).send(`Correspondence marked as claimed.`);
+      res.status(200).send(`The correspondence has been succesfully marked as claimed.`);
       return;
     }
   });
@@ -469,8 +474,8 @@ router.get('/view_logs', (req, res) => {
   connection.query(query, (err, rows) => {
     // Query failed
     if (err) {
-      console.error('An error occurred when trying to execute the query:', err);
-      res.status(500).send('An error occurred when trying to fetch data from the database.');
+      console.error('An error occurred while trying to execute the query:', err);
+      res.status(500).send('An error occurred while trying to fetch the logs from the database.');
       return;
     }
     // Query success
@@ -509,8 +514,8 @@ router.get('/add_log/:log_level/:log_message/:context', (req, res) => {
   connection.query(query, [log_message, context], (err, rows) => {
     // Query failed
     if (err) {
-      console.error('An error occurred when trying to execute the query:', err);
-      res.status(500).send('An error occurred when trying to manipulate data from the database.');
+      console.error('An error occurred while trying to execute the query:', err);
+      res.status(500).send('An error occurred while trying to create logs and add them to the database.');
       return;
     }
     // Query success
@@ -521,7 +526,7 @@ router.get('/add_log/:log_level/:log_message/:context', (req, res) => {
   });
 });
 
-// Route: Mark correspondence as claimed 
+// Route: Add a frequent visitor
 router.get('/frequent_visit/:run', (req, res) => {
 
   // Fetch parameters from the previous link
@@ -534,7 +539,7 @@ router.get('/frequent_visit/:run', (req, res) => {
   connection.query(query, [run], (err, rows) => {
     // Query failed
     if (err) {
-      res.status(500).send('An error occurred when trying to update the data from the database.');
+      res.status(500).send('An error occurred while trying to update the data related to frequent visitors from the database.');
       return;
     }
 
@@ -545,7 +550,7 @@ router.get('/frequent_visit/:run', (req, res) => {
   });
 });
 
-// Route: Mark correspondence as claimed 
+// Route: Add a frequent visitor (general use)
 router.get('/new_frequent_visit/:name/:last_name/:rut/:dv/:birthdate/:apartment/:tower', (req, res) => {
 
   // Fetch parameters from the previous link
@@ -558,7 +563,7 @@ router.get('/new_frequent_visit/:name/:last_name/:rut/:dv/:birthdate/:apartment/
   connection.query(query, [name, last_name, rut, dv, birthdate, apartment, tower], (err, rows) => {
     // Query failed
     if (err) {
-      res.status(500).send('An error occurred when trying to update the data from the database.');
+      res.status(500).send('An error occurred while trying to upload the data related to the frequent visitor to the database.');
       return;
     }
 
@@ -569,7 +574,7 @@ router.get('/new_frequent_visit/:name/:last_name/:rut/:dv/:birthdate/:apartment/
   });
 });
 
-// Route: Delete Msg
+// Route: Delete message
 router.get('/delete_msg/:id', (req, res) => {
 
   // Fetch parameters from the previous link
@@ -582,7 +587,7 @@ router.get('/delete_msg/:id', (req, res) => {
   connection.query(query, [id], (err, rows) => {
     // Query failed
     if (err) {
-      res.status(500).send('An error occurred when trying to update the data from the database.');
+      res.status(500).send('An error occurred while trying to update the data related to the messaging from the database.');
       return;
     }
 
@@ -593,7 +598,7 @@ router.get('/delete_msg/:id', (req, res) => {
   });
 });
 
-// Route: Delete Msg
+// Route: Get messages view
 router.get('/get_msg/:tower', (req, res) => {
 
   // Fetch parameters from the previous link
@@ -606,7 +611,7 @@ router.get('/get_msg/:tower', (req, res) => {
   connection.query(query, [tower], (err, rows) => {
     // Query failed
     if (err) {
-      res.status(500).send('An error occurred when trying to update the data from the database.');
+      res.status(500).send('An error occurred while trying to fetch data related to messaging from the database.');
       return;
     }
 
@@ -617,7 +622,7 @@ router.get('/get_msg/:tower', (req, res) => {
   });
 });
 
-// Route: New Msg
+// Route: Create a new message
 router.get('/new_msg/:id/:tower/:message', (req, res) => {
 
   // Fetch parameters from the previous link
@@ -630,7 +635,7 @@ router.get('/new_msg/:id/:tower/:message', (req, res) => {
   connection.query(query, [id, tower, message], (err, rows) => {
     // Query failed
     if (err) {
-      res.status(500).send('An error occurred when trying to update the data from the database.');
+      res.status(500).send('An error occurred while trying to create data related to messaging.');
       return;
     }
 
@@ -643,6 +648,7 @@ router.get('/new_msg/:id/:tower/:message', (req, res) => {
 
 // Route: Login
 router.get('/login/:username', (req, res) => {
+
   // Fetch the username
   const username = req.params.username;
 
@@ -653,8 +659,8 @@ router.get('/login/:username', (req, res) => {
   connection.query(query, [username], (err, rows) => {
     // Query failed
     if (err) {
-      console.error('An error occurred when trying to execute the query:', err);
-      res.status(500).send('An error occurred when trying to authenticate the user.');
+      console.error('An error occurred while trying to execute the query:', err);
+      res.status(500).send('An error occurred while trying to authenticate the user.');
       return;
     }
     // Query success
@@ -680,16 +686,16 @@ router.get('/token/:username/:notexpire', (req, res) => {
   const notexpire = req.params.notexpire;
 
   // Create and sign token
-  const customTime = Math.floor(Date.now() / 1000) + (60 * 60 * 2); // 2 hours por default
+  const customTime = Math.floor(Date.now() / 1000) + (60 * 60 * 2); // 2 hours by default
   const payload = { username: username, customTime: customTime};
   const secretKey = 'Stack';
 
   let token;
   if (notexpire === 'true') {
-    // Token sin expiración
+    // Token does not expire
     token = jwt.sign(payload, secretKey);
   } else {
-    // Token con expiración de 2 horas
+    // Token expires after 2hrs
     token = jwt.sign(payload, secretKey, { expiresIn: '2h' });
   }
 
@@ -700,6 +706,7 @@ router.get('/token/:username/:notexpire', (req, res) => {
 
 // Route: UpdatePassword
 router.get('/updatepassword/:username/:newpassword', (req, res) => {
+
   // Fetch the username and newpassword
   const username = req.params.username;
   const newpassword = req.params.newpassword;
@@ -711,8 +718,8 @@ router.get('/updatepassword/:username/:newpassword', (req, res) => {
   connection.query(query, [newpassword, username], (err, rows) => {
     // Query failed
     if (err) {
-      console.error('An error occurred when trying to execute the query:', err);
-      res.status(500).send('An error occurred when trying to authenticate the user.');
+      console.error('An error occurred while trying to execute the query:', err);
+      res.status(500).send('An error occurred while trying to change the password.');
       return;
     }
     // Query success

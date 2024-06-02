@@ -6,15 +6,21 @@ import FormParking from '../components/FormParking';
 import InfoParking from '../components/InfoParking';
 
 const AdminParking = () => {
+
+  // General configuration
   const { t } = useTranslation();
+
+  // Variables
   const [parking, setParking] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selectedParkingId, setSelectedParkingId] = useState(null);
   const [showInfo, setShowInfo] = useState(false);
   const [selectedParkingData, setSelectedParkingData] = useState(null);
 
+  // Get user role from sessionStorage
   const user_role = sessionStorage.getItem('user_role');
 
+  // Fetch parking data through the API
   const fetchParkingData = async () => {
     try {
       const response = await fetch('https://dduhalde.online/.netlify/functions/api/parked');
@@ -41,26 +47,28 @@ const AdminParking = () => {
     setShowInfo(true);
   };
 
+  // Handle parking release
   const handleFreeParking = async (license_plate, parkingId) => {
     try {
       await fetch(`https://dduhalde.online/.netlify/functions/api/free_parking/${license_plate}`);
       fetchParkingData(); // Update the parking data after freeing a spot
       HandleShowForm(parkingId);
     } catch (error) {
-      console.error('An error occurred trying to remove a vehicle:', error);
+      console.error('An error occurred trying to release the parking spot:', error);
     }
   };
 
+  // Handle parking assignment
   const handleAddParking = async (licensePlate, parkingId) => {
     try {
-      await fetch(`https://dduhalde.online/.netlify/functions/api/assing_parking/${licensePlate}/${parkingId}`);
+      await fetch(`https://dduhalde.online/.netlify/functions/api/assign_parking/${licensePlate}/${parkingId}`);
       fetchParkingData(); // Update the parking data after freeing a spot
       const response = await fetch('https://dduhalde.online/.netlify/functions/api/parked');
       const data = await response.json();
       const parkingData = data.find(p => p.parked_at === parkingId);
       HandleShowInfo(parkingData);
     } catch (error) {
-      console.error('An error occurred trying to remove a vehicle:', error);
+      console.error('An error occurred trying to assign parking:', error);
     }
   };
 

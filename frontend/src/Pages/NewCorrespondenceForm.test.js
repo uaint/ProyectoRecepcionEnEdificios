@@ -2,10 +2,10 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import NewCorrespondenceForm from './NewCorrespondenceForm';
 
-// Mock de la función fetch para simular la solicitud
+// Mock fetch fuction (simulate request)
 global.fetch = jest.fn();
 
-// Mock de la función t para la traducción
+// Mock function t for translation
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: key => key }),
 }));
@@ -14,7 +14,7 @@ describe('NewCorrespondenceForm Component', () => {
   test('renders search form by default', () => {
     const { getByLabelText, getByText } = render(<NewCorrespondenceForm />);
     
-    // Verifica que los elementos del formulario de búsqueda estén presentes
+    // Verify if elements from the search form are present
     expect(getByText('correspondenceForm.addNewCorrespondence')).toBeInTheDocument();
     expect(getByLabelText('correspondenceForm.selectApartment')).toBeInTheDocument();
     expect(getByLabelText('correspondenceForm.selectTower')).toBeInTheDocument();
@@ -26,12 +26,12 @@ describe('NewCorrespondenceForm Component', () => {
 
     const { getByLabelText, getByText } = render(<NewCorrespondenceForm />);
     
-    // Completa los campos del formulario de búsqueda y envía el formulario
+    // Fill all the fields of the form and send it
     fireEvent.change(getByLabelText('correspondenceForm.selectApartment'), { target: { value: '101' } });
     fireEvent.change(getByLabelText('correspondenceForm.selectTower'), { target: { value: '1' } });
     fireEvent.click(getByText('correspondenceForm.searchresident'));
 
-    // Espera a que se realice la solicitud y cambie al formulario de correspondencia
+    // Wait for the request to be done and change to the correspondence form
         expect(getByText('correspondenceForm.addNewCorrespondence')).toBeInTheDocument();
         expect(getByText('correspondenceForm.addCorrespondence')).toBeInTheDocument();
         expect(getByText('correspondenceForm.timeOfArrival')).toBeInTheDocument();
@@ -48,7 +48,7 @@ describe('NewCorrespondenceForm Component', () => {
 
     const { getByLabelText, getByText } = render(<NewCorrespondenceForm />);
     
-    // Completa los campos del formulario de búsqueda y envía el formulario
+    // Fill all fields of the search form and send it
     fireEvent.change(getByLabelText('correspondenceForm.selectApartment'), { target: { value: '101' } });
     fireEvent.change(getByLabelText('correspondenceForm.selectTower'), { target: { value: '1' } });
     fireEvent.click(getByText('correspondenceForm.searchresident'));

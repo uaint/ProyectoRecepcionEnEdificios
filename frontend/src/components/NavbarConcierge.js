@@ -17,7 +17,6 @@ const NavbarConcierge = () => {
     i18n.changeLanguage(newLanguage);
   };
 
-
   // Logout and delete all from local and session storage. Afterwards, redirect to login page.
   const handleSignOut = () => {
     localStorage.clear();
