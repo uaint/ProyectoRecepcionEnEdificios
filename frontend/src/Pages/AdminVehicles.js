@@ -18,6 +18,7 @@ const AdminVehicles = () => {
   const [showVehiclesFailAlert, setShowVehiclesFailAlert] = useState(false);
   const [setVehiclesAlert, setShowVehicles] = useState(false);
 
+  // Get user role from sessionStorage
   const user_role = sessionStorage.getItem('user_role');
 
   // Define the API call to the vehicles
@@ -26,7 +27,7 @@ const AdminVehicles = () => {
       .then(response => response.json())
       .then(data =>setVehicles(data))
       .catch(error => {
-        console.error('An error occurred when fetching the vehicles:', error);
+        console.error('An error occurred while trying to fetch the vehicles:', error);
         setShowVehicles(true);
         timeAlerts(() => setShowVehicles(false));
       });
@@ -42,7 +43,7 @@ const AdminVehicles = () => {
     fetch(`https://dduhalde.online/.netlify/functions/api/delete_vehicle/${plate}`)
     .then(response => {
       if (!response.ok) {
-        throw new Error('An error occurred when trying to update the vehicles');
+        throw new Error('An error occurred when trying to delete the vehicle.');
       }
       setShowVehicleAlert(true);
       timeAlerts(() => setShowVehicleAlert(false));

@@ -5,12 +5,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { passwordHashed } from '../Utils';
 
 const Login = (props) => {
-    const { t } = useTranslation(); // useTranslation: Access translations (EN & ES)
+
+    // General configuration
+    const { t } = useTranslation();
+    
+    // Variables
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [usernameError, setUsernameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
-    const navigate = useNavigate(); // Redirect the user
+    const navigate = useNavigate();
 
     /* Hash logic:
     1) Receive user input

@@ -5,8 +5,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { timeAlerts } from '../Utils.js';
 
 const NewMessage = () => {
+
+  // General configuration
   const { t } = useTranslation();
 
+  // Get the tower_id_associated and person_id from the sessionStorage
   const tower_id_associated = sessionStorage.getItem('tower_id_associated');
   const person_id = sessionStorage.getItem('person_id');
 
@@ -22,11 +25,12 @@ const NewMessage = () => {
     setMessage(e.target.value);
   };
 
+  // Send message to the concierge
   const handleSendMessage = () => {
     fetch(`https://dduhalde.online/.netlify/functions/api/new_msg/${person_id}/${tower_id_associated}/${message}`)
     .then(response => {
       if (!response.ok) {
-        throw new Error('An error occured trying to add Msg.');
+        throw new Error('An error occured trying to send the message.');
       }
       setShowSuccessAlert(true);
       timeAlerts(() => setShowSuccessAlert(false));

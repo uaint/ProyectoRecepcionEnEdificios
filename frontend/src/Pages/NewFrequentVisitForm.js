@@ -14,7 +14,7 @@ const NewFrequentVisitForm = () => {
   const storedTowerId = sessionStorage.getItem('tower_id_associated');
   const storedApartmentId = sessionStorage.getItem('apartment_id_associated');
   
-  // Initiate formData, only default value for Type
+  // Initiate formData empty except for the stored values
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -39,11 +39,11 @@ const NewFrequentVisitForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Call API to add visitor
+    // Call API to add a new frequent visit
     fetch(`https://dduhalde.online/.netlify/functions/api/new_frequent_visit/${formData.firstName}/${formData.lastName}/${formData.run}/${formData.dv}/${formData.birthDate}/${formData.apartmentToVisit}/${formData.buildToVisit}`)
     .then(response => {
       if (!response.ok) {
-        throw new Error('An error occured trying to add a visitor.');
+        throw new Error('An error occured trying to add a new frequent visit.');
       }
       setShowSuccessAlert(true);
       timeAlerts(() => setShowSuccessAlert(false));

@@ -4,8 +4,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { formatDateLarge, timeAlerts } from '../Utils.js';
 
 const AdminMessages = () => {
+
+  // General configuration
   const { t } = useTranslation();
 
+  // Get user role and tower id from sessionStorage
   const user_role = sessionStorage.getItem('user_role');
   const tower_id_associated = sessionStorage.getItem('tower_id_associated');
 
@@ -41,7 +44,7 @@ const AdminMessages = () => {
     fetch(`https://dduhalde.online/.netlify/functions/api/delete_msg/${id}`)
     .then(response => {
       if (!response.ok) {
-        throw new Error('An error occurred when trying to delete Msg.');
+        throw new Error('An error occurred while trying to delete a message.');
       }
       setShowDeleteAlert(true);
       timeAlerts(() => setShowDeleteAlert(false));

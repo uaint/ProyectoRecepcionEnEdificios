@@ -135,7 +135,7 @@ const NewCorrespondenceForm = () => {
         window.location.href = '/admincorrespondence';
       }, 3000);
     } else {
-      alert('Por favor, complete todos los campos requeridos antes de agregar la correspondencia.');
+      alert('Please, fill all the required fields before adding the correspondence.');
     }
   };
   

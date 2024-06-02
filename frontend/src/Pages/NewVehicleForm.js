@@ -17,6 +17,7 @@ const NewVehicleForm = () => {
     license_plate: ''
   });
 
+  // Get the user_role from the sessionStorage
   const user_role = sessionStorage.getItem('user_role');
 
   // Create alerts
@@ -44,13 +45,11 @@ const NewVehicleForm = () => {
         timeRedirect('/adminparking');
     })
     .catch(error => {
-      console.error('An error occurred when fetching the vehicles:', error);
+      console.error('An error occurred while trying to fetch the vehicles:', error);
       setShowAddedVehicleFailAlert(true);
         timeAlerts(() => setShowAddedVehicleFailAlert(false));
     });
   };
-
-  
 
   return (
     <div id="change" className="container">

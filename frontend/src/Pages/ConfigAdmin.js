@@ -7,18 +7,20 @@ import { parseJwt, passwordHashed } from '../Utils';
 
 
 {/*
-              // input1: pedir contraseña actual (password)
-              // input2: pedir contraseña nueva (newPassword)
-              // input3: confirmar contraseña nueva (newPassword2)
-              // boton de submit
-              // verificar que input de contraseña nueva y confirmar contraseña nueva sean iguales (newPassword === newPassword2)
-              // confirmar que contraseña actual (password) sea correcta
-              // modificar contraseña en la base de datos, considerando hash y salt (contraseña no se guarda en texto plano) */}
+              // input1: ask for current password (password)
+              // input2: ask for new password (newPassword)
+              // input3: confirm new password (newPassword2)
+              // Submit button
+              // verify that (newPassword === newPassword2)
+              // confirm that current password is correct
+              // modify password in the DB, considering hash and salt */}
 
 const ConfigAdmin = () => {
+  // General configuration
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState(null);
 
+  // Variables
+  const [activeTab, setActiveTab] = useState(null);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordConfirmed, setNewPasswordConfirmed] = useState('');
@@ -47,7 +49,8 @@ const ConfigAdmin = () => {
     
     else {
         updatePassword(newPassword, currentPassword);
-    }}
+    }
+  }
 
   const handleToggleTab = (tabName) => {
     setActiveTab(activeTab === tabName ? null : tabName);
