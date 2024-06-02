@@ -13,6 +13,8 @@ const AdminParking = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [selectedParkingData, setSelectedParkingData] = useState(null);
 
+  const user_role = sessionStorage.getItem('user_role');
+
   const fetchParkingData = async () => {
     try {
       const response = await fetch('https://dduhalde.online/.netlify/functions/api/parked');
@@ -64,6 +66,8 @@ const AdminParking = () => {
 
   return (
     <div id="change" className="container">
+      {user_role !== '3' && (
+        <div>
       <h1 className="text-center mb-4">{t('adminParking.adminParking')}</h1>
       <hr className="mb-5"/>
       <div className="container text-center mt-3">
@@ -104,6 +108,8 @@ const AdminParking = () => {
         { showForm && <FormParking parkingId={selectedParkingId} onAddParking={handleAddParking} /> }
         { showInfo && <InfoParking data={selectedParkingData} onFreeParking={handleFreeParking} /> }
       </div>
+      </div>
+      )}
     </div>
   );
 };

@@ -18,6 +18,8 @@ const AdminVehicles = () => {
   const [showVehiclesFailAlert, setShowVehiclesFailAlert] = useState(false);
   const [setVehiclesAlert, setShowVehicles] = useState(false);
 
+  const user_role = sessionStorage.getItem('user_role');
+
   // Define the API call to the vehicles
   const fetchVehicles = () => {
     fetch('https://dduhalde.online/.netlify/functions/api/vehicles')
@@ -64,6 +66,8 @@ const AdminVehicles = () => {
 
   return (
     <div id="change" className="container">
+      {user_role !== '3' && (
+      <div>
       <h1 className="text-center mb-4">{t('adminVehicles.adminVehiclesTitle')}</h1>
       <hr className="mb-4"/>
       <div>
@@ -122,6 +126,8 @@ const AdminVehicles = () => {
           )}
         </div>
       </div>
+      </div>
+      )}
     </div>
     
   );

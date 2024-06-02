@@ -17,12 +17,10 @@ import Home from './Pages/Home';
 import Login from './Pages/Login';
 import NewCorrespondenceForm from './Pages/NewCorrespondenceForm';
 import NewVisitForm from './Pages/NewVisitForm';
-import Notifications from './Pages/notifications';
-import SearchPersonByRut from './Pages/SearchPersonByRut';
+import Notifications from './Pages/Notifications';
 import ScanID from './Pages/ScanID';
 import AdminVisits from './Pages/AdminVisits';
-import Messages from './Pages/Messages';
-import Config from './Pages/config';
+import NewMessage from './Pages/NewMessage';
 import AdminCorrespondence from './Pages/AdminCorrespondence';
 import AllCorrespondence from './Pages/AllCorrespondence';
 import AdminMessages from './Pages/AdminMessages';
@@ -30,6 +28,7 @@ import ConfigAdmin from './Pages/ConfigAdmin';
 import NewVehicleForm from './Pages/NewVehicleForm';
 import AdminParking from './Pages/AdminParking';
 import AdminVehicles from './Pages/AdminVehicles';
+import NewFrequentVisitForm from './Pages/NewFrequentVisitForm';
 
 //Importar funcion de verificacion token
 import { parseJwt } from './Utils';
@@ -67,12 +66,10 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/newcorrespondenceform" element={<NewCorrespondenceForm />} />
               <Route path="/newvisitform" element={<NewVisitForm />} />
-              <Route path="/searchpersonbyrut" element={<SearchPersonByRut />} />
               <Route path="/scanid" element={<ScanID />} />
-              <Route path="/notifications" element={<Notifications />} />
-              <Route path="/messages" element={<Messages />} />
+              <Route path="/Notifications" element={<Notifications />} />
+              <Route path="/newmessage" element={<NewMessage />} />
               <Route path="/newvehicleform" element={<NewVehicleForm />} />
-              <Route path="/config" element={<Config />} />
               <Route path="/configadmin" element={<ConfigAdmin />} />
               <Route path="/admincorrespondence" element={<AdminCorrespondence />} />
               <Route path="/allcorrespondence" element={<AllCorrespondence />} />
@@ -80,6 +77,7 @@ function App() {
               <Route path="/adminvisits" element={<AdminVisits />} />
               <Route path="/adminparking" element={<AdminParking />} />
               <Route path="/adminvehicles" element={<AdminVehicles />} />
+              <Route path="/newfrequentvisitform" element={<NewFrequentVisitForm />} />
               <Route path="*" element={<Navigate to="/home" replace />} /> {/* Redireccionar desde cualquier ruta inválida a /home */}
             </Route>
             <Route element={<NavbarNotVisible />}>

@@ -20,7 +20,7 @@ const AllCorrespondence = () => {
   const fetchCorrespondenceData = () => {
     fetch(`https://dduhalde.online/.netlify/functions/api/correspondence/${storedTowerId}/${storedApartmentId}`)
       .then(response => response.json())
-      .then(data => setCorrespondence(data))
+      .then(data => setCorrespondence(data[0]))
       .catch(error => {
         console.error('An error occurred when fetching the correspondence:', error);
       });
@@ -52,7 +52,7 @@ const AllCorrespondence = () => {
               {correspondence.map((pkg, index) => (
               <tr key={index + 1}>
                 <td>{pkg.id}</td>
-                <td>{pkg.recipient}</td>
+                <td>{pkg.apartment_identifier}-{pkg.tower}</td>
                 <td>{pkg.mail_type}</td>
                 <td >{formatDateLarge(pkg.arrival_time)}</td>
                 <td>{pkg.is_notified === 1 ? <span>&#10004;</span> : <span>&#10060;</span>}</td>

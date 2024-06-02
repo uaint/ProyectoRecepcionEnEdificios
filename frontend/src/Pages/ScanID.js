@@ -65,7 +65,6 @@ const ScanID = () => {
         console.error('There was a problem with the fetch operation:', error);
       });
     } catch (error) {
-      console.log("Error Analyzing Img", error);
       const url_to_redirect = `/newvisitform`;
       window.location.href = url_to_redirect;
     } 

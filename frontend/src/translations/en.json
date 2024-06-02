@@ -1,19 +1,19 @@
 {
   "navbarConcierge": {
-    "adminCorrespondence": "Manage Correspondence",
-    "adminVisits": "Manage Visits",
+    "adminCorrespondence": "Correspondence",
+    "adminVisits": "Visits",
     "searchPerson": "Search Person",
-    "newVisit": "New Visit",
-    "newVehicle": "New Vehicle",
-    "adminParking": "Manage Parking",
+    "newVisit": "Visit",
+    "newVehicle": "Vehicle",
+    "adminParking": "Parking",
     "messages": "Messages",
     "config": "Configuration",
     "signOut": "Sign Out",
     "searchByRut":"Search by RUN",
     "scanID":"Scan ID",
-    "admin": "Admin",
+    "admin": "Manage",
     "new": "Add New",
-    "adminVehicles": "Manage Vehicles"
+    "adminVehicles": "Vehicles"
   },
   "navbarResident": {
     "notifications": "Notifications",

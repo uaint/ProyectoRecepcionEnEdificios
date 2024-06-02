@@ -3,8 +3,8 @@
     "adminCorrespondence": "Correspondencia",
     "adminVisits": "Visitas",
     "searchPerson": "Buscar Persona",
-    "newVisit": "Nueva Visita",
-    "newVehicle": "Nuevo Vehículo",
+    "newVisit": "Visita",
+    "newVehicle": "Vehículo",
     "adminParking": "Estacionamientos",
     "messages": "Mensajes",
     "config": "Configuración",
@@ -13,7 +13,7 @@
     "scanID":"Escanear Carnet",
     "admin": "Administrador",
     "new": "Agregar nuevo elemento",
-    "adminVehicles": "Administrar Vehiculos"
+    "adminVehicles": "Vehiculos"
   },
   "navbarResident": {
     "notifications": "Notificaciones",
