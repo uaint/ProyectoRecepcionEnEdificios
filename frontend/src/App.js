@@ -4,8 +4,6 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 import './App.css';
 
-
-
 // Importa los componentes
 import NavbarVisible from './components/NavbarVisible'; // Considera NavbarConcierge
 import NavbarNotVisible from './components/NavbarNotVisible'; // Considera Outlet
@@ -19,51 +17,44 @@ import Home from './Pages/Home';
 import Login from './Pages/Login';
 import NewCorrespondenceForm from './Pages/NewCorrespondenceForm';
 import NewVisitForm from './Pages/NewVisitForm';
-import Notifications from './Pages/notifications';
-import SearchPersonByRut from './Pages/SearchPersonByRut';
 import ScanID from './Pages/ScanID';
 import AdminVisits from './Pages/AdminVisits';
-import Messages from './Pages/Messages';
-import Config from './Pages/config';
+import NewMessage from './Pages/NewMessage';
 import AdminCorrespondence from './Pages/AdminCorrespondence';
+import AllCorrespondence from './Pages/AllCorrespondence';
 import AdminMessages from './Pages/AdminMessages';
 import ConfigAdmin from './Pages/ConfigAdmin';
 import NewVehicleForm from './Pages/NewVehicleForm';
 import AdminParking from './Pages/AdminParking';
+import AdminVehicles from './Pages/AdminVehicles';
+import NewFrequentVisitForm from './Pages/NewFrequentVisitForm';
 
 //Importar funcion de verificacion token
 import { parseJwt } from './Utils';
 
-
-
-
 function App() {
-
+  
   useEffect(() => {
     const token = localStorage.getItem('token'); // Obtiene la data del token desde localStorage
     if (token) {
       // Parsea el token y verifica su caducacion (si esta expirado o vencido)
       const tokenExpiration = parseJwt(token).exp * 1000;
       if (tokenExpiration > Date.now()) {
-        console.log('Token válido');
       } else {
-        // Si token expira, redirigimos a la página de login, removemos el token del ambiente local y quitamos navbar
-        console.log('Token expirado');
-        localStorage.removeItem('token'); // removemos data del token del ambiente local
+        // Si token expira, removemos todo de el storage y si no nos encontramos en /login, nos redirigmios
+        localStorage.clear();
+        sessionStorage.clear();
         if (window.location.pathname !== '/login'){
           window.location.href = '/login';
         }
       }
     } else {
-      // Al no estar loggeado o caducar token, redirige a la página de login
-      console.log('No hay token');
+      // Al no existir token, redirigimos a /login
       if (window.location.pathname !== '/login') {
         window.location.href = '/login';
     }
   }
   }, []);
-
-
 
   return (
     <div className="App">
@@ -74,17 +65,17 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/newcorrespondenceform" element={<NewCorrespondenceForm />} />
               <Route path="/newvisitform" element={<NewVisitForm />} />
-              <Route path="/searchpersonbyrut" element={<SearchPersonByRut />} />
               <Route path="/scanid" element={<ScanID />} />
-              <Route path="/notifications" element={<Notifications />} />
-              <Route path="/messages" element={<Messages />} />
+              <Route path="/newmessage" element={<NewMessage />} />
               <Route path="/newvehicleform" element={<NewVehicleForm />} />
-              <Route path="/config" element={<Config />} />
               <Route path="/configadmin" element={<ConfigAdmin />} />
               <Route path="/admincorrespondence" element={<AdminCorrespondence />} />
+              <Route path="/allcorrespondence" element={<AllCorrespondence />} />
               <Route path="/adminmessages" element={<AdminMessages />} />
               <Route path="/adminvisits" element={<AdminVisits />} />
               <Route path="/adminparking" element={<AdminParking />} />
+              <Route path="/adminvehicles" element={<AdminVehicles />} />
+              <Route path="/newfrequentvisitform" element={<NewFrequentVisitForm />} />
               <Route path="*" element={<Navigate to="/home" replace />} /> {/* Redireccionar desde cualquier ruta inválida a /home */}
             </Route>
             <Route element={<NavbarNotVisible />}>

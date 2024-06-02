@@ -3,8 +3,8 @@
     "adminCorrespondence": "Correspondencia",
     "adminVisits": "Visitas",
     "searchPerson": "Buscar Persona",
-    "newVisit": "Nueva Visita",
-    "newVehicle": "Nuevo Vehículo",
+    "newVisit": "Visita",
+    "newVehicle": "Vehículo",
     "adminParking": "Estacionamientos",
     "messages": "Mensajes",
     "config": "Configuración",
@@ -12,7 +12,8 @@
     "searchByRut":"Buscar por RUN",
     "scanID":"Escanear Carnet",
     "admin": "Administrador",
-    "new": "Agregar nuevo elemento"
+    "new": "Agregar nuevo elemento",
+    "adminVehicles": "Vehiculos"
   },
   "navbarResident": {
     "notifications": "Notificaciones",
@@ -35,7 +36,8 @@
     "addNewCorrespondence": "Agregar Nueva Correspondencia",
     "calimedSuccessAlert": "¡Correspondencia marcada como reclamada!",
     "calimedFailAlert": "Error al cambiar estado de correspondencia",
-    "correspondenceAlert": "Problema al cargar datos"
+    "correspondenceAlert": "Problema al cargar datos",
+    "allCorrespondence": "Toda la correspondencia"
   },
   "adminVisits": {
     "adminVisits": "Administrar Visitas",
@@ -46,7 +48,10 @@
     "visitType": "Tipo de Visita",
     "lastVisit": "Fecha Visita",
     "delete": "Eliminar",
-    "addVisit": "Agregar Visita Frecuente"
+    "addVisit": "Agregar Visita",
+    "deleteSuccessAlert": "¡Registro eliminado correctamente!",
+    "deleteFailAlert": "Error al eliminar registro",
+    "visitAlert": "Problema al cargar datos"
   },
   "adminMessages": {
     "adminMessages": "Mensajes de Administración",
@@ -73,7 +78,22 @@
     "parket_at": "Estacionado en",
     "arrivingTime": "Estacionado desde",
     "delete": "Eliminar",
-    "addParked": "Agregar Vehículo Estacionado"
+    "addParked": "Agregar Vehículo Estacionado",
+    "freeParking": "Liberar Estacionamiento",
+    "parkedNumber": "Estacionamiento N°"
+  },
+  "adminVehicles": {
+    "adminVehiclesTitle": "Administrar Vehiculos",
+    "visitor_id": "RUT Visita",
+    "full_name":"Nombre Completo",
+    "license_plate": "Patente",
+    "deleteVehicle": "Borrar vehiculo",
+    "allVehicles": "Mostrar todos los vehiculos",
+    "deleteButton": "Borrar",
+    "addNewVehicles": "Agregar nuevo vehiculo",
+    "SuccessAlert": "Vehiculo eliminado correctamente",
+    "FailAlert": "Error al eliminar vehiculo",
+    "vehiclesAlert": "Problema al cargar datos"
   },
   "config": {
     "configuration": "Configuración",
@@ -99,13 +119,11 @@
   },
   "configAdmin": {
     "configuration": "Configuración",
-    "adminUsersRoles": "Usuarios y Roles de Administración",
-    "newUser": "Nuevo Usuario",
-    "notifications": "Notificaciones",
-    "createNewUser": "Crear Nuevo Usuario",
-    "createNewUserTitle": "Crear Nuevo Usuario",
-    "notificationsTitle": "Notificaciones",
-    "adminUsersRolesTitle": "Usuarios y Roles de Administración"
+    "changePassword":"Cambiar Contraseña",
+    "currentPassword": "Contraseña Actual",
+    "newPassword": "Nueva Contraseña",
+    "newPasswordConfirmed": "Confirmar Nueva Contraseña",
+    "submitButton": "Actualizar Contraseña"
   },
   "home": {
     "welcome": "¡Bienvenido!",
@@ -172,7 +190,9 @@
     "licensePlate": "Patente",
     "parking": "Estacionamiento:",
     "parkedSince": "Estacionado desde:",
-    "addVehicle": "Agregar Vehículo"
+    "addVehicle": "Agregar Vehículo",
+    "SuccessAlert": "Vehiculo Agregado",
+    "FailAlert": "Error al agregar vehiculo"
   },
   "visitForm": {
     "addNewVisit": "Agregar Nueva Visita",
@@ -184,7 +204,7 @@
     "dvPlaceholder": "Si termina con K, remplazar con 0",
     "buildToVisit": "Torre a Visitar:",
     "type": "Tipo de Visita:",
-    "frequent": "Frecuente",
+    "casual": "Casual",
     "regular": "Regular",
     "social": "Social",
     "delivery": "Delivery",
@@ -194,31 +214,13 @@
     "birthDate": "Fecha de nacimiento:",
     "apartmentToVisit": "Apartamento a visitar:",
     "addVisit": "Agregar Visita",
-    "selectApartment": "Seleccionar Apartamento"
-  },
-  "notifications": {
-    "title": "Notificaciones",
-    "packageArrival": "El paquete 'TIPO_PAQUETE' llegó a conserjería a las 'FECHA'.",
-    "personArrival": "La persona 'PERSONA' llegó a las 'FECHA'.",
-    "parkingOccupied": "El estacionamiento 'ESTACIONAMIENTO está ocupado por 'NOMBRE_VISITA'. Debe ser desocupado en 'REMAINING_TIME'."
+    "selectApartment": "Seleccionar Apartamento",
+    "SuccessAlert": "Visita Agregada",
+    "FailAlert": "Error al agregar visita"
   },
   "ScanID": {
     "title": "Escanear Carnet",
-    "uploadbutton": "Subir Imagen",
-    "noFileChosen": "Ningún archivo seleccionado",
-    "uploadedInfo": "Imagen subida correctamente"
-  },
-  "SearchPersonByRut": {
-    "searchByRut": "Buscar Persona por RUN",
-    "rutLabel": "RUN:",
-    "searchButton": "Buscar",
-    "personFound": "Persona Encontrada",
-    "rut": "RUN",
-    "name": "Nombre",
-    "birthDate": "Fecha de Nacimiento",
-    "address": "Dirección",
-    "phone": "Teléfono",
-    "apartmentsVisited": "Apartamentos Visitados",
-    "quantity": "Cantidad"
+    "scanimg": "Carnet Escaneado",
+    "uploadimg": "Subir Imagen de Carnet"
   }
 }

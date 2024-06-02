@@ -1,18 +1,19 @@
 {
   "navbarConcierge": {
-    "adminCorrespondence": "Manage Correspondence",
-    "adminVisits": "Manage Visits",
+    "adminCorrespondence": "Correspondence",
+    "adminVisits": "Visits",
     "searchPerson": "Search Person",
-    "newVisit": "New Visit",
-    "newVehicle": "New Vehicle",
-    "adminParking": "Manage Parking",
+    "newVisit": "Visit",
+    "newVehicle": "Vehicle",
+    "adminParking": "Parking",
     "messages": "Messages",
     "config": "Configuration",
     "signOut": "Sign Out",
     "searchByRut":"Search by RUN",
     "scanID":"Scan ID",
-    "admin": "Admin",
-    "new": "Add New"
+    "admin": "Manage",
+    "new": "Add New",
+    "adminVehicles": "Vehicles"
   },
   "navbarResident": {
     "notifications": "Notifications",
@@ -33,9 +34,10 @@
     "contact": "Contact",
     "delete": "Delete",
     "addNewCorrespondence": "Add New Correspondence",
-    "calimedSuccessAlert": "Mail marked as claimed!",
-    "calimedFailAlert": "Error when changing correspondence claimed status.",
-    "correspondenceAlert": "Error occurred when trying to load corresponde data."
+    "claimedSuccessAlert": "Mail marked as claimed!",
+    "claimedFailAlert": "Error when changing correspondence claimed status.",
+    "correspondenceAlert": "Error occurred when trying to load corresponde data.",
+    "allCorrespondence": "All Correspondence"
   },
   "adminVisits": {
     "adminVisits": "Manage Visits",
@@ -46,7 +48,10 @@
     "visitType": "Visit Type",
     "lastVisit": "Visit Date",
     "delete": "Delete",
-    "addVisit": "Add Visit"
+    "addVisit": "Add Visit",
+    "deleteSuccessAlert": "Record deleted successfully!",
+    "deleteFailAlert": "Error deleting record",
+    "visitAlert": "Error occurred when trying to load visits data."
   },
   "adminMessages": {
     "adminMessages": "Manage Messages",
@@ -73,7 +78,22 @@
     "parket_at": "Parket At",
     "arrivingTime": "Time of arrival",
     "delete": "Delete",
-    "addParked": "Add New Parked Vehicle"
+    "addParked": "Add New Parked Vehicle",
+    "freeParking": "Free Parking",
+    "parkedNumber": "Parking N°"
+  },
+  "adminVehicles": {
+    "adminVehiclesTitle": "Manage Vehicles",
+    "visitor_id": "Visitor's ID",
+    "full_name":"Full Name",
+    "license_plate": "License Plate",
+    "deleteVehicle": "Delete Vehicle",
+    "allVehicles": "Show all vehicles",
+    "deleteButton": "Delete",
+    "addNewVehicles": "Add New Vehicle",
+    "SuccessAlert": "Vehicle deleted succesfully",
+    "FailAlert": "Error deleting vehicle",
+    "vehiclesAlert": "Error occurred when trying to load vehicles data."
   },
   "config": {
     "configuration": "Configuration",
@@ -99,13 +119,11 @@
   },
   "configAdmin": {
     "configuration": "Configuration",
-    "adminUsersRoles": "Manage Users & Roles",
-    "newUser": "New User",
-    "notifications": "Notifications",
-    "createNewUser": "Create New User",
-    "createNewUserTitle": "Create New User",
-    "notificationsTitle": "Notifications",
-    "adminUsersRolesTitle": "Manage Users & Roles"
+    "changePassword":"Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "newPasswordConfirmed": "Confirm New Password",
+    "submitButton": "Update Password"
   },
   "home": {
     "welcome": "Welcome!",
@@ -172,7 +190,9 @@
       "licensePlate": "License Plate:",
       "parking": "Parking at:",
       "parkedSince": "Parking since:",
-      "addVehicle": "Add Vehicle"
+      "addVehicle": "Add Vehicle",
+      "SuccessAlert": "Succed Add Vehicle",
+      "FailAlert": "Fail Add Vehicle"
     },
     "visitForm": {
       "addNewVisit": "Add New Visit",
@@ -184,7 +204,7 @@
       "dvPlaceholder": "If the check digit ends with a K, replace it with a 0",
       "buildToVisit": "Tower being visited:",
       "type": "Visit Type:",
-      "frequent": "Frequent",
+      "casual": "Casual",
       "regular": "Regular",
       "social": "Social",
       "delivery": "Delivery",
@@ -194,31 +214,13 @@
       "birthDate": "Birth Date:",
       "apartmentToVisit": "Apartment being visited:",
       "addVisit": "Add Visit",
-      "selectApartment": "Select Apartment"
-    },
-    "notifications": {
-      "title": "Notifications",
-      "packageArrival": "The package 'TYPE' has arrived at the concierge since 'DATE'.",
-      "personArrival": "The person 'PERSON' arrived at 'DATE'.",
-      "parkingOccupied": "The parking spot 'PARKING' is occupied by 'VISITOR_NAME'. It must be vacated in 'REMAINING_TIME'."
+      "selectApartment": "Select Apartment",
+      "SuccessAlert": "Succed Add Visit",
+      "FailAlert": "Fail Add Visit"
     },
     "ScanID": {
       "title": "Scan ID",
-      "uploadbutton": "Upload",
-      "noFileChosen": "No file chosen",
-      "uploadedInfo": "File uploaded"
-    },
-    "SearchPersonByRut": {
-      "searchByRut": "Search Person by RUN",
-      "rutLabel": "RUN:",
-      "searchButton": "Search",
-      "personFound": "Person Found",
-      "rut": "RUN",
-      "name": "Name",
-      "birthDate": "Birth Date",
-      "address": "Address",
-      "phone": "Phone",
-      "apartmentsVisited": "Apartments Visited",
-      "quantity": "Quantity"
+      "scanimg": "ID Scanned",
+      "uploadimg": "Upload ID Image"
     }
 }

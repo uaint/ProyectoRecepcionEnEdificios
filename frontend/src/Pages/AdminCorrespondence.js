@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
-import { formatDateLarge, timeAlerts } from '../Utils.js';
+import { formatDateLarge, timeAlerts, logToDatabase } from '../Utils.js';
 
 const AdminCorrespondence = () => {
 
@@ -14,6 +14,11 @@ const AdminCorrespondence = () => {
   // Create correspondence
   const [correspondence, setCorrespondence] = useState([]);
 
+  // Read variables from sessionStorage
+  const storedTowerId = sessionStorage.getItem('tower_id_associated');
+  const storedApartmentId = sessionStorage.getItem('apartment_id_associated');
+  const user_role = sessionStorage.getItem('user_role');
+
   // Create alerts
   const [showClaimedAlert, setShowClaimedAlert] = useState(false);
   const [showClaimedFailAlert, setShowClaimedFailAlert] = useState(false);
@@ -21,11 +26,18 @@ const AdminCorrespondence = () => {
 
   // Define the API call to the unclaimed_correspondence
   const fetchCorrespondenceData = () => {
-    fetch('https://dduhalde.online/.netlify/functions/api/unclaimed_correspondence')
-      .then(response => response.json())
-      .then(data => setCorrespondence(data))
+    logToDatabase('DEBUG','Fetching correspondence data','fetchCorrespondenceData');
+    fetch(`https://dduhalde.online/.netlify/functions/api/unclaimed_correspondence/${storedTowerId}/${storedApartmentId}`)
+      .then(response => {
+        logToDatabase('INFO','API response','fetchCorrespondenceData');
+        return response.json();
+      })
+      .then(data => {
+        logToDatabase('INFO','Correspondence data received','fetchCorrespondenceData');
+        setCorrespondence(data[0]);
+      })
       .catch(error => {
-        console.error('An error occurred when fetching the correspondence:', error);
+        logToDatabase('ERROR','An error occurred when fetching the correspondence','fetchCorrespondenceData');
         setShowCorrespondenceAlert(true);
         timeAlerts(() => setShowCorrespondenceAlert(false));
       });
@@ -36,18 +48,21 @@ const AdminCorrespondence = () => {
     fetchCorrespondenceData();
   }, []);
 
-  const handleDelete = (id) => {
+  const handleMarkClaimed = (id) => {
+    logToDatabase('DEBUG',`Attempting to update correspondence status for ID: ${id}`,'handleMarkClaimed');
     // Do the UPDATE request to the server (channge from "unclaimed/not claimed" to "claimed")
     fetch(`https://dduhalde.online/.netlify/functions/api/is_claimed/${id}`)
     .then(response => {
       if (!response.ok) {
         throw new Error('An error occurred when trying to update the correspondence status.');
       }
+      logToDatabase('INFO',`Correspondence status updated successfully for ID: ${id}`,'handleMarkClaimed');
       setShowClaimedAlert(true);
       timeAlerts(() => setShowClaimedAlert(false));
       fetchCorrespondenceData();
     })
     .catch(error => {
+      logToDatabase('ERROR',`An error occurred when updating the correspondence status`,'handleMarkClaimed');
       setShowClaimedFailAlert(true);
       timeAlerts(() => setShowClaimedFailAlert(false));
     });
@@ -56,6 +71,11 @@ const AdminCorrespondence = () => {
   // Button to redirect to the add new correspondence form
   const handleButtonClick = () => {
     navigate('/newcorrespondenceform');
+  };
+
+  // Button to redirect to all correspondence
+  const ButtonClick = () => {
+    navigate('/allcorrespondence');
   };
 
   return (
@@ -72,29 +92,38 @@ const AdminCorrespondence = () => {
                 <th scope="col">{t('adminCorrespondence.type')}</th>
                 <th scope="col">{t('adminCorrespondence.date')}</th>
                 <th scope="col">{t('adminCorrespondence.notified')}</th>
+                {user_role !== '3' && (
                 <th scope="col">{t('adminCorrespondence.claimed')}</th>
+                )}
               </tr>
             </thead>
             <tbody>
               {correspondence.map((pkg, index) => (
               <tr key={index + 1}>
                 <td>{pkg.id}</td>
-                <td>{pkg.housing_unit_apartment}</td>
+                <td>{pkg.apartment_identifier}-{pkg.tower}</td>
                 <td>{pkg.mail_type}</td>
                 <td >{formatDateLarge(pkg.arrival_time)}</td>
                 <td>{pkg.is_notified === 1 ? <span>&#10004;</span> : <span>&#10060;</span>}</td>
+                {user_role !== '3' && (
                 <td>
-                  <button className="btn btn-success btn-sm" onClick={() => handleDelete(pkg.id)}>{t('adminCorrespondence.claimed')}</button>
+                  <button className="btn btn-success btn-sm" onClick={() => handleMarkClaimed(pkg.id)}>{t('adminCorrespondence.claimed')}</button>
                 </td>
+                )}
               </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
+      <div className="text-center mt-0 pt-0">
+        <a className="link-secondary link-underline-opacity-25 link-underline-opacity-100-hover" style = {{cursor: 'pointer'}} onClick={ButtonClick}>{t('adminCorrespondence.allCorrespondence')}</a>
+      </div>
+      {user_role !== '3' && (
       <div className="text-center mt-4 mb-5">
         <button className="btn btn-primary" onClick={handleButtonClick}>{t('adminCorrespondence.addNewCorrespondence')}</button>
       </div>
+      )}
       <div className='row'>
         <div className='col-md-3 order-md-3 rounded-5'>
           {showClaimedAlert && (

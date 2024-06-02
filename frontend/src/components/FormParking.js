@@ -1,33 +1,29 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
-const FormParking = ({ parkingId }) => {
+const FormParking = ({ parkingId, onAddParking }) => {
+    // General configurations
+    const { t } = useTranslation();
+
     const [licensePlate, setLicensePlate] = useState('');
+
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        // Call API to add visitor
-        fetch(`https://dduhalde.online/.netlify/functions/api/assing_parking/${licensePlate}/${parkingId}`)
-        .then(response => {
-        if (!response.ok) {
-            throw new Error('An error occured trying to add a vehicle.');
-        }
-        console.log(`Vehicle added successfully.`);
-        })
-        .catch(error => {
-        console.error('An error occured trying to add a vehicle:', error);
-        });
+        onAddParking(licensePlate, parkingId);
+        setLicensePlate(''); // Limpiar el campo de la placa después de agregar el estacionamiento
     };
 
     return (
         <div className="container">
             <div className="row justify-content-center">
-                <div className="col-md-6">
+                <div className="col-md-4">
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="card-title">Add Car to Parking {parkingId}</h2>
+                            <h2 className="card-title mb-2">{t('adminParking.parkedNumber')}{parkingId}</h2>
+                            <h5 className="card-title">{t('adminParking.addParked')}</h5>
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
-                                    <label htmlFor="license_plate" className="form-label">License Plate</label>
+                                    <label htmlFor="license_plate" className="form-label">{t('adminParking.licensePlate')}</label>
                                     <input
                                         type="text"
                                         className="form-control"
@@ -39,7 +35,7 @@ const FormParking = ({ parkingId }) => {
                                     />
                                 </div>
                                 <div className="d-grid gap-1">
-                                    <button type="submit" className="btn btn-primary">Submit</button>
+                                    <button type="submit" className="btn btn-primary">{t('adminParking.addParked')}</button>
                                 </div>
                             </form>
                         </div>

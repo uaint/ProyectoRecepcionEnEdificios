@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import '../App.css'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useLocation } from 'react-router-dom';
+import { timeAlerts, timeRedirect } from '../Utils.js';
 
 const NewVisitForm = () => {
 
@@ -11,6 +12,10 @@ const NewVisitForm = () => {
   
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+
+  // Read variables from sessionStorage
+  const storedTowerId = sessionStorage.getItem('tower_id_associated');
+  const user_role = sessionStorage.getItem('user_role');
   
   // Obtener los parámetros de la URL
   const scannedData = {
@@ -27,9 +32,9 @@ const NewVisitForm = () => {
     run: scannedData.run,
     dv: scannedData.dv,
     birthDate: '',
-    buildToVisit: '',
+    buildToVisit: storedTowerId,
     apartmentToVisit: '',
-    type: 'Frequent',
+    type: 'Casual',
   });
   
   // Update type according to selected option
@@ -46,6 +51,10 @@ const NewVisitForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  // Show alerts
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showFaildAlert, setShowFaildAlert] = useState(false);
+
   // Submit button
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -56,22 +65,13 @@ const NewVisitForm = () => {
       if (!response.ok) {
         throw new Error('An error occured trying to add a visitor.');
       }
-      console.log(`Visitor added successfully.`);
+      setShowSuccessAlert(true);
+      timeAlerts(() => setShowSuccessAlert(false));
+      timeRedirect('/adminvisits');
     })
     .catch(error => {
-      console.error('An error occured trying to add a visitor:', error);
-    });
-    
-    // Reset formData
-    setFormData({
-      firstName: '',
-      lastName: '',
-      run: '',
-      dv: '',
-      birthDate: '',
-      buildToVisit: '',
-      apartmentToVisit: '',
-      type: 'Frequent',
+      setShowFaildAlert(true)
+      timeAlerts(() => setShowFaildAlert(false));
     });
   };
 
@@ -86,6 +86,8 @@ const NewVisitForm = () => {
 
   return (
     <div id="change" className="container">
+      {user_role !== '3' && (
+      <div>
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card">
@@ -116,13 +118,21 @@ const NewVisitForm = () => {
                   <label for="apartmentToVisit" class="form-label">{t('visitForm.apartmentToVisit')}</label>
                   <input type="number" class="form-control" id="apartmentToVisit" name="apartmentToVisit" value={formData.apartmentToVisit} onChange={handleChange} required/>
                 </div>
+                {user_role === '2' && (
                 <div class="mb-3">
+                  <label for="buildToVisit" class="form-label">{t('visitForm.buildToVisit')}</label>
+                  <input type="number" class="form-control" id="buildToVisit" name="buildToVisit" value={storedTowerId} onChange={handleChange} required disabled/>
+                </div>
+                )}
+                {user_role === '1' && (
+                  <div class="mb-3">
                   <label for="buildToVisit" class="form-label">{t('visitForm.buildToVisit')}</label>
                   <input type="number" class="form-control" id="buildToVisit" name="buildToVisit" value={formData.buildToVisit} onChange={handleChange} required/>
                 </div>
+                )}
                 <label for="type" class="form-label">{t('visitForm.type')}</label>
                 <select class="form-select" aria-label="Default select example" value={selectedOption} onChange={handleOptionChange}>
-                  <option value="Frequent">{t('visitForm.frequent')}</option>
+                  <option value="Casual">{t('visitForm.casual')}</option>
                   <option value="Regular">{t('visitForm.regular')}</option>
                   <option value="Social">{t('visitForm.social')}</option>
                   <option value="Delivery">{t('visitForm.delivery')}</option>
@@ -138,6 +148,22 @@ const NewVisitForm = () => {
           </div>
         </div>
       </div>
+      <div className='row'>
+        <div className='col-md-3 order-md-3 rounded-5'>
+          {showSuccessAlert && (
+          <div className="alert alert-success text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
+            &#10004; {t('visitForm.SuccessAlert')}
+          </div>
+          )}
+          {showFaildAlert && (
+          <div className="alert alert-danger text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
+            &#9888; {t('visitForm.FailAlert')}
+          </div>
+          )}
+        </div>
+      </div>
+      </div>
+      )}
     </div>
   );
 };

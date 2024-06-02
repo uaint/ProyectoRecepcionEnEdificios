@@ -9,13 +9,17 @@ const NewCorrespondenceForm = () => {
   // General configurations
   const { t } = useTranslation();
 
-  // Initiate formData with some 'default' values
-  const [formData, setFormData] = useState({
+  // Read variables from sessionStorage
+  const storedTowerId = sessionStorage.getItem('tower_id_associated');
+  const user_role = sessionStorage.getItem('user_role');
+
+   // Initiate formData with some 'default' values
+   const [formData, setFormData] = useState({
     type: 'Packages',
     timeOfArrival: '',
     isClaimed: false,
     apartment: '',
-    build: '',
+    build: storedTowerId,
   });
 
   // Update type according to selected option
@@ -78,10 +82,10 @@ const NewCorrespondenceForm = () => {
     const notifiedWhatsApp = selectedInhabitantsWhatsApp.length !== 0 ? 1 : 0
 
     // Filtered array with whatever we want them to receive on the message
-    const filteredArrayWhatsApp = inhabitants.filter(obj => selectedInhabitantsWhatsApp.includes(obj.id));
+    const filteredArrayWhatsApp = inhabitants.filter(obj => selectedInhabitantsWhatsApp.includes(obj.person_id));
 
     // Filtered array with whatever we want them to receive on the message
-    const filteredArrayEmail = inhabitants.filter(obj => selectedInhabitantsEmail.includes(obj.id));
+    const filteredArrayEmail = inhabitants.filter(obj => selectedInhabitantsEmail.includes(obj.person_id));
 
     // Do the ADD request to the server according to the parameters
     fetch(`https://dduhalde.online/.netlify/functions/api/add_mail/${formData.build}/${formData.apartment}/${formData.type}/${formData.timeOfArrival}/${notifiedWhatsApp}`)
@@ -89,7 +93,6 @@ const NewCorrespondenceForm = () => {
       if (!response.ok) {
         throw new Error('An error occurred trying to add correspondence.');
       }
-      console.log(`Correspondence added successfully.`);
     })
     .catch(error => {
       console.error('An error occurred trying to add correspondence:', error);
@@ -144,7 +147,7 @@ const NewCorrespondenceForm = () => {
 
   // If selected, delete it from the selected list
   if (isSelected) {
-    setSelectedInhabitantsWhatsApp(selectedInhabitantsWhatsApp.filter(id => id !== inhabitantId));
+    setSelectedInhabitantsWhatsApp(selectedInhabitantsWhatsApp.filter(person_id => person_id !== inhabitantId));
     } else { // Else, add it to the list
       setSelectedInhabitantsWhatsApp([...selectedInhabitantsWhatsApp, inhabitantId]);
     }
@@ -156,7 +159,7 @@ const NewCorrespondenceForm = () => {
   
     // If selected, delete it from the selected list
     if (isSelected) {
-      setSelectedInhabitantsEmail(selectedInhabitantsEmail.filter(id => id !== inhabitantId));
+      setSelectedInhabitantsEmail(selectedInhabitantsEmail.filter(person_id => person_id !== inhabitantId));
       } else { // Else, add it to the list
         setSelectedInhabitantsEmail([...selectedInhabitantsEmail, inhabitantId]);
       }
@@ -175,10 +178,18 @@ const NewCorrespondenceForm = () => {
                   <label htmlFor="apartment" className="form-label">{t('correspondenceForm.selectApartment')}</label>
                   <input type="number" className="form-control" id="apartment" name="apartment" value={formData.apartment} onChange={handleChange} required placeholder={t('correspondenceForm.selectApartment')}/>
                 </div>
+                {user_role === '2' && (
+                <div className="mb-3">
+                  <label htmlFor="build" className="form-label">{t('correspondenceForm.selectTower')}</label>
+                  <input type="number" className="form-control" id="build" name="build" value={storedTowerId} onChange={handleChange} required placeholder={t('correspondenceForm.selectTower')} disabled/>
+                </div>
+                )}
+                {user_role === '1' && (
                 <div className="mb-3">
                   <label htmlFor="build" className="form-label">{t('correspondenceForm.selectTower')}</label>
                   <input type="number" className="form-control" id="build" name="build" value={formData.build} onChange={handleChange} required placeholder={t('correspondenceForm.selectTower')}/>
                 </div>
+                )}
                 <div className="d-grid gap-1">
                   <button type="submit" className="btn btn-primary mt-3">{t('correspondenceForm.searchresident')}</button>
                 </div>
@@ -195,11 +206,11 @@ const NewCorrespondenceForm = () => {
                         <li key={inhabitant.id}>
                           <div class="form-check form-check-inline">
                             <label className="form-check-label" htmlFor="flexCheckDefault"></label>
-                            <input className="form-check-input" type="checkbox" id={`flexCheckDefault-${inhabitant.id}`} checked={selectedInhabitantsWhatsApp.includes(inhabitant.id)} onChange={() => handleSelectInhabitantWhatsApp(inhabitant.id)}/>
+                            <input className="form-check-input" type="checkbox" id={`flexCheckDefault-${inhabitant.person_id}`} checked={selectedInhabitantsWhatsApp.includes(inhabitant.person_id)} onChange={() => handleSelectInhabitantWhatsApp(inhabitant.person_id)}/>
                           </div>
                           <div class="form-check form-check-inline">
                             <label className="form-check-label" htmlFor="flexCheckDefault"></label>
-                            <input className="form-check-input" type="checkbox" id={`flexCheckDefault-2-${inhabitant.id}`} checked={selectedInhabitantsEmail.includes(inhabitant.id)} onChange={() => handleSelectInhabitantEmail(inhabitant.id)}/>
+                            <input className="form-check-input" type="checkbox" id={`flexCheckDefault-2-${inhabitant.person_id}`} checked={selectedInhabitantsEmail.includes(inhabitant.person_id)} onChange={() => handleSelectInhabitantEmail(inhabitant.person_id)}/>
                           </div>
                           <div class="form-check form-check-inline">{inhabitant.first_name} {inhabitant.last_name}</div>
                         </li>

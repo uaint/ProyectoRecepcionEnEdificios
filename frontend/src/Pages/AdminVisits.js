@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { formatDate, formatDateLarge } from '../Utils.js';
+import { formatDate, formatDateLarge, timeAlerts } from '../Utils.js';
 
 const AdminVisits = () => {
 
@@ -14,31 +14,53 @@ const AdminVisits = () => {
   // Initiate/Create the visitors
   const [visitors, setVisitors] = useState([]);
 
-  // Fetch visitors data from the API
+  // Read variables from sessionStorage
+  const storedTowerId = sessionStorage.getItem('tower_id_associated');
+  const storedApartmentId = sessionStorage.getItem('apartment_id_associated');
+  const user_role = sessionStorage.getItem('user_role');
+
+  // Fetch unclaimed correspondence data through the API
   useEffect(() => {
-    fetch('https://dduhalde.online/.netlify/functions/api/visitors')
-      .then(response => response.json())
-      .then(data => setVisitors(data))
-      .catch(error => console.error('An error occurred when trying to fetch visitors:', error));
+    fetchVisitData();
   }, []);
+
+  // Fetch visitors data from the API
+  const fetchVisitData = () => {
+    fetch(`https://dduhalde.online/.netlify/functions/api/visitors/${storedTowerId}/${storedApartmentId}`)
+      .then(response => response.json())
+      .then(data => setVisitors(data[0]))
+      .catch(error => {
+        console.error('An error occurred when trying to fetch visitors:', error);
+        setShowVisitAlert(true);
+        timeAlerts(() => setShowVisitAlert(false));
+      });
+  }
+
+  // Create alerts
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+  const [showDeleteFailAlert, setShowDeleteFailAlert] = useState(false);
+  const [showVisitAlert, setShowVisitAlert] = useState(false);
 
   const handleDelete = (id) => {
     // Do the DELETE request to the server, thus deleting a visitor given his ID
-    fetch(`https://dduhalde.online/.netlify/functions/api/delete_visitor/${id}`)
+    fetch(`https://dduhalde.online/.netlify/functions/api/delete_visit/${id}`)
     .then(response => {
       if (!response.ok) {
         throw new Error('An error occurred when trying to delete the visitor.');
       }
-      console.log(`Visitor with ID ${id} deleted successfully.`);
+      setShowDeleteAlert(true);
+      timeAlerts(() => setShowDeleteAlert(false));
+      fetchVisitData();
     })
     .catch(error => {
-      console.error('An error occurred when trying to delete the visitor:', error);
+      setShowDeleteFailAlert(true);
+      timeAlerts(() => setShowDeleteFailAlert(false));
     });
   };
 
   // Button to redirect to the new visit form
   const handleButtonClick = () => {
-    navigate('/newvisitform');
+    navigate('/scanid');
   };
 
   return (
@@ -55,28 +77,53 @@ const AdminVisits = () => {
             <th scope="col">{t('adminVisits.apartment')}</th>
             <th scope="col">{t('adminVisits.visitType')}</th>
             <th scope="col">{t('adminVisits.lastVisit')}</th>
+            {user_role !== '3' && (
             <th scope="col">{t('adminVisits.delete')}</th>
+            )}
           </tr>
         </thead>
         <tbody>
           {visitors.map((visitor) => (
-            <tr key={visitor.visitor_id}>
+            <tr key={visitor.log_id}>
               <td>{visitor.full_name}</td>
               <td>{visitor.run}</td>
               <td>{formatDate(visitor.birth_date)}</td>
-              <td>{visitor.unit_apartment_visited}</td>
-              <td>{visitor.visit_type}</td>
+              <td>{visitor.apartment_identifier}-{visitor.tower}</td>
+              <td>{visitor.visit_motive}</td>
               <td>{formatDateLarge(visitor.visit_date)}</td>
+              {user_role !== '3' && (
               <td>
-                <button class="btn btn-danger btn-sm" onClick={() => handleDelete(visitor.visitor_id)}>{t('adminVisits.delete')}</button>
+                <button class="btn btn-danger btn-sm" onClick={() => handleDelete(visitor.log_id)}>{t('adminVisits.delete')}</button>
               </td>
+              )}
             </tr>
           ))}
         </tbody>
       </table>
       </div>
+      {user_role !== '3' && (
       <div class="text-center mt-4 mb-5">
         <button class="btn btn-primary" onClick={handleButtonClick}>{t('adminVisits.addVisit')}</button>
+      </div>
+      )}
+      <div className='row'>
+        <div className='col-md-3 order-md-3 rounded-5'>
+          {showDeleteAlert && (
+          <div className="alert alert-success text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
+            &#10004; {t('adminVisits.deleteSuccessAlert')}
+          </div>
+          )}
+          {showDeleteFailAlert && (
+          <div className="alert alert-danger text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
+            &#9888; {t('adminVisits.deleteFailAlert')}
+          </div>
+          )}
+          {showVisitAlert && (
+          <div className="alert alert-danger text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
+            &#9888; {t('adminVisits.visitAlert')}
+          </div>
+          )}
+        </div>
       </div>
       </div>
   );
