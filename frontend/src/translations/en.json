@@ -218,28 +218,9 @@
       "SuccessAlert": "Succed Add Visit",
       "FailAlert": "Fail Add Visit"
     },
-    "notifications": {
-      "title": "Notifications",
-      "packageArrival": "The package 'TYPE' has arrived at the concierge since 'DATE'.",
-      "personArrival": "The person 'PERSON' arrived at 'DATE'.",
-      "parkingOccupied": "The parking spot 'PARKING' is occupied by 'VISITOR_NAME'. It must be vacated in 'REMAINING_TIME'."
-    },
     "ScanID": {
       "title": "Scan ID",
       "scanimg": "ID Scanned",
       "uploadimg": "Upload ID Image"
-    },
-    "SearchPersonByRut": {
-      "searchByRut": "Search Person by RUN",
-      "rutLabel": "RUN:",
-      "searchButton": "Search",
-      "personFound": "Person Found",
-      "rut": "RUN",
-      "name": "Name",
-      "birthDate": "Birth Date",
-      "address": "Address",
-      "phone": "Phone",
-      "apartmentsVisited": "Apartments Visited",
-      "quantity": "Quantity"
     }
 }

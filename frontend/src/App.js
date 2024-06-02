@@ -17,7 +17,6 @@ import Home from './Pages/Home';
 import Login from './Pages/Login';
 import NewCorrespondenceForm from './Pages/NewCorrespondenceForm';
 import NewVisitForm from './Pages/NewVisitForm';
-import Notifications from './Pages/Notifications';
 import ScanID from './Pages/ScanID';
 import AdminVisits from './Pages/AdminVisits';
 import NewMessage from './Pages/NewMessage';
@@ -67,7 +66,6 @@ function App() {
               <Route path="/newcorrespondenceform" element={<NewCorrespondenceForm />} />
               <Route path="/newvisitform" element={<NewVisitForm />} />
               <Route path="/scanid" element={<ScanID />} />
-              <Route path="/Notifications" element={<Notifications />} />
               <Route path="/newmessage" element={<NewMessage />} />
               <Route path="/newvehicleform" element={<NewVehicleForm />} />
               <Route path="/configadmin" element={<ConfigAdmin />} />

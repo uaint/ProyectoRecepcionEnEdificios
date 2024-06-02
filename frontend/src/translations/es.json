@@ -218,28 +218,9 @@
     "SuccessAlert": "Visita Agregada",
     "FailAlert": "Error al agregar visita"
   },
-  "notifications": {
-    "title": "Notificaciones",
-    "packageArrival": "El paquete 'TIPO_PAQUETE' llegó a conserjería a las 'FECHA'.",
-    "personArrival": "La persona 'PERSONA' llegó a las 'FECHA'.",
-    "parkingOccupied": "El estacionamiento 'ESTACIONAMIENTO está ocupado por 'NOMBRE_VISITA'. Debe ser desocupado en 'REMAINING_TIME'."
-  },
   "ScanID": {
     "title": "Escanear Carnet",
     "scanimg": "Carnet Escaneado",
     "uploadimg": "Subir Imagen de Carnet"
-  },
-  "SearchPersonByRut": {
-    "searchByRut": "Buscar Persona por RUN",
-    "rutLabel": "RUN:",
-    "searchButton": "Buscar",
-    "personFound": "Persona Encontrada",
-    "rut": "RUN",
-    "name": "Nombre",
-    "birthDate": "Fecha de Nacimiento",
-    "address": "Dirección",
-    "phone": "Teléfono",
-    "apartmentsVisited": "Apartamentos Visitados",
-    "quantity": "Cantidad"
   }
 }
