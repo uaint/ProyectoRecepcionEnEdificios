@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const FormParking = ({ parkingId, onAddParking }) => {
+    
     // General configurations
     const { t } = useTranslation();
 
@@ -10,7 +11,7 @@ const FormParking = ({ parkingId, onAddParking }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         onAddParking(licensePlate, parkingId);
-        setLicensePlate(''); // Limpiar el campo de la placa después de agregar el estacionamiento
+        setLicensePlate(''); // 'Clean' the license plate field after adding the parking spot
     };
 
     return (

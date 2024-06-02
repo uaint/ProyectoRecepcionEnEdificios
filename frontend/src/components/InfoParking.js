@@ -3,6 +3,8 @@ import { formatDateLarge } from '../Utils.js';
 import { useTranslation } from 'react-i18next';
 
 const InfoParking = ({ data, onFreeParking }) => {
+
+  // General configurations
   const { t } = useTranslation();
 
   return (

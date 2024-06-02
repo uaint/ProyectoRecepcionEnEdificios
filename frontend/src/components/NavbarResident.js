@@ -70,7 +70,7 @@ const NavbarResident = () => {
           <li className="nav-item me-4 pull-right">
             <Link className="nav-link" to="/login" onClick={handleSignOut}>{t('navbarResident.signOut')}</Link>
           </li>
-          </ul>
+        </ul>
       </div>
     </nav>
   );

@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 describe('NavbarConcierge', () => {
   test('renders NavbarConcierge component', async () => {
-    // Simular la respuesta de la API
+    // Simulate API response
     global.fetch = jest.fn().mockResolvedValueOnce({
         json: () => Promise.resolve([
           {
@@ -33,46 +33,46 @@ describe('NavbarConcierge', () => {
         </MemoryRouter>
       );
     
-    // Verifica que el texto "ESP" esté presente en el navbar
+// Verify that the text "ESP" it's present in the navbar
 expect(getByText('ESP')).toBeInTheDocument();
 
-// Verifica que el texto "EN" esté presente en el navbar
+// Verify that the text "EN" it's present in the navbar
 expect(getByText('EN')).toBeInTheDocument();
 
-// Verifica que el texto "Admin" esté presente en el navbar
+// Verify that the text "Admin" it's present in the navbar
 expect(getByText('Admin')).toBeInTheDocument();
 
-// Verifica que el texto "Manage Correspondence" esté presente en el navbar
+// Verify that the text "Manage Correspondence" it's present in the navbar
 expect(getByText('Manage Correspondence')).toBeInTheDocument();
 
-// Verifica que el texto "Manage Visits" esté presente en el navbar
+// Verify that the text "Manage Visits" it's present in the navbar
 expect(getByText('Manage Visits')).toBeInTheDocument();
 
-// Verifica que el texto "Manage Parking" esté presente en el navbar
+// Verify that the text "Manage Parking" it's present in the navbar
 expect(getByText('Manage Parking')).toBeInTheDocument();
 
-// Verifica que el texto "Search Person" esté presente en el navbar
+// Verify that the text "Search Person" it's present in the navbar
 expect(getByText('Search Person')).toBeInTheDocument();
 
-// Verifica que el texto "Search by RUN" esté presente en el navbar
+// Verify that the text "Search by RUN" it's present in the navbar
 expect(getByText('Search by RUN')).toBeInTheDocument();
 
-// Verifica que el texto "Scan ID" esté presente en el navbar
+// Verify that the text "Scan ID" it's present in the navbar
 expect(getByText('Scan ID')).toBeInTheDocument();
 
-// Verifica que el texto "Add New" esté presente en el navbar
+// Verify that the text "Add New" it's present in the navbar
 expect(getByText('Add New')).toBeInTheDocument();
 
-// Verifica que el texto "New Visit" esté presente en el navbar
+// Verify that the text "New Visit" it's present in the navbar
 expect(getByText('New Visit')).toBeInTheDocument();
 
-// Verifica que el texto "New Vehicle" esté presente en el navbar
+// Verify that the text "New Vehicle" it's present in the navbar
 expect(getByText('New Vehicle')).toBeInTheDocument();
 
-// Verifica que el texto "Configuration" esté presente en el navbar
+// Verify that the text "Configuration" it's present in the navbar
 expect(getByText('Configuration')).toBeInTheDocument();
 
-// Verifica que el texto "Sign Out" esté presente en el navbar
+// Verify that the text "Sign Out" it's present in the navbar
 expect(getByText('Sign Out')).toBeInTheDocument();
   });
 
@@ -83,11 +83,11 @@ expect(getByText('Sign Out')).toBeInTheDocument();
         </MemoryRouter>
       );
     
-    // Verifica que al hacer clic en el botón 'EN' se cambie el idioma a inglés
+    // Verify that clicking in the button 'EN' changes language to english
     fireEvent.click(getByText('EN'));
     expect(document.documentElement.lang).toBe('');
     
-    // Verifica que al hacer clic en el botón 'ESP' se cambie el idioma a español
+    // Verify that clicking in the button 'ESP' changes language to spanish (español)
     fireEvent.click(getByText('ESP'));
     expect(document.documentElement.lang).toBe('');
   });

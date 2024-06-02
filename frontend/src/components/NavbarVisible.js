@@ -5,6 +5,7 @@ import React from 'react';
 
 export default () => {
 
+  // user_role = 3 => Resident
   const user_role = sessionStorage.getItem('user_role');
 
   return (
