@@ -42,28 +42,28 @@ const NewMessage = () => {
     <div id="change" className="container">
       <div className="row justify-content-center">
           <div className="col-md-6">
-          <h1 class="text-center mb-4">{t('newMewssage.contactConcierge')}</h1> 
+          <h1 class="text-center mb-4">{t('newMessage.contactConcierge')}</h1> 
       <hr className="mb-4"/>  
           <div class="mb-2">
-            <label for="exampleFormControlTextarea1" class="form-label">{t('newMewssage.writeMessage')}</label>
+            <label for="exampleFormControlTextarea1" class="form-label">{t('newMessage.writeMessage')}</label>
             <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" rezise="none" value={message}
           onChange={handleInputChange} maxlength="512"></textarea>
           </div>
       </div>
       <div class="text-center mt-4">
-      <button class="btn btn-primary"  onClick={handleSendMessage}>{t('newMewssage.sendMessage')}</button>
+      <button class="btn btn-primary"  onClick={handleSendMessage}>{t('newMessage.sendMessage')}</button>
       </div>
     </div>
     <div className='row'>
         <div className='col-md-3 order-md-3 rounded-5'>
           {showSuccessAlert && (
           <div className="alert alert-success text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
-            &#10004; {t('newMewssage.SuccessAlert')}
+            &#10004; {t('newMessage.SuccessAlert')}
           </div>
           )}
           {showFaildAlert && (
           <div className="alert alert-danger text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
-            &#9888; {t('newMewssage.FailAlert')}
+            &#9888; {t('newMessage.FailAlert')}
           </div>
           )}
         </div>
