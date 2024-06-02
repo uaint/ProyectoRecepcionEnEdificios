@@ -196,6 +196,7 @@ CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`frequent_visitor` (
   PRIMARY KEY (`id`, `visitor_id`, `apartment_id`),
   INDEX `fk_table1_visitor1_idx` (`visitor_id` ASC) VISIBLE,
   INDEX `fk_table1_apartment1_idx` (`apartment_id` ASC) VISIBLE,
+  UNIQUE INDEX `visitor_id_UNIQUE` (`visitor_id` ASC) VISIBLE,
   CONSTRAINT `fk_table1_visitor1`
     FOREIGN KEY (`visitor_id`)
     REFERENCES `roentgenium_new_eer`.`visitor` (`id`)
@@ -219,6 +220,31 @@ CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`logs` (
   `log_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `context` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `roentgenium_new_eer`.`messaging`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`messaging` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `sender_id` INT NOT NULL,
+  `tower_id` INT NOT NULL,
+  `message` VARCHAR(512) NOT NULL,
+  `message_timestamp` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`, `sender_id`, `tower_id`),
+  INDEX `fk_messaging_person1_idx` (`sender_id` ASC) VISIBLE,
+  INDEX `fk_messaging_tower1_idx` (`tower_id` ASC) VISIBLE,
+  CONSTRAINT `fk_messaging_person1`
+    FOREIGN KEY (`sender_id`)
+    REFERENCES `roentgenium_new_eer`.`person` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_messaging_tower1`
+    FOREIGN KEY (`tower_id`)
+    REFERENCES `roentgenium_new_eer`.`tower` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 USE `roentgenium_new_eer` ;
@@ -247,6 +273,11 @@ CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`all_correspondence` (`id` INT,
 -- Placeholder table for view `roentgenium_new_eer`.`all_vehicles`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`all_vehicles` (`visitor_id` INT, `full_name` INT, `license_plates` INT);
+
+-- -----------------------------------------------------
+-- Placeholder table for view `roentgenium_new_eer`.`message_view`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`message_view` (`message_id` INT, `sender_id` INT, `sender_full_name` INT, `message` INT, `sent_at` INT, `apartment_number` INT, `tower_number` INT);
 
 -- -----------------------------------------------------
 -- procedure add_inhabitant
@@ -363,9 +394,34 @@ DELIMITER ;
 
 DELIMITER $$
 USE `roentgenium_new_eer`$$
-CREATE PROCEDURE add_frequent_visitor(IN v_id INT, IN apt_id INT)
+CREATE PROCEDURE add_frequent_visitor(IN f_name VARCHAR(31), IN l_name VARCHAR(31), IN r_num INT, IN r_vd TINYINT(1), IN b_date DATE, IN apartment_number INT, IN tower_number INT)
 BEGIN
-	INSERT INTO frequent_visitor (visitor_id, apartment_id) VALUES (v_id, apt_id);
+	DECLARE p_id INT;
+    DECLARE v_id INT;
+    DECLARE a_id INT;
+    
+    SET a_id = obtain_apartment_id(tower_number, apartment_number);
+    SET p_id = obtain_person_id_by_run(r_num);
+    SET v_id = obtain_visitor_id_by_run(r_num);
+    
+    -- Best case scenario: Person does exist
+    IF p_id IS NOT NULL THEN
+		IF v_id IS NOT NULL THEN
+			INSERT INTO frequent_visitor (visitor_id, apartment_id) VALUES (v_id, a_id);
+		ELSE
+			INSERT INTO visitor (person_id) VALUES (p_id);
+            SET v_id = obtain_visitor_id_by_run(r_num);
+            INSERT INTO frequent_visitor (visitor_id, apartment_id) VALUES (v_id, a_id);
+		END IF;
+			
+    -- Worst case scenario: Person does not exist (therefore, neither does the visitor and frequent visitor instances)
+    ELSE
+		CALL add_person(f_name, l_name, r_num, r_vd, b_date, NULL, NULL);
+        SET p_id = obtain_person_id_by_run(r_num);
+		INSERT INTO visitor (person_id) VALUES (p_id);
+        SET v_id = obtain_visitor_id_by_run(r_num);
+		INSERT INTO frequent_visitor (visitor_id, apartment_id) VALUES (v_id, a_id);
+	END IF;
 END$$
 
 DELIMITER ;
@@ -723,6 +779,36 @@ END$$
 DELIMITER ;
 
 -- -----------------------------------------------------
+-- procedure send_message
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium_new_eer`$$
+CREATE PROCEDURE send_message(IN s_id INT, IN t_id INT, IN message_to_send VARCHAR(256))
+BEGIN
+	INSERT INTO messaging (sender_id, tower_id, message) VALUES (s_id, t_id, message_to_send);
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure get_messages
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium_new_eer`$$
+CREATE PROCEDURE get_messages(IN tower_param VARCHAR(4))
+BEGIN
+    IF (tower_param IS NULL OR tower_param = 'null') THEN
+        SELECT * FROM message_view;
+    ELSE
+		SELECT * FROM message_view WHERE tower_number = tower_param;
+    END IF;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
 -- View `roentgenium_new_eer`.`visitors_information`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `roentgenium_new_eer`.`visitors_information`;
@@ -832,6 +918,31 @@ CREATE  OR REPLACE VIEW `all_vehicles` AS
 		person p ON p.id = v.person_id
 	GROUP BY
         v.id, p.first_name, p.last_name;
+
+-- -----------------------------------------------------
+-- View `roentgenium_new_eer`.`message_view`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `roentgenium_new_eer`.`message_view`;
+USE `roentgenium_new_eer`;
+CREATE  OR REPLACE VIEW `message_view` AS
+    SELECT 
+		msg.id AS message_id,
+        msg.sender_id,
+        CONCAT(sender.first_name, ' ', sender.last_name) AS sender_full_name,
+        msg.message,
+        msg.message_timestamp AS sent_at,
+        apt.number_identifier AS apartment_number,
+		t.id AS tower_number
+    FROM
+        messaging msg
+    LEFT JOIN
+        person sender ON msg.sender_id = sender.id
+    LEFT JOIN
+        inhabitant sender_inhabitant ON sender.id = sender_inhabitant.person_id
+	LEFT JOIN
+        apartment apt ON sender_inhabitant.apartment_id = apt.id
+    LEFT JOIN
+        tower t ON apt.tower_id = t.id;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
