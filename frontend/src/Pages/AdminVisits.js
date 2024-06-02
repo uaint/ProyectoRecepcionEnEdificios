@@ -14,6 +14,11 @@ const AdminVisits = () => {
   // Initiate/Create the visitors
   const [visitors, setVisitors] = useState([]);
 
+  // Read variables from sessionStorage
+  const storedTowerId = sessionStorage.getItem('tower_id_associated');
+  const storedApartmentId = sessionStorage.getItem('apartment_id_associated');
+  const user_role = sessionStorage.getItem('user_role');
+
   // Fetch unclaimed correspondence data through the API
   useEffect(() => {
     fetchVisitData();
@@ -21,9 +26,9 @@ const AdminVisits = () => {
 
   // Fetch visitors data from the API
   const fetchVisitData = () => {
-    fetch('https://dduhalde.online/.netlify/functions/api/visitors')
+    fetch(`https://dduhalde.online/.netlify/functions/api/visitors/${storedTowerId}/${storedApartmentId}`)
       .then(response => response.json())
-      .then(data => setVisitors(data))
+      .then(data => setVisitors(data[0]))
       .catch(error => {
         console.error('An error occurred when trying to fetch visitors:', error);
         setShowVisitAlert(true);
@@ -72,7 +77,9 @@ const AdminVisits = () => {
             <th scope="col">{t('adminVisits.apartment')}</th>
             <th scope="col">{t('adminVisits.visitType')}</th>
             <th scope="col">{t('adminVisits.lastVisit')}</th>
+            {user_role !== '3' && (
             <th scope="col">{t('adminVisits.delete')}</th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -81,20 +88,24 @@ const AdminVisits = () => {
               <td>{visitor.full_name}</td>
               <td>{visitor.run}</td>
               <td>{formatDate(visitor.birth_date)}</td>
-              <td>{visitor.apartment_visited}</td>
+              <td>{visitor.apartment_identifier}-{visitor.tower}</td>
               <td>{visitor.visit_motive}</td>
               <td>{formatDateLarge(visitor.visit_date)}</td>
+              {user_role !== '3' && (
               <td>
                 <button class="btn btn-danger btn-sm" onClick={() => handleDelete(visitor.log_id)}>{t('adminVisits.delete')}</button>
               </td>
+              )}
             </tr>
           ))}
         </tbody>
       </table>
       </div>
+      {user_role !== '3' && (
       <div class="text-center mt-4 mb-5">
         <button class="btn btn-primary" onClick={handleButtonClick}>{t('adminVisits.addVisit')}</button>
       </div>
+      )}
       <div className='row'>
         <div className='col-md-3 order-md-3 rounded-5'>
           {showDeleteAlert && (

@@ -9,12 +9,16 @@ const AllCorrespondence = () => {
   // General configurations
   const { t } = useTranslation();
 
+  // Read variables from sessionStorage
+  const storedTowerId = sessionStorage.getItem('tower_id_associated');
+  const storedApartmentId = sessionStorage.getItem('apartment_id_associated');
+
   // Create correspondence
   const [correspondence, setCorrespondence] = useState([]);
 
   // Define the API call to the unclaimed_correspondence
   const fetchCorrespondenceData = () => {
-    fetch('https://dduhalde.online/.netlify/functions/api/correspondence')
+    fetch(`https://dduhalde.online/.netlify/functions/api/correspondence/${storedTowerId}/${storedApartmentId}`)
       .then(response => response.json())
       .then(data => setCorrespondence(data))
       .catch(error => {

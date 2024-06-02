@@ -18,9 +18,10 @@ const NavbarConcierge = () => {
   };
 
 
-  // Logout and delete token from local storage. Afterwards, redirect to login page.
+  // Logout and delete all from local and session storage. Afterwards, redirect to login page.
   const handleSignOut = () => {
-    localStorage.removeItem('token');
+    localStorage.clear();
+    sessionStorage.clear();
     window.location.href = '/login';
   };
 

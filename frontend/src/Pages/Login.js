@@ -47,11 +47,20 @@ const Login = (props) => {
         logIn();
     }
 
+    const [notExpire, SetNotExpire] = useState(false);
+
+    const handleCheckboxChange = (e) => {
+        const isChecked = e.target.checked;
+        console.log(isChecked)
+        SetNotExpire(isChecked);
+    };
+
 
     // Call to the API (logging of the user)
     const logIn = () => {
         const url_api = `https://dduhalde.online/.netlify/functions/api/login/${username}`;
-        const url_api_token = `https://dduhalde.online/.netlify/functions/api/token/${username}`;
+        const url_api_token = `https://dduhalde.online/.netlify/functions/api/token/${username}/${notExpire}`;
+        console.log(url_api_token)
         fetch(url_api)
             .then(response => response.json())
             .then(data => {
@@ -60,6 +69,10 @@ const Login = (props) => {
                     const salt = data[0].password_salt;
                     const password_hashed = data[0].password_hashed;
                     const password_hashed_input = passwordHashed(password, salt);
+                    const tower_id_associated = data[0].tower_id_associated;
+                    const apartment_id_associated = data[0].apartment_id_associated;
+                    const user_role = data[0].user_role;
+
                     if (password_hashed === password_hashed_input) {
                         fetch(url_api_token) // Retrieve the token from the specific API
                             .then(response => response.json())
@@ -67,6 +80,11 @@ const Login = (props) => {
                                 console.log(data.token) // TEST TOKEN
                                 // If login is successful, save token into the localStorage of the browser
                                 localStorage.setItem('token', data2.token)
+
+                                sessionStorage.setItem('tower_id_associated', tower_id_associated);
+                                sessionStorage.setItem('apartment_id_associated', apartment_id_associated);
+                                sessionStorage.setItem('user_role', user_role);
+                                
                             })
                             .catch(error => {
                                 console.error('Error fetching token data:', error);
@@ -108,8 +126,8 @@ const Login = (props) => {
                                     {passwordError && <div className="text-danger">{passwordError}</div>}
                                 </div>
                                 <div className="mb-3 form-check">
-                                    <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-                                    <label className="form-check-label" htmlFor="exampleCheck1">{t('login.remember')}</label>
+                                    <input type="checkbox" className="form-check-input" id="exampleCheck1" checked={notExpire} onChange={handleCheckboxChange}/>
+                                    <label className="form-check-label" htmlFor="exampleCheck1">{t('login.loggedin')}</label>
                                 </div>
                                 <div className="d-grid gap-1">
                                     <button type="submit" className="btn btn-primary">{t('login.loginButton')}</button>

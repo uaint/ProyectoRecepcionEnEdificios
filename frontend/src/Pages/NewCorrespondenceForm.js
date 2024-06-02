@@ -9,13 +9,17 @@ const NewCorrespondenceForm = () => {
   // General configurations
   const { t } = useTranslation();
 
-  // Initiate formData with some 'default' values
-  const [formData, setFormData] = useState({
+  // Read variables from sessionStorage
+  const storedTowerId = sessionStorage.getItem('tower_id_associated');
+  const user_role = sessionStorage.getItem('user_role');
+
+   // Initiate formData with some 'default' values
+   const [formData, setFormData] = useState({
     type: 'Packages',
     timeOfArrival: '',
     isClaimed: false,
     apartment: '',
-    build: '',
+    build: storedTowerId,
   });
 
   // Update type according to selected option
@@ -175,10 +179,18 @@ const NewCorrespondenceForm = () => {
                   <label htmlFor="apartment" className="form-label">{t('correspondenceForm.selectApartment')}</label>
                   <input type="number" className="form-control" id="apartment" name="apartment" value={formData.apartment} onChange={handleChange} required placeholder={t('correspondenceForm.selectApartment')}/>
                 </div>
+                {user_role === '2' && (
+                <div className="mb-3">
+                  <label htmlFor="build" className="form-label">{t('correspondenceForm.selectTower')}</label>
+                  <input type="number" className="form-control" id="build" name="build" value={storedTowerId} onChange={handleChange} required placeholder={t('correspondenceForm.selectTower')} disabled/>
+                </div>
+                )}
+                {user_role === '1' && (
                 <div className="mb-3">
                   <label htmlFor="build" className="form-label">{t('correspondenceForm.selectTower')}</label>
                   <input type="number" className="form-control" id="build" name="build" value={formData.build} onChange={handleChange} required placeholder={t('correspondenceForm.selectTower')}/>
                 </div>
+                )}
                 <div className="d-grid gap-1">
                   <button type="submit" className="btn btn-primary mt-3">{t('correspondenceForm.searchresident')}</button>
                 </div>

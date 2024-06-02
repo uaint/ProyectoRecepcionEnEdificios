@@ -12,6 +12,10 @@ const NewVisitForm = () => {
   
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+
+  // Read variables from sessionStorage
+  const storedTowerId = sessionStorage.getItem('tower_id_associated');
+  const user_role = sessionStorage.getItem('user_role');
   
   // Obtener los parámetros de la URL
   const scannedData = {
@@ -28,7 +32,7 @@ const NewVisitForm = () => {
     run: scannedData.run,
     dv: scannedData.dv,
     birthDate: '',
-    buildToVisit: '',
+    buildToVisit: storedTowerId,
     apartmentToVisit: '',
     type: 'Casual',
   });
@@ -112,10 +116,18 @@ const NewVisitForm = () => {
                   <label for="apartmentToVisit" class="form-label">{t('visitForm.apartmentToVisit')}</label>
                   <input type="number" class="form-control" id="apartmentToVisit" name="apartmentToVisit" value={formData.apartmentToVisit} onChange={handleChange} required/>
                 </div>
+                {user_role === '2' && (
                 <div class="mb-3">
+                  <label for="buildToVisit" class="form-label">{t('visitForm.buildToVisit')}</label>
+                  <input type="number" class="form-control" id="buildToVisit" name="buildToVisit" value={storedTowerId} onChange={handleChange} required disabled/>
+                </div>
+                )}
+                {user_role === '1' && (
+                  <div class="mb-3">
                   <label for="buildToVisit" class="form-label">{t('visitForm.buildToVisit')}</label>
                   <input type="number" class="form-control" id="buildToVisit" name="buildToVisit" value={formData.buildToVisit} onChange={handleChange} required/>
                 </div>
+                )}
                 <label for="type" class="form-label">{t('visitForm.type')}</label>
                 <select class="form-select" aria-label="Default select example" value={selectedOption} onChange={handleOptionChange}>
                   <option value="Casual">{t('visitForm.casual')}</option>
