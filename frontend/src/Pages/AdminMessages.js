@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const AdminMessages = () => {
   const { t } = useTranslation();
 
+  const user_role = sessionStorage.getItem('user_role');
+
   const messages = [
     {
       id: 1,
@@ -40,6 +42,7 @@ const AdminMessages = () => {
 
   return (
     <div id="change" className="container">
+      {user_role !== '3' && (
       <div className="row justify-content-center">
           <div className="col-md-6">
           <h1 className="text-center mb-4">{t('adminMessages.adminCorrespondence')}</h1>
@@ -69,6 +72,7 @@ const AdminMessages = () => {
     </div>
     </div>
     </div>
+  )}
     </div>
   );
 };

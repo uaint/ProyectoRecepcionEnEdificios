@@ -17,12 +17,10 @@ import Home from './Pages/Home';
 import Login from './Pages/Login';
 import NewCorrespondenceForm from './Pages/NewCorrespondenceForm';
 import NewVisitForm from './Pages/NewVisitForm';
-import Notifications from './Pages/notifications';
-import SearchPersonByRut from './Pages/SearchPersonByRut';
+import Notifications from './Pages/Notifications';
 import ScanID from './Pages/ScanID';
 import AdminVisits from './Pages/AdminVisits';
-import Messages from './Pages/Messages';
-import Config from './Pages/config';
+import NewMessage from './Pages/NewMessage';
 import AdminCorrespondence from './Pages/AdminCorrespondence';
 import AllCorrespondence from './Pages/AllCorrespondence';
 import AdminMessages from './Pages/AdminMessages';
@@ -68,12 +66,10 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/newcorrespondenceform" element={<NewCorrespondenceForm />} />
               <Route path="/newvisitform" element={<NewVisitForm />} />
-              <Route path="/searchpersonbyrut" element={<SearchPersonByRut />} />
               <Route path="/scanid" element={<ScanID />} />
-              <Route path="/notifications" element={<Notifications />} />
-              <Route path="/messages" element={<Messages />} />
+              <Route path="/Notifications" element={<Notifications />} />
+              <Route path="/newmessage" element={<NewMessage />} />
               <Route path="/newvehicleform" element={<NewVehicleForm />} />
-              <Route path="/config" element={<Config />} />
               <Route path="/configadmin" element={<ConfigAdmin />} />
               <Route path="/admincorrespondence" element={<AdminCorrespondence />} />
               <Route path="/allcorrespondence" element={<AllCorrespondence />} />

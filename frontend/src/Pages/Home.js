@@ -1,13 +1,11 @@
 import React from "react";
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import home_img from '../img/home_img.png';
 
 
-const Home = (props) => {
+const Home = () => {
     const { t } = useTranslation();
-    const navigate = useNavigate();
 
     return (
         <div id="change" className="container">

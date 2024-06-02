@@ -17,6 +17,8 @@ const NewVehicleForm = () => {
     license_plate: ''
   });
 
+  const user_role = sessionStorage.getItem('user_role');
+
   // Create alerts
   const [showAddedVehicleAlert, setShowAddedVehicleAlert] = useState(false);
   const [showAddedVehicleFailAlert, setShowAddedVehicleFailAlert] = useState(false);
@@ -52,6 +54,8 @@ const NewVehicleForm = () => {
 
   return (
     <div id="change" className="container">
+      {user_role !== '3' && (
+      <div>
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card">
@@ -92,6 +96,8 @@ const NewVehicleForm = () => {
           )}
         </div>
       </div>
+      </div>
+      )}
     </div>
   );
 };

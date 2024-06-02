@@ -59,7 +59,7 @@ const NavbarResident = () => {
               <Link className="nav-link" to="/newfrequentvisitform">{t('navbarResident.newfrequentvisitform')}</Link>
             </li>
             <li className="nav-item me-4">
-              <Link className="nav-link" to="/adminmessages">{t('navbarResident.messages')}</Link>
+              <Link className="nav-link" to="/newmessage">{t('navbarResident.newmessage')}</Link>
             </li>
             <li className="nav-item me-4">
               <Link className="nav-link" to="/configadmin">{t('navbarResident.config')}</Link>
