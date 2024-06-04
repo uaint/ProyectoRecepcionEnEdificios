@@ -3,6 +3,22 @@ import mysql from 'mysql';
 import env from 'dotenv';
 import serverless from 'serverless-http';
 import jwt from 'jsonwebtoken';
+import winston from 'winston';
+
+// Winston logger configuration
+const logger = winston.createLogger({
+  level: 'debug',
+  format: winston.format.combine(
+    winston.format.timestamp({
+      format: 'YYYY-MM-DD HH:mm:ss'
+    }),
+    winston.format.printf(info => `${info.timestamp} - ${info.level.toUpperCase()} - ${info.message}`)
+  ),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: 'app.log' })
+  ]
+});
 
 // Start app & router with Express
 const app = express();
@@ -43,6 +59,9 @@ router.use((req, res, next) => {
   }
 });
 
+// Logging de inicio de la aplicación correctamente
+logger.info('Application has started.');
+
 // Route to obtain data related to inhabitants living in a given apartment
 // Example: /inhabitants/1/101
 router.get('/inhabitants/:tower_id/:number_identifier', (req, res) => {
@@ -50,19 +69,26 @@ router.get('/inhabitants/:tower_id/:number_identifier', (req, res) => {
   // Fetch the parameters from the previous link
   const { tower_id, number_identifier} = req.params;
 
+  // Log the request parameters
+  logger.info('Fetching inhabitants data', { tower_id, number_identifier });
+  logger.debug('Received request on /inhabitants endpoint', { tower_id, number_identifier });
+
   // Create the query
   const query = `CALL obtain_inhabitants_by_apartment(?, ?);`;
 
   // Execute the query (call to the database)
+  logger.debug('Executing database query', { query, params: [tower_id, number_identifier] });
   connection.query(query, [tower_id, number_identifier], (err, rows) => {
     // Query failed
     if (err) {
+      logger.error('There was an error executing the query', { error: err });
       console.error('There was an error executing the query:', err);
       res.status(500).send('There was an error trying to fetch specific inhabitants data from the database.');
       return;
     }
     // Query success
     else {
+      logger.info('Query successful', { rows });
       res.json(rows[0]); // Send the data obtained as .json to the client
       return;
     }
@@ -79,6 +105,7 @@ router.get('/inhabitants', (req, res) => {
   connection.query(query, (err, rows) => {
     // Query failed
     if (err) {
+      logger.error('Request error', { error });
       console.error('There was an error executing the query:', err);
       res.status(500).send('There was an error trying to fetch inhabitants data from the database.');
       return;
@@ -587,6 +614,7 @@ router.get('/delete_msg/:id', (req, res) => {
   connection.query(query, [id], (err, rows) => {
     // Query failed
     if (err) {
+      logger.error('Database query error', { error: err });
       res.status(500).send('An error occurred while trying to update the data related to the messaging from the database.');
       return;
     }
@@ -659,12 +687,15 @@ router.get('/login/:username', (req, res) => {
   connection.query(query, [username], (err, rows) => {
     // Query failed
     if (err) {
+      logger.error('Authentication error', { username: req.body.username, error });
       console.error('An error occurred while trying to execute the query:', err);
       res.status(500).send('An error occurred while trying to authenticate the user.');
       return;
     }
     // Query success
     else {
+      logger.info('User logged in successfully', { username: req.body.username });
+      res.send('Login successful');
       res.json(rows); // Send data as .json to the client
       return;
     }
