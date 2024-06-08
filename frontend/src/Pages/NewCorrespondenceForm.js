@@ -138,8 +138,6 @@ const NewCorrespondenceForm = () => {
       alert('Please, fill all the required fields before adding the correspondence.');
     }
   };
-  
-  
 
   const handleSelectInhabitantWhatsApp = (inhabitantId) => {
   // Verify if the inhabitant has been selected

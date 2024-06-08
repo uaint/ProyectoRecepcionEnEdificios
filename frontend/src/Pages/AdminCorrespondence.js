@@ -128,12 +128,12 @@ const AdminCorrespondence = () => {
         <div className='col-md-3 order-md-3 rounded-5'>
           {showClaimedAlert && (
           <div className="alert alert-success text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
-            &#10004; {t('adminCorrespondence.calimedSuccessAlert')}
+            &#10004; {t('adminCorrespondence.claimedSuccessAlert')}
           </div>
           )}
           {showClaimedFailAlert && (
           <div className="alert alert-danger text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
-            &#9888; {t('adminCorrespondence.calimedFailAlert')}
+            &#9888; {t('adminCorrespondence.claimedFailAlert')}
           </div>
           )}
           {showCorrespondenceAlert && (
