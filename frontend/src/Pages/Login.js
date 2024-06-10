@@ -88,7 +88,15 @@ const Login = (props) => {
                                 sessionStorage.setItem('apartment_id_associated', apartment_id_associated);
                                 sessionStorage.setItem('user_role', user_role);
                                 sessionStorage.setItem('person_id', person_id);
-                                
+                                if (user_role == '2') {
+                                    fetch(`https://dduhalde.online/.netlify/functions/api/gettowerinfo/${tower_id_associated}`)
+                                    .then(response => response.json())
+                                    .then(data3 => {
+                                        sessionStorage.setItem('parking_spot_ammount', data3[0].parking_spot_ammount);
+                                        sessionStorage.setItem('parking_limit_time', data3[0].parking_limit_time);
+                                        sessionStorage.setItem('parking_time_window', data3[0].parking_time_window);
+                                    })
+                                }
                             })
                             .catch(error => {
                                 console.error('Error fetching token data:', error);
