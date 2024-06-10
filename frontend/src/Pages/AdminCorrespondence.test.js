@@ -30,6 +30,7 @@ const mockSessionStorage = (() => {
     },
   };
 })();
+
 Object.defineProperty(window, 'sessionStorage', { value: mockSessionStorage });
 
 beforeEach(() => {
@@ -121,4 +122,51 @@ test('API Fetch test', async () => {
   await waitFor(() => {
     expect(global.fetch).toHaveBeenCalledWith('https://dduhalde.online/.netlify/functions/api/unclaimed_correspondence/null/null')
   });
+});
+
+// TEST 5: Sorting
+test('Sorting test', async () => {
+  sessionStorage.setItem('user_role', '2');
+  sessionStorage.setItem('tower_id_associated', '1');
+  sessionStorage.setItem('apartment_id_associated', 'null');
+  global.fetch = jest.fn().mockResolvedValueOnce({
+    json: () => Promise.resolve([
+      {
+        "id": 1,
+        "apartment_identifier": 101,
+        "tower": 1,
+        "mail_type": "Packages",
+        "arrival_time": "2024-05-26T03:35:00.000Z",
+        "is_notified": 0,
+        "is_claimed": 0
+      },
+      {
+        "id": 2,
+        "apartment_identifier": 101,
+        "tower": 1,
+        "mail_type": "Letters",
+        "arrival_time": "2024-05-26T03:42:00.000Z",
+        "is_notified": 1,
+        "is_claimed": 0
+      }
+    ]),
+  });
+
+  render(
+    <Router>
+      <AdminCorrespondence />
+    </Router>
+  );
+
+  // Check all the sorting options
+  fireEvent.click(screen.getByText('adminCorrespondence.id'));
+  expect(screen.getByText('adminCorrespondence.id ▲')).toBeInTheDocument();
+  fireEvent.click(screen.getByText('adminCorrespondence.apartment'));
+  expect(screen.getByText('adminCorrespondence.apartment ▲')).toBeInTheDocument();
+  fireEvent.click(screen.getByText('adminCorrespondence.type'));
+  expect(screen.getByText('adminCorrespondence.type ▲')).toBeInTheDocument();
+  fireEvent.click(screen.getByText('adminCorrespondence.date'));
+  expect(screen.getByText('adminCorrespondence.date ▲')).toBeInTheDocument();
+  fireEvent.click(screen.getByText('adminCorrespondence.notified'));
+  expect(screen.getByText('adminCorrespondence.notified ▲')).toBeInTheDocument();
 });
