@@ -31,7 +31,7 @@ const NavbarConcierge = () => {
           <button
               type="button"
               className={`btn ${i18n.language === 'es' ? 'btn-primary btn-sm' : 'btn-secondary btn-sm'}`}
-              onClick={() => handleLanguageChange('es')}
+              onClick={() => handleLanguageChange('es') }
           >
               ESP
           </button>

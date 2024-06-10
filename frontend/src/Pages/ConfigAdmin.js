@@ -1,19 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Collapse } from 'react-bootstrap';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { parseJwt, passwordHashed } from '../Utils';
-
-
-{/*
-              // input1: ask for current password (password)
-              // input2: ask for new password (newPassword)
-              // input3: confirm new password (newPassword2)
-              // Submit button
-              // verify that (newPassword === newPassword2)
-              // confirm that current password is correct
-              // modify password in the DB, considering hash and salt */}
 
 const ConfigAdmin = () => {
   // General configuration
@@ -39,7 +29,7 @@ const ConfigAdmin = () => {
         setPasswordError(t('configAdmin.passwordsDoNotMatch'));
         return;
     }
-    if (newPassword == currentPassword) {
+    if (newPassword === currentPassword) {
       setPasswordError(t('configAdmin.passwordsMatch'));
       return;
   }
@@ -150,7 +140,7 @@ const ConfigAdmin = () => {
       <div class="btn-group btn-group-sm d-flex pt-2" role="group" aria-label="Basic radio toggle button group">
         <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" onClick={() => handleToggleTab('changePassword')}></input>
         <label class="btn btn-outline-primary" for="btnradio1">{t('configAdmin.changePassword')}</label>
-        {user_role == '2' && (
+        {user_role === '2' && (
           <>
         <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" onClick={() => handleToggleTab('changeParkingTime')}></input>
         <label class="btn btn-outline-primary" for="btnradio2">{t('configAdmin.changeParkingTime')}</label>
@@ -186,7 +176,7 @@ const ConfigAdmin = () => {
                 </form>
             </div>
             </Collapse>
-            {user_role == '2' && (
+            {user_role === '2' && (
               <>
             <Collapse in={activeTab === 'changeParkingTime'}>
             <div className="card p-3">

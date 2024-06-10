@@ -3,11 +3,15 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { passwordHashed } from '../Utils';
+import i18n from '../i18n';
 
 const Login = (props) => {
 
     // General configuration
     const { t } = useTranslation();
+    const handleLanguageChange = (newLanguage) => {
+        i18n.changeLanguage(newLanguage);
+    };
     
     // Variables
     const [username, setUsername] = useState("");
@@ -88,7 +92,7 @@ const Login = (props) => {
                                 sessionStorage.setItem('apartment_id_associated', apartment_id_associated);
                                 sessionStorage.setItem('user_role', user_role);
                                 sessionStorage.setItem('person_id', person_id);
-                                if (user_role == '2') {
+                                if (user_role === '2') {
                                     fetch(`https://dduhalde.online/.netlify/functions/api/gettowerinfo/${tower_id_associated}`)
                                     .then(response => response.json())
                                     .then(data3 => {
@@ -129,7 +133,29 @@ const Login = (props) => {
                 <div className="col-md-6">
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="card-title text-center">{t('login.title')}</h2>
+                        <h2 className="card-title text-center">
+                            <div className="d-flex justify-content-center align-items-center mb-0 pb-0">
+                                <div className="btn-group me-auto" role="group">
+                                    <button
+                                        type="button"
+                                        className={`btn ${i18n.language === 'es' ? 'btn-primary btn-sm' : 'btn-secondary btn-sm'}`}
+                                        onClick={() => handleLanguageChange('es')}
+                                    >
+                                        ESP
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={`btn ${i18n.language === 'en' ? 'btn-danger btn-sm' : 'btn-secondary btn-sm'}`}
+                                        onClick={() => handleLanguageChange('en')}
+                                    >
+                                        EN
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="text-center mt-0 pt-0 pb-3">
+                                <span>{t('login.title')}</span>
+                            </div>
+                        </h2>
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
                                     <input type="text" className="form-control" id="exampleInputUsername" aria-describedby="usernameHelp" value={username} placeholder={t('login.usernamePlaceholder')} onChange={(ev) => setUsername(ev.target.value)} /> 

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../App.css'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useLocation } from 'react-router-dom';
 import { timeAlerts, timeRedirect } from '../Utils.js';
 
 const NewFrequentVisitForm = () => {

@@ -67,6 +67,28 @@ const AdminParking = () => {
       const data = await response.json();
       const parkingData = data.find(p => p.parked_at === parkingId);
       HandleShowInfo(parkingData);
+
+      // Conseguir parametros globales
+      const parking_limit_time = sessionStorage.getItem('parking_limit_time');
+      const parking_time_window = sessionStorage.getItem('parking_time_window');
+      const notificationTime = parking_limit_time - parking_time_window;
+
+      // Ver si existe alguna notificacion en cola
+      let savedNotificationsString = sessionStorage.getItem('notifications');
+      let savedNotifications = savedNotificationsString ? JSON.parse(savedNotificationsString) : {};
+
+      // Crear nueva notificacion
+      const notification = {
+        parkingId: { parking_limit_time: parking_limit_time, parking_time_window: parking_time_window, notificationTime: notificationTime }
+      };
+
+      // Agregar nueva notificacion a las ya existentes
+      savedNotifications  = { ...savedNotifications, ...notification };
+
+      // Guardarlo en sessionStorage
+      sessionStorage.setItem("notifications", JSON.stringify(savedNotifications));
+
+      console.log(savedNotifications)
     } catch (error) {
       console.error('An error occurred trying to assign parking:', error);
     }

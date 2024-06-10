@@ -33,6 +33,10 @@ import NewFrequentVisitForm from './Pages/NewFrequentVisitForm';
 import { parseJwt } from './Utils';
 
 function App() {
+
+  if (!localStorage.getItem('i18nextLng')) {
+    i18n.changeLanguage('es');
+  }
   
   useEffect(() => {
     const token = localStorage.getItem('token'); // Obtiene la data del token desde localStorage
