@@ -731,6 +731,111 @@ router.get('/updatepassword/:username/:newpassword', (req, res) => {
   );
 });
 
+// Route: /updateparkingtime
+router.get('/updateparkingtime/:id/:parking_limit_time', (req, res) => {
+
+  // Fetch the username and newpassword
+  const id = req.params.id;
+  const parking_limit_time = req.params.parking_limit_time;
+
+  // Create the query to get username and newpassword
+  const query = 'UPDATE tower SET parking_limit_time  = ? WHERE id = ?';
+
+  // Execute query (call to the database)
+  connection.query(query, [parking_limit_time, id], (err, rows) => {
+    // Query failed
+    if (err) {
+      console.error('An error occurred while trying to execute the query:', err);
+      res.status(500).send('An error occurred while trying to change the time limit.');
+      return;
+    }
+    // Query success
+    else {
+      res.status(200).json({ message: 'Time limit updated successfully.'});
+      return;
+    }
+    }
+  );
+});
+
+// Route: /updatetimenotification
+router.get('/updatetimenotification/:id/:parking_time_window', (req, res) => {
+
+  // Fetch the username and newpassword
+  const id = req.params.id;
+  const parking_time_window = req.params.parking_time_window;
+
+  // Create the query to get username and newpassword
+  const query = 'UPDATE tower SET parking_time_window = ? WHERE id = ?;';
+
+  // Execute query (call to the database)
+  connection.query(query, [parking_time_window, id], (err, rows) => {
+    // Query failed
+    if (err) {
+      console.error('An error occurred while trying to execute the query:', err);
+      res.status(500).send('An error occurred while trying to change the time notification.');
+      return;
+    }
+    // Query success
+    else {
+      res.status(200).json({ message: 'Time notification updated successfully.'});
+      return;
+    }
+    }
+  );
+});
+
+// Route: /updateparkingammount
+router.get('/updateparkingammount/:id/:parking_spot_ammount', (req, res) => {
+
+  // Fetch the username and newpassword
+  const id = req.params.id;
+  const parking_spot_ammount = req.params.parking_spot_ammount;
+
+  // Create the query to get username and newpassword
+  const query = 'UPDATE tower SET parking_spot_ammount = ? WHERE id = ?;';
+
+  // Execute query (call to the database)
+  connection.query(query, [parking_spot_ammount, id], (err, rows) => {
+    // Query failed
+    if (err) {
+      console.error('An error occurred while trying to execute the query:', err);
+      res.status(500).send('An error occurred while trying to change the ammount.');
+      return;
+    }
+    // Query success
+    else {
+      res.status(200).json({ message: 'Ammount parking updated successfully.'});
+      return;
+    }
+    }
+  );
+});
+
+// Route: /gettowerinfo
+router.get('/gettowerinfo/:id', (req, res) => {
+
+  // Fetch the username and newpassword
+  const id = req.params.id;
+
+  // Create the query to get username and newpassword
+  const query = 'SELECT * FROM tower WHERE id = ?;';
+
+  // Execute query (call to the database)
+  connection.query(query, [id], (err, rows) => {
+    // Query failed
+    if (err) {
+      console.error('An error occurred while trying to execute the query:', err);
+      return;
+    }
+    // Query success
+    else {
+      res.json(rows);
+      return;
+    }
+    }
+  );
+});
 
 // Start the server
 app.use('/.netlify/functions/api', router);
