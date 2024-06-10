@@ -13,6 +13,7 @@ const AdminCorrespondence = () => {
 
   // Create correspondence
   const [correspondence, setCorrespondence] = useState([]);
+  const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
 
   // Read variables from sessionStorage
   const storedTowerId = sessionStorage.getItem('tower_id_associated');
@@ -78,6 +79,51 @@ const AdminCorrespondence = () => {
     navigate('/allcorrespondence');
   };
 
+  // Sorting functions
+  const sortCorrespondence = (correspondence, config) => {
+    const sorted = [...correspondence];
+    if (config.key) {
+      sorted.sort((a, b) => {
+        let aValue = a[config.key];
+        let bValue = b[config.key];
+
+        if (config.key === 'arrival_time') {
+          aValue = new Date(aValue);
+          bValue = new Date(bValue);
+        } else if (config.key === 'apartment') {
+          aValue = `${a.apartment_identifier}-${a.tower}`;
+          bValue = `${b.apartment_identifier}-${b.tower}`;
+        }
+
+        if (aValue < bValue) {
+          return config.direction === 'ascending' ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return config.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sorted;
+  };
+
+  const handleSort = (key) => {
+    let direction = 'ascending';
+    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedCorrespondence = sortCorrespondence(correspondence, sortConfig);
+
+  const getSortIndicator = (key) => {
+    if (sortConfig.key === key) {
+      return sortConfig.direction === 'ascending' ? ' ▲' : ' ▼';
+    }
+    return '';
+  };
+
   return (
     <div id="change" className="container">
       <h1 className="text-center mb-4">{t('adminCorrespondence.adminCorrespondence')}</h1>
@@ -87,18 +133,48 @@ const AdminCorrespondence = () => {
           <table className="table table-striped table-bordered text-center">
             <thead>
               <tr>
-                <th scope="col">{t('adminCorrespondence.id')}</th>
-                <th scope="col">{t('adminCorrespondence.apartment')}</th>
-                <th scope="col">{t('adminCorrespondence.type')}</th>
-                <th scope="col">{t('adminCorrespondence.date')}</th>
-                <th scope="col">{t('adminCorrespondence.notified')}</th>
+                <th 
+                  scope="col" 
+                  onClick={() => handleSort('id')}
+                  style={{ fontWeight: sortConfig.key === 'id' ? 'bold' : 'normal' }}
+                >
+                  {t('adminCorrespondence.id')}{getSortIndicator('id')}
+                </th>
+                <th 
+                  scope="col" 
+                  onClick={() => handleSort('apartment')}
+                  style={{ fontWeight: sortConfig.key === 'apartment' ? 'bold' : 'normal' }}
+                >
+                  {t('adminCorrespondence.apartment')}{getSortIndicator('apartment')}
+                </th>
+                <th 
+                  scope="col" 
+                  onClick={() => handleSort('mail_type')}
+                  style={{ fontWeight: sortConfig.key === 'mail_type' ? 'bold' : 'normal' }}
+                >
+                  {t('adminCorrespondence.type')}{getSortIndicator('mail_type')}
+                </th>
+                <th 
+                  scope="col" 
+                  onClick={() => handleSort('arrival_time')}
+                  style={{ fontWeight: sortConfig.key === 'arrival_time' ? 'bold' : 'normal' }}
+                >
+                  {t('adminCorrespondence.date')}{getSortIndicator('arrival_time')}
+                </th>
+                <th 
+                  scope="col" 
+                  onClick={() => handleSort('is_notified')}
+                  style={{ fontWeight: sortConfig.key === 'is_notified' ? 'bold' : 'normal' }}
+                >
+                  {t('adminCorrespondence.notified')}{getSortIndicator('is_notified')}
+                </th>
                 {user_role !== '3' && (
                 <th scope="col">{t('adminCorrespondence.claimed')}</th>
                 )}
               </tr>
             </thead>
             <tbody>
-              {correspondence.map((pkg, index) => (
+              {sortedCorrespondence.map((pkg, index) => (
               <tr key={index + 1}>
                 <td>{pkg.id}</td>
                 <td>{pkg.apartment_identifier}-{pkg.tower}</td>
@@ -133,18 +209,17 @@ const AdminCorrespondence = () => {
           )}
           {showClaimedFailAlert && (
           <div className="alert alert-danger text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
-            &#9888; {t('adminCorrespondence.claimedFailAlert')}
+            &#10060; {t('adminCorrespondence.claimedFailAlert')}
           </div>
           )}
           {showCorrespondenceAlert && (
           <div className="alert alert-danger text-center position-fixed top-0 end-0 m-3" role="alert" style={{ zIndex: "9999" }}>
-            &#9888; {t('adminCorrespondence.correspondenceAlert')}
+            &#10060; {t('adminCorrespondence.generalFailAlert')}
           </div>
           )}
         </div>
       </div>
     </div>
-    
   );
 };
 

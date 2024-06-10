@@ -52,7 +52,8 @@
     "addVisit": "Add New Visit",
     "deleteSuccessAlert": "Record deleted successfully!",
     "deleteFailAlert": "An error occurred while trying to delete the visit record",
-    "visitAlert": "An error occurred while trying to load the visit data."
+    "visitAlert": "An error occurred while trying to load the visit data.",
+    "searchPlaceholder": "Search visit by name"
   },
   "adminMessages": {
     "adminCorrespondence": "Manage Messages",
@@ -78,7 +79,8 @@
     "addNewVehicles": "Add New Vehicle",
     "SuccessAlert": "Vehicle deleted succesfully!",
     "FailAlert": "An error occurred while trying to delete the vehicle.",
-    "vehiclesAlert": "An error occurred when trying to load the data related to vehicles."
+    "vehiclesAlert": "An error occurred when trying to load the data related to vehicles.",
+    "searchPlaceholder": "Search by name"
   },
   "configAdmin": {
     "configuration": "Configuration",
