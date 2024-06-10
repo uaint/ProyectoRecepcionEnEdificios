@@ -83,10 +83,22 @@
   "configAdmin": {
     "configuration": "Configuración",
     "changePassword":"Cambiar Contraseña",
+    "changeParkingAmmount":"Cambiar Cantidad Estacionamientos",
+    "changeParkingTime":"Cambiar Tiempo de Estacionamiento",
+    "changeParkingLimitTime": "Cambiar Tiempo de Notificacion",
     "currentPassword": "Contraseña Actual",
     "newPassword": "Nueva Contraseña",
     "newPasswordConfirmed": "Confirmar Nueva Contraseña",
-    "submitButton": "Actualizar Contraseña"
+    "submitPasswordButton": "Actualizar Contraseña",
+    "actualParkingTime": "Tiempo de Estacionamiento Actual",
+    "parkingTimePH": "Formato HH:MM:SS",
+    "submitParkingTimeButton": "Actualizar Tiempo Limite",
+    "actualParkingNotification": "Tiempo Para Notificacion Actual",
+    "parkingLimitTimePH": "Formato HH:MM:SS",
+    "submitParkingLimitTimeButton": "Actualizar Tiempo Notificacion",
+    "actualParkingAmmount": "Cantidad de Estacionamientos Actual",
+    "parkingAmmountPH": "Número",
+    "submitParkingAmmountButton": "Actualizar Cantidad de Estacionamientos"
   },
   "home": {
     "welcome": "¡Bienvenido!",

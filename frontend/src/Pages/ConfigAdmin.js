@@ -75,6 +75,7 @@ const ConfigAdmin = () => {
         throw new Error('An error occurred when trying to update.');
       }
       sessionStorage.setItem('parking_limit_time', newParkingTime);
+      setNewParkingTime('');
     })
     .catch(error => {
     });
@@ -88,6 +89,7 @@ const ConfigAdmin = () => {
         throw new Error('An error occurred when trying to update.');
       }
       sessionStorage.setItem('parking_time_window', newParkingLimitTime);
+      setNewParkingLimitTime('');
     })
     .catch(error => {
     });
@@ -101,12 +103,12 @@ const ConfigAdmin = () => {
         throw new Error('An error occurred when trying to update.');
       }
       sessionStorage.setItem('parking_spot_ammount', newParkingAmmount);
+      setNewParkingAmmount('');
     })
     .catch(error => {
     });
   }
   
-
   // Verify password
   const updatePassword = (newPassword, currentPassword) => {
     const token = getToken();
@@ -140,25 +142,27 @@ const ConfigAdmin = () => {
 
 
   return (
-    <div className="container d-flex justify-content-center align-items-center vh-100">
-      <div className="text-center">
-        <h1>{t('configAdmin.configuration')}</h1>
-        <button className="btn btn-primary config-button ms-3" onClick={() => handleToggleTab('changePassword')}>
-          {t('configAdmin.changePassword')}
-        </button>
+    <div id="change" className="container">
+      <div className="row justify-content-center">
+          <div className="col-md-6">
+          <h1 className="text-center mb-4">{t('configAdmin.configuration')}</h1>
+      <hr className="mb-5"/>
+      <div class="btn-group btn-group-sm d-flex pt-2" role="group" aria-label="Basic radio toggle button group">
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" onClick={() => handleToggleTab('changePassword')}></input>
+        <label class="btn btn-outline-primary" for="btnradio1">{t('configAdmin.changePassword')}</label>
         {user_role == '2' && (
-          <div>
-        <button className="btn btn-primary config-button ms-3" onClick={() => handleToggleTab('changeParkingTime')}>
-          {t('configAdmin.changeParkingTime')}
-        </button>
-        <button className="btn btn-primary config-button ms-3" onClick={() => handleToggleTab('changeParkingLimitTime')}>
-          {t('configAdmin.changeParkingLimitTime')}
-        </button>
-        <button className="btn btn-primary config-button ms-3" onClick={() => handleToggleTab('changeParkingAmmount')}>
-          {t('configAdmin.changeParkingAmmount')}
-        </button>
-        </div>
+          <>
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" onClick={() => handleToggleTab('changeParkingTime')}></input>
+        <label class="btn btn-outline-primary" for="btnradio2">{t('configAdmin.changeParkingTime')}</label>
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" onClick={() => handleToggleTab('changeParkingLimitTime')}></input>
+        <label class="btn btn-outline-primary" for="btnradio3">{t('configAdmin.changeParkingLimitTime')}</label>
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" onClick={() => handleToggleTab('changeParkingAmmount')}></input>
+        <label class="btn btn-outline-primary" for="btnradio4">{t('configAdmin.changeParkingAmmount')}</label>
+        </>
         )}
+      </div>
         <div className="mt-3">
           <Collapse in={activeTab === 'changePassword'}>
             <div className="card p-3">
@@ -183,14 +187,14 @@ const ConfigAdmin = () => {
             </div>
             </Collapse>
             {user_role == '2' && (
-              <div>
+              <>
             <Collapse in={activeTab === 'changeParkingTime'}>
             <div className="card p-3">
               <h3>{t('configAdmin.changeParkingTime')}</h3>
-              <h4>{parking_limit_time}</h4>
+              <h4>{t('configAdmin.actualParkingTime')}: {parking_limit_time}</h4>
               <form onSubmit={handleParkingTimeSubmit}>
                 <div className="mb-3">
-                  <input type="text" className="form-control" value={newParkingTime} placeholder={t('configAdmin.ParkingTimePH')} onChange={(e) => setNewParkingTime(e.target.value)}/>
+                  <input type="text" className="form-control" value={newParkingTime} placeholder={t('configAdmin.parkingTimePH')} onChange={(e) => setNewParkingTime(e.target.value)}/>
                 </div>
                 <div className="d-grid gap-1">
                   <button type="submit" className="btn btn-primary">{t('configAdmin.submitParkingTimeButton')}</button>
@@ -201,10 +205,10 @@ const ConfigAdmin = () => {
           <Collapse in={activeTab === 'changeParkingLimitTime'}>
             <div className="card p-3">
               <h3>{t('configAdmin.changeParkingLimitTime')}</h3>
-              <h4>{parking_time_window}</h4>
+              <h4>{t('configAdmin.actualParkingNotification')}: {parking_time_window}</h4>
               <form onSubmit={handleParkingLimitTimeSubmit}>
                 <div className="mb-3">
-                  <input type="text" className="form-control" value={newParkingLimitTime} placeholder={t('configAdmin.ParkingLimitTimePH')} onChange={(e) => setNewParkingLimitTime(e.target.value)}/>
+                  <input type="text" className="form-control" value={newParkingLimitTime} placeholder={t('configAdmin.parkingLimitTimePH')} onChange={(e) => setNewParkingLimitTime(e.target.value)}/>
                 </div>
                 <div className="d-grid gap-1">
                   <button type="submit" className="btn btn-primary">{t('configAdmin.submitParkingLimitTimeButton')}</button>
@@ -215,10 +219,10 @@ const ConfigAdmin = () => {
           <Collapse in={activeTab === 'changeParkingAmmount'}>
             <div className="card p-3">
               <h3>{t('configAdmin.changeParkingAmmount')}</h3>
-              <h4>{parking_spot_ammount}</h4>
+              <h4>{t('configAdmin.actualParkingAmmount')}: {parking_spot_ammount}</h4>
               <form onSubmit={handleParkingAmmountSubmit}>
                 <div className="mb-3">
-                  <input type="number" className="form-control" value={newParkingAmmount} placeholder={t('configAdmin.ParkingAmmountPH')} onChange={(e) => setNewParkingAmmount(e.target.value)}/>
+                  <input type="number" className="form-control" value={newParkingAmmount} placeholder={t('configAdmin.parkingAmmountPH')} onChange={(e) => setNewParkingAmmount(e.target.value)}/>
                 </div>
                 <div className="d-grid gap-1">
                   <button type="submit" className="btn btn-primary">{t('configAdmin.submitParkingAmmountButton')}</button>
@@ -226,10 +230,11 @@ const ConfigAdmin = () => {
               </form>
             </div>
           </Collapse>
-          </div>
+          </>
             )}
         </div>
       </div>
+    </div>
     </div>
   );
 };
