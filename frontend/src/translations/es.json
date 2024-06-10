@@ -52,7 +52,8 @@
     "addVisit": "Agregar nueva visita",
     "deleteSuccessAlert": "¡Registro eliminado correctamente!",
     "deleteFailAlert": "Ocurrió un error al eliminar el registro.",
-    "visitAlert": "Ocurrió un problema al cargar los datos."
+    "visitAlert": "Ocurrió un problema al cargar los datos.",
+    "searchPlaceholder": "Buscar visita por nombre"
   },
   "adminMessages": {
     "adminCorrespondence": "Gestionar Mensajes",
@@ -78,7 +79,8 @@
     "addNewVehicles": "Añadir nuevo vehículo",
     "SuccessAlert": "¡Vehículo eliminado exitosamente!",
     "FailAlert": "Ocurrió un error al intentar eliminar el vehículo.",
-    "vehiclesAlert": "Ocurrió un error al intentar cargar los datos relacionados a vehículos."
+    "vehiclesAlert": "Ocurrió un error al intentar cargar los datos relacionados a vehículos.",
+    "searchPlaceholder": "Buscar por nombre"
   },
   "configAdmin": {
     "configuration": "Configuración",

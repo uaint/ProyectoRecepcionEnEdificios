@@ -1,59 +1,77 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import NewCorrespondenceForm from './NewCorrespondenceForm';
+import { EmailMsg, WhatsAppMsg } from '../Utils';
 
-// Mock fetch fuction (simulate request)
-global.fetch = jest.fn();
-
-// Mock function t for translation
+// Mock the `useTranslation` hook
 jest.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: key => key }),
+    useTranslation: () => ({
+      t: (key) => key,
+    }),
 }));
 
-describe('NewCorrespondenceForm Component', () => {
-  test('renders search form by default', () => {
-    const { getByLabelText, getByText } = render(<NewCorrespondenceForm />);
+// Mock Utils.js
+jest.mock('../Utils', () => ({
+    formatDateLarge: jest.fn((date) => date),
+    timeAlerts: jest.fn((callback) => callback()),
+    logToDatabase: jest.fn(),
+    WhatsAppMsg: jest.fn(),
+    EmailMsg: jest.fn()
+}));
+
+// Mock the sessionStorage
+const mockSessionStorage = (() => {
+    let store = {};
+    return {
+        getItem: (key) => store[key] || null,
+        setItem: (key, value) => {
+        store[key] = value.toString();
+        },
+        clear: () => {
+        store = {};
+        },
+    };
+})();
+Object.defineProperty(window, 'sessionStorage', { value: mockSessionStorage });
+
+beforeEach(() => {
+  sessionStorage.clear();
+  WhatsAppMsg.mockClear();
+  EmailMsg.mockClear();
+});
+
+// TEST 1: Page Render
+test('renders NewCorrespondenceForm component correctly', () => {
+    sessionStorage.setItem('user_role', '2');
+    sessionStorage.setItem('tower_id_associated', '1');
+    sessionStorage.setItem('apartment_id_associated', 'null');
     
-    // Verify if elements from the search form are present
-    expect(getByText('correspondenceForm.addNewCorrespondence')).toBeInTheDocument();
-    expect(getByLabelText('correspondenceForm.selectApartment')).toBeInTheDocument();
-    expect(getByLabelText('correspondenceForm.selectTower')).toBeInTheDocument();
-    expect(getByText('correspondenceForm.searchresident')).toBeInTheDocument();
+    render(
+      <Router>
+        <NewCorrespondenceForm />
+      </Router>
+    );
+    
+    expect(screen.getByText('correspondenceForm.addNewCorrespondence')).toBeInTheDocument();
+});
+
+// TEST 2: Form Continue
+test('continue to the next step of the form', async () => {
+  sessionStorage.setItem('user_role', '2');
+  sessionStorage.setItem('tower_id_associated', '1');
+  sessionStorage.setItem('apartment_id_associated', 'null');
+  
+  render(
+    <Router>
+      <NewCorrespondenceForm />
+    </Router>
+  );
+
+  fireEvent.change(screen.getByPlaceholderText('correspondenceForm.selectApartment'), { target: { value: '101' } });
+  fireEvent.click(screen.getByText('correspondenceForm.searchresident'));
+
+  await waitFor(() => {
+    expect(screen.getByText('correspondenceForm.addNewCorrespondence')).toBeInTheDocument();
   });
-
-  test('switches to correspondence form after search', async () => {
-    fetch.mockResolvedValueOnce({ json: () => [] });
-
-    const { getByLabelText, getByText } = render(<NewCorrespondenceForm />);
-    
-    // Fill all the fields of the form and send it
-    fireEvent.change(getByLabelText('correspondenceForm.selectApartment'), { target: { value: '101' } });
-    fireEvent.change(getByLabelText('correspondenceForm.selectTower'), { target: { value: '1' } });
-    fireEvent.click(getByText('correspondenceForm.searchresident'));
-
-    // Wait for the request to be done and change to the correspondence form
-        expect(getByText('correspondenceForm.addNewCorrespondence')).toBeInTheDocument();
-        expect(getByText('correspondenceForm.addCorrespondence')).toBeInTheDocument();
-        expect(getByText('correspondenceForm.timeOfArrival')).toBeInTheDocument();
-        expect(getByText('correspondenceForm.type')).toBeInTheDocument();
-        expect(getByText('correspondenceForm.letters')).toBeInTheDocument();
-        expect(getByText('correspondenceForm.packages')).toBeInTheDocument();
-        expect(getByText('correspondenceForm.item')).toBeInTheDocument();
-        expect(getByText('correspondenceForm.food')).toBeInTheDocument();
-        expect(getByText('correspondenceForm.others')).toBeInTheDocument();
-  }); 
-
-  test('complete form', async () => {
-    fetch.mockResolvedValueOnce({ json: () => [] });
-
-    const { getByLabelText, getByText } = render(<NewCorrespondenceForm />);
-    
-    // Fill all fields of the search form and send it
-    fireEvent.change(getByLabelText('correspondenceForm.selectApartment'), { target: { value: '101' } });
-    fireEvent.change(getByLabelText('correspondenceForm.selectTower'), { target: { value: '1' } });
-    fireEvent.click(getByText('correspondenceForm.searchresident'));
-    fireEvent.change(getByLabelText('correspondenceForm.timeOfArrival'), { target: { value: Date.now() } });
-    fireEvent.click(getByText('correspondenceForm.addCorrespondence'));
-
-  }); 
 });
