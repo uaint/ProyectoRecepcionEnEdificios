@@ -30,7 +30,7 @@ import AdminVehicles from './Pages/AdminVehicles';
 import NewFrequentVisitForm from './Pages/NewFrequentVisitForm';
 
 //Importar funcion de verificacion token
-import { parseJwt } from './Utils';
+import { parseJwt, updateTheme } from './Utils';
 
 function App() {
 
@@ -59,6 +59,21 @@ function App() {
     }
   }
   }, []);
+
+  if (!localStorage.getItem('theme')) {
+    localStorage.setItem('theme', 'dark');
+  }
+  
+  // Actualizar el tema cuando se carga la página
+  updateTheme();
+  
+  // Escuchar cambios en el localStorage
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'theme') {
+      // Si el cambio es en el key 'theme', actualizar el tema
+      updateTheme();
+    }
+  });
 
   return (
     <div className="App">

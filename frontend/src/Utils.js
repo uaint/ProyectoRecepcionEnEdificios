@@ -214,5 +214,17 @@ function passwordHashed(password, salt) {
 return secondHash;
 }
 
+function updateTheme() {
+  // Obtener el tema del localStorage
+  const theme = localStorage.getItem('theme');
+  // Aplicar el tema al atributo data-bs-theme del elemento <html>
+  document.documentElement.setAttribute('data-bs-theme', theme);
+  if (theme === 'dark') {
+    document.body.style.backgroundColor = '#343a40'; // Cambia el color de fondo a un gris oscuro (#343a40)
+  } else {
+    document.body.style.backgroundColor = '#FFFFFF';
+  }
+}
 
-export { parseJwt, formatDateLarge, formatDate, timeAlerts, whatsAppDate, WhatsAppMsg, EmailMsg, extractInfo, timeRedirect, generateSalt, passwordHashed, logToDatabase };
+
+export { parseJwt, formatDateLarge, formatDate, timeAlerts, whatsAppDate, WhatsAppMsg, EmailMsg, extractInfo, timeRedirect, generateSalt, passwordHashed, logToDatabase, updateTheme };

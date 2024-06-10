@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from 'react-i18next'; 
 import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { passwordHashed } from '../Utils';
+import { passwordHashed, updateTheme } from '../Utils';
 import i18n from '../i18n';
 
 const Login = (props) => {
@@ -11,6 +11,21 @@ const Login = (props) => {
     const { t } = useTranslation();
     const handleLanguageChange = (newLanguage) => {
         i18n.changeLanguage(newLanguage);
+    };
+
+    const handleThemeChange = (mode) => {
+        localStorage.setItem('theme', mode);
+    
+        const themeButtons = document.querySelectorAll('.theme-btn-group button');
+        themeButtons.forEach(btn => {
+            btn.classList.remove('btn-primary', 'btn-danger');
+            btn.classList.add('btn-secondary');
+        });
+    
+        const activeBtn = document.querySelector(`.theme-btn-group button[data-mode="${mode}"]`);
+        activeBtn.classList.remove('btn-secondary');
+        activeBtn.classList.add(mode === 'light' ? 'btn-primary' : 'btn-danger');
+        updateTheme()
     };
     
     // Variables
@@ -134,24 +149,42 @@ const Login = (props) => {
                     <div className="card">
                         <div className="card-body">
                         <h2 className="card-title text-center">
-                            <div className="d-flex justify-content-center align-items-center mb-0 pb-0">
-                                <div className="btn-group me-auto" role="group">
-                                    <button
-                                        type="button"
-                                        className={`btn ${i18n.language === 'es' ? 'btn-primary btn-sm' : 'btn-secondary btn-sm'}`}
-                                        onClick={() => handleLanguageChange('es')}
-                                    >
-                                        ESP
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className={`btn ${i18n.language === 'en' ? 'btn-danger btn-sm' : 'btn-secondary btn-sm'}`}
-                                        onClick={() => handleLanguageChange('en')}
-                                    >
-                                        EN
-                                    </button>
-                                </div>
+                        <div className="d-flex justify-content-between align-items-center mb-0 pb-0">
+                            <div className="btn-group" role="group">
+                                <button
+                                    type="button"
+                                    className={`btn ${i18n.language === 'es' ? 'btn-primary btn-sm' : 'btn-secondary btn-sm'}`}
+                                    onClick={() => handleLanguageChange('es')}
+                                >
+                                    ESP
+                                </button>
+                                <button
+                                    type="button"
+                                    className={`btn ${i18n.language === 'en' ? 'btn-danger btn-sm' : 'btn-secondary btn-sm'}`}
+                                    onClick={() => handleLanguageChange('en')}
+                                >
+                                    EN
+                                </button>
                             </div>
+                            <div className="btn-group theme-btn-group" role="group">
+                                <button
+                                    type="button"
+                                    className={`btn btn-sm ${localStorage.getItem('theme') === 'light' ? 'btn-primary' : 'btn-secondary'}`}
+                                    onClick={() => handleThemeChange('light')}
+                                    data-mode="light"
+                                >
+                                    ☀️
+                                </button>
+                                <button
+                                    type="button"
+                                    className={`btn btn-sm ${localStorage.getItem('theme') === 'dark' ? 'btn-danger' : 'btn-secondary'}`}
+                                    onClick={() => handleThemeChange('dark')}
+                                    data-mode="dark"
+                                >
+                                    🌕
+                                </button>
+                            </div>
+                        </div>
                             <div className="text-center mt-0 pt-0 pb-3">
                                 <span>{t('login.title')}</span>
                             </div>
