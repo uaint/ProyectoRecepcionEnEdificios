@@ -253,7 +253,6 @@ router.get('/parked', (req, res) => {
     }
     // Query success
     else {
-      res.status(200).json({ message: `Returning currently parked vehicles.`});
       res.json(rows); // Send data as .json to the client
       return;
     }
@@ -276,7 +275,6 @@ router.get('/vehicles', (req, res) => {
     }
     // Query success
     else {
-      res.status(200).json({ message: `Returning all vehicles on the record.`});
       res.json(rows); // Send data as .json to the client
       return;
     }
