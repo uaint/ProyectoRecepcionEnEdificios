@@ -170,3 +170,19 @@ test('Sorting test', async () => {
   fireEvent.click(screen.getByText('adminCorrespondence.notified'));
   expect(screen.getByText('adminCorrespondence.notified ▲')).toBeInTheDocument();
 });
+
+// TEST 6: API Fetch (error handling)
+test('alert shows up when an API fetch error occurs', async () => {
+  global.fetch = jest.fn().mockRejectedValueOnce(new Error('API fetch error'));
+
+  render(
+    <Router>
+      <AdminCorrespondence />
+    </Router>
+  );
+
+  await waitFor(() => {
+    expect(global.fetch).toHaveBeenCalledWith('https://dduhalde.online/.netlify/functions/api/unclaimed_correspondence/null/null');
+  });
+  expect(screen.getByText('❌ adminCorrespondence.generalFailAlert')).toBeInTheDocument();
+});
