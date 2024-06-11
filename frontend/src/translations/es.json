@@ -59,7 +59,10 @@
     "adminCorrespondence": "Gestionar Mensajes",
     "labelBuilding": "Torre:",
     "labelApartment": "Depto:",
-    "delete": "Eliminar mensaje"
+    "delete": "Eliminar mensaje",
+    "deleteSuccessAlert": "¡Mensaje eliminado exitosamente!",
+    "deleteFailAlert": "Ocurrió un error al intentat eliminar el mensaje.",
+    "messagesAlert": "Ocurrió un error al intentar cargar los mensajes."
   },
   "adminParking": {
     "adminParking": "Administrar Estacionamientos",
