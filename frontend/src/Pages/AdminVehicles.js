@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { formatDateLarge, timeAlerts } from '../Utils.js';
+import { timeAlerts } from '../Utils.js';
 
 const AdminVehicles = () => {
   // General configurations

@@ -67,7 +67,9 @@
     "arrivingTime": "Estacionado desde",
     "addParked": "Añadir vehículo entrante",
     "freeParking": "Liberar estacionamiento",
-    "parkedNumber": "Estacionamiento N°"
+    "parkedNumber": "Estacionamiento N°",
+    "titleNotification": "Alerta Estacionamiento",
+    "bodyNotification": "Estacionamiento pronto a cumplir tiempo limite"
   },
   "adminVehicles": {
     "adminVehiclesTitle": "Administrar Vehículos",

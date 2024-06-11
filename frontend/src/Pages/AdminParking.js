@@ -4,6 +4,7 @@ import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FormParking from '../components/FormParking';
 import InfoParking from '../components/InfoParking';
+import { timeToMilliseconds } from '../Utils';
 
 const AdminParking = () => {
 
@@ -67,6 +68,36 @@ const AdminParking = () => {
       const data = await response.json();
       const parkingData = data.find(p => p.parked_at === parkingId);
       HandleShowInfo(parkingData);
+
+      // Conseguir parametros globales
+      const parking_limit_time = sessionStorage.getItem('parking_limit_time');
+      const parking_time_window = sessionStorage.getItem('parking_time_window');
+
+      const time1 = timeToMilliseconds(parking_limit_time);
+      const time2 = timeToMilliseconds(parking_time_window);
+      const interval = time1 - time2;
+
+      // Obtener la hora actual
+      const now = new Date();
+
+      // Calcular la hora futura
+      const futureTime = new Date(now.getTime() + interval);
+
+      // Ver si existen notificaciones en cola
+      let savedNotificationsString = sessionStorage.getItem('notifications');
+      let savedNotifications = savedNotificationsString ? JSON.parse(savedNotificationsString) : [];
+
+      // Crear nueva notificación
+      const notification = {
+        parking_limit_time: parking_limit_time, parking_time_window: parking_time_window, notificationTime: futureTime, parking_id: parkingId, license_plate: licensePlate 
+      };
+
+      // Agregar nueva notificación a las ya existentes
+      savedNotifications.push(notification);
+
+      // Guardarlo en sessionStorage
+      sessionStorage.setItem("notifications", JSON.stringify(savedNotifications));
+
     } catch (error) {
       console.error('An error occurred trying to assign parking:', error);
     }

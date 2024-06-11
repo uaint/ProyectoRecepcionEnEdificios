@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import i18n from '../i18n';
 import '../App.css';
+import { updateTheme } from '../Utils';
 
 // Navbar style
 const navbarStyle = {
@@ -24,6 +25,23 @@ const NavbarConcierge = () => {
     window.location.href = '/login';
   };
 
+  const handleThemeChange = (mode) => {
+    localStorage.setItem('theme', mode);
+
+    const themeButtons = document.querySelectorAll('.theme-btn-group button');
+    themeButtons.forEach(btn => {
+        btn.classList.remove('btn-primary', 'btn-danger');
+        btn.classList.add('btn-secondary');
+    });
+
+    const activeBtn = document.querySelector(`.theme-btn-group button[data-mode="${mode}"]`);
+    activeBtn.classList.remove('btn-secondary');
+    activeBtn.classList.add(mode === 'light' ? 'btn-primary' : 'btn-danger');
+    updateTheme()
+};
+
+
+
   return (
     <nav class="navbar navbar-expand-lg bg-body-tertiary mb-5 fixed-top">
       <div class="container-fluid">
@@ -31,7 +49,7 @@ const NavbarConcierge = () => {
           <button
               type="button"
               className={`btn ${i18n.language === 'es' ? 'btn-primary btn-sm' : 'btn-secondary btn-sm'}`}
-              onClick={() => handleLanguageChange('es')}
+              onClick={() => handleLanguageChange('es') }
           >
               ESP
           </button>
@@ -43,6 +61,24 @@ const NavbarConcierge = () => {
               EN
           </button>
         </div>
+        <div className="btn-group navbar-brand theme-btn-group" role="group" style={navbarStyle}>
+            <button
+               type="button"
+                 className={`btn btn-sm ${localStorage.getItem('theme') === 'light' ? 'btn-primary' : 'btn-secondary'}`}
+                onClick={() => handleThemeChange('light')}
+                 data-mode="light"
+            >
+                ☀️
+            </button>
+            <button
+               type="button"
+               className={`btn btn-sm ${localStorage.getItem('theme') === 'dark' ? 'btn-danger' : 'btn-secondary'}`}
+               onClick={() => handleThemeChange('dark')}
+              data-mode="dark"
+              >
+                🌕
+                </button>
+          </div>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>

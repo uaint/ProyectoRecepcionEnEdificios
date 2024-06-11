@@ -214,5 +214,42 @@ function passwordHashed(password, salt) {
 return secondHash;
 }
 
+function updateTheme() {
+  // Obtener el tema del localStorage
+  const theme = localStorage.getItem('theme');
+  // Aplicar el tema al atributo data-bs-theme del elemento <html>
+  document.documentElement.setAttribute('data-bs-theme', theme);
+  if (theme === 'dark') {
+    document.body.style.backgroundColor = '#343a40'; // Cambia el color de fondo a un gris oscuro (#343a40)
+    sessionStorage.setItem('text_color', "#f8f9fa");
+    sessionStorage.setItem('background_color', "#2b3035");
+  } else {
+    document.body.style.backgroundColor = '#FFFFFF';
+    sessionStorage.setItem('background_color', "#f8f9fa");
+    sessionStorage.setItem('text_color', "#2b3035");
+  }
+}
 
-export { parseJwt, formatDateLarge, formatDate, timeAlerts, whatsAppDate, WhatsAppMsg, EmailMsg, extractInfo, timeRedirect, generateSalt, passwordHashed, logToDatabase };
+function timeToMilliseconds(time) {
+  const [hours, minutes, seconds] = time.split(':').map(Number);
+  return ((hours * 60 * 60) + (minutes * 60) + seconds) * 1000;
+}
+
+
+// Exportar todas las funciones
+export { 
+  parseJwt, 
+  formatDateLarge, 
+  formatDate, 
+  timeAlerts, 
+  whatsAppDate, 
+  WhatsAppMsg, 
+  EmailMsg, 
+  extractInfo, 
+  timeRedirect, 
+  generateSalt, 
+  passwordHashed, 
+  logToDatabase, 
+  updateTheme, 
+  timeToMilliseconds 
+};
