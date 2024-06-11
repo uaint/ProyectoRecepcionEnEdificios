@@ -107,7 +107,8 @@ const Login = (props) => {
                                 sessionStorage.setItem('apartment_id_associated', apartment_id_associated);
                                 sessionStorage.setItem('user_role', user_role);
                                 sessionStorage.setItem('person_id', person_id);
-                                if (user_role === '2') {
+                                console.log(user_role)
+                                if (user_role === 2) {
                                     fetch(`https://dduhalde.online/.netlify/functions/api/gettowerinfo/${tower_id_associated}`)
                                     .then(response => response.json())
                                     .then(data3 => {

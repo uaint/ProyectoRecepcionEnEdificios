@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 import './App.css';
+import Swal from 'sweetalert2'
+import { useTranslation } from 'react-i18next';
 
 // Importa los componentes
 import NavbarVisible from './components/NavbarVisible'; // Considera NavbarConcierge
@@ -37,6 +39,9 @@ function App() {
   if (!localStorage.getItem('i18nextLng')) {
     i18n.changeLanguage('es');
   }
+
+  // General configuration
+  const { t } = useTranslation();
   
   useEffect(() => {
     const token = localStorage.getItem('token'); // Obtiene la data del token desde localStorage
@@ -74,6 +79,31 @@ function App() {
       updateTheme();
     }
   });
+
+  const getNotificationsFromSessionStorage = () => {
+    const data = sessionStorage.getItem('notifications');
+    return data ? JSON.parse(data) : [];
+  };
+  
+  const checkNotificationTime = () => {
+    const notifications = getNotificationsFromSessionStorage();
+    const now = new Date();
+
+    notifications.forEach(notification => {
+      const notificationTime = new Date(notification.notificationTime);
+    if (now >= notificationTime && now < new Date(notificationTime.getTime() + 30000)) {
+      const text_alert = `${t('adminParking.bodyNotification')} \n${t('adminParking.licensePlate')}: ${notification.license_plate} \n${t('adminParking.parkedNumber')}${notification.parking_id}`;
+      Swal.fire({title: t('adminParking.titleNotification'), text: text_alert, background: localStorage.getItem('background_color'), color: localStorage.getItem('text_color')});
+    } else if (now < notificationTime) {
+      // Aun falta
+    }
+  });
+};
+  
+  useEffect(() => {
+    const intervalId = setInterval(checkNotificationTime, 30000); // Verifica 30 segundos
+    return () => clearInterval(intervalId); // Limpia el intervalo cuando el componente se desmonta
+  }, []);
 
   return (
     <div className="App">

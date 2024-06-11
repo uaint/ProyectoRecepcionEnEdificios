@@ -231,7 +231,7 @@ router.get('/assign_parking/:license_plate/:parket_at/', (req, res) => {
     }
     // Query success
     else {
-      res.status(200).json({ message: `The parking spot ${parked_at} has been successfully assigned to the vehicle with the license plate ${license_plate}.`});
+      res.status(200).json({ message: `The parking spot ${parket_at} has been successfully assigned to the vehicle with the license plate ${license_plate}.`});
       return;
     }
   });
@@ -253,7 +253,6 @@ router.get('/parked', (req, res) => {
     }
     // Query success
     else {
-      res.status(200).json({ message: `Returning currently parked vehicles.`});
       res.json(rows); // Send data as .json to the client
       return;
     }
@@ -276,7 +275,6 @@ router.get('/vehicles', (req, res) => {
     }
     // Query success
     else {
-      res.status(200).json({ message: `Returning all vehicles on the record.`});
       res.json(rows); // Send data as .json to the client
       return;
     }
