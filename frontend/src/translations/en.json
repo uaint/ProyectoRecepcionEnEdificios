@@ -59,7 +59,10 @@
     "adminCorrespondence": "Manage Messages",
     "labelBuilding": "Tower:",
     "labelApartment": "Apartment:",
-    "delete": "Delete message"
+    "delete": "Delete message",
+    "deleteSuccessAlert": "Message deleted successfully!",
+    "deleteFailAlert": "An error occurred while trying to delete the message.",
+    "messagesAlert": "An error occurred while trying to load the messages."
   },
   "adminParking": {
     "adminParking": "Manage Parking",
