@@ -75,3 +75,28 @@ test('continue to the next step of the form', async () => {
     expect(screen.getByText('correspondenceForm.addNewCorrespondence')).toBeInTheDocument();
   });
 });
+
+// TEST 3: Handle checkboxes
+test('handle checkbox for WhatsApp and Email', async () => {
+  sessionStorage.setItem('user_role', '2');
+  sessionStorage.setItem('tower_id_associated', '1');
+  sessionStorage.setItem('apartment_id_associated', 'null');
+
+  render(
+    <Router>
+      <NewCorrespondenceForm />
+    </Router>
+  );
+
+  fireEvent.change(screen.getByPlaceholderText('correspondenceForm.selectApartment'), { target: { value: '101' } });
+  fireEvent.click(screen.getByText('correspondenceForm.searchresident'));
+
+  // Wait for the form to render and inhabitants to load
+  await waitFor(() => screen.getByText('correspondenceForm.selectMsg'));
+
+  // Simulate selecting checkbox of WhatsApp & Email
+  fireEvent.click(screen.getAllByRole('checkbox')[0]);
+  fireEvent.click(screen.getAllByRole('checkbox')[1]);
+  expect(screen.getAllByRole('checkbox')[0].checked).toBe(true);
+  expect(screen.getAllByRole('checkbox')[1].checked).toBe(true);
+});

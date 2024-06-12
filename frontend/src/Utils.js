@@ -100,7 +100,7 @@ function WhatsAppMsg(data, inhabitants) {
 
     const inhabitant = inhabitants[i];
     const name = inhabitant.first_name;
-    const number = inhabitant.contact_number;
+    const number = inhabitant.contact_phone_number;
 
     // Se envia WhatsApp por la correspondencia
     const message = `*Atención ${name}* \nHay un paquete esperando por ti en conserjería, llego *${fechamsg}*, por favor ven a recogerlo a la brevedad.`;
@@ -140,7 +140,7 @@ function EmailMsg(data, inhabitants) {
     const inhabitant = inhabitants[i];
     const name = inhabitant.first_name;
     const last_name = inhabitant.last_name;
-    const email = inhabitant.email;
+    const email = inhabitant.contact_email;
 
     const data = {
       service_id: "default_service",
