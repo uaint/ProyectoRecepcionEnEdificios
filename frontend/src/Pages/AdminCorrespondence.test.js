@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import AdminCorrespondence from './AdminCorrespondence';
+import AdminCorrespondence, { sortCorrespondence } from './AdminCorrespondence';
 
 // Mock i18
 jest.mock('react-i18next', () => ({
@@ -126,6 +126,34 @@ test('API Fetch test', async () => {
 
 // TEST 5: Sorting
 test('Sorting test', async () => {
+
+  // Data mock for test
+  const data_test = [
+    {
+      "id": 1,
+      "apartment_identifier": 101,
+      "tower": 1,
+      "mail_type": "Packages",
+      "arrival_time": "2024-05-26T03:35:00.000Z",
+      "is_notified": 0,
+      "is_claimed": 0
+    },
+    {
+      "id": 2,
+      "apartment_identifier": 101,
+      "tower": 1,
+      "mail_type": "Letters",
+      "arrival_time": "2024-05-26T03:42:00.000Z",
+      "is_notified": 1,
+      "is_claimed": 0
+    }
+  ];
+  
+  // sortConfig for the sort mock
+  const sortConfig1 = { key: 'id', direction: 'descending' };
+  const sortConfig2 = { key: 'arrival_time', direction: 'descending' };
+  const sortConfig3 = { key: 'apartment', direction: 'descending' };
+
   sessionStorage.setItem('user_role', '2');
   sessionStorage.setItem('tower_id_associated', '1');
   sessionStorage.setItem('apartment_id_associated', 'null');
@@ -169,6 +197,74 @@ test('Sorting test', async () => {
   expect(screen.getByText('adminCorrespondence.date ▲')).toBeInTheDocument();
   fireEvent.click(screen.getByText('adminCorrespondence.notified'));
   expect(screen.getByText('adminCorrespondence.notified ▲')).toBeInTheDocument();
+
+  // Check the sorting results
+  const sortedCorrespondence1 = sortCorrespondence(data_test, sortConfig1);
+  const sortedCorrespondence2 = sortCorrespondence(data_test, sortConfig2);
+  const sortedCorrespondence3 = sortCorrespondence(data_test, sortConfig3);
+
+  expect(sortedCorrespondence1).toEqual([
+    {
+      "id": 2,
+      "apartment_identifier": 101,
+      "tower": 1,
+      "mail_type": "Letters",
+      "arrival_time": "2024-05-26T03:42:00.000Z",
+      "is_notified": 1,
+      "is_claimed": 0
+    },
+    {
+      "id": 1,
+      "apartment_identifier": 101,
+      "tower": 1,
+      "mail_type": "Packages",
+      "arrival_time": "2024-05-26T03:35:00.000Z",
+      "is_notified": 0,
+      "is_claimed": 0
+    }
+  ]);
+
+  expect(sortedCorrespondence2).toEqual([
+    {
+      "id": 2,
+      "apartment_identifier": 101,
+      "tower": 1,
+      "mail_type": "Letters",
+      "arrival_time": "2024-05-26T03:42:00.000Z",
+      "is_notified": 1,
+      "is_claimed": 0
+    },
+    {
+      "id": 1,
+      "apartment_identifier": 101,
+      "tower": 1,
+      "mail_type": "Packages",
+      "arrival_time": "2024-05-26T03:35:00.000Z",
+      "is_notified": 0,
+      "is_claimed": 0
+    }
+  ]);
+
+  expect(sortedCorrespondence3).toEqual([
+    {
+      "id": 1,
+      "apartment_identifier": 101,
+      "tower": 1,
+      "mail_type": "Packages",
+      "arrival_time": "2024-05-26T03:35:00.000Z",
+      "is_notified": 0,
+      "is_claimed": 0
+    },
+    {
+      "id": 2,
+      "apartment_identifier": 101,
+      "tower": 1,
+      "mail_type": "Letters",
+      "arrival_time": "2024-05-26T03:42:00.000Z",
+      "is_notified": 1,
+      "is_claimed": 0
+    }
+  ]);
 });
 
 // TEST 6: API Fetch (error handling)
