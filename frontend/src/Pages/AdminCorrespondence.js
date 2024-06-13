@@ -5,6 +5,36 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import { formatDateLarge, timeAlerts, logToDatabase } from '../Utils.js';
 
+// Sorting functions
+const sortCorrespondence = (correspondence, config) => {
+  const sorted = [...correspondence];
+  if (config.key) {
+    sorted.sort((a, b) => {
+      let aValue = a[config.key];
+      let bValue = b[config.key];
+
+      if (config.key === 'arrival_time') {
+        aValue = new Date(aValue);
+        bValue = new Date(bValue);
+      } else if (config.key === 'apartment') {
+        aValue = `${a.apartment_identifier}-${a.tower}`;
+        bValue = `${b.apartment_identifier}-${b.tower}`;
+      }
+
+      if (aValue < bValue) {
+        return config.direction === 'ascending' ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return config.direction === 'ascending' ? 1 : -1;
+      }
+      return 0;
+    });
+  }
+  return sorted;
+};
+
+export {sortCorrespondence};
+
 const AdminCorrespondence = () => {
 
   // General configurations
@@ -77,34 +107,6 @@ const AdminCorrespondence = () => {
   // Button to redirect to all correspondence
   const ButtonClick = () => {
     navigate('/allcorrespondence');
-  };
-
-  // Sorting functions
-  const sortCorrespondence = (correspondence, config) => {
-    const sorted = [...correspondence];
-    if (config.key) {
-      sorted.sort((a, b) => {
-        let aValue = a[config.key];
-        let bValue = b[config.key];
-
-        if (config.key === 'arrival_time') {
-          aValue = new Date(aValue);
-          bValue = new Date(bValue);
-        } else if (config.key === 'apartment') {
-          aValue = `${a.apartment_identifier}-${a.tower}`;
-          bValue = `${b.apartment_identifier}-${b.tower}`;
-        }
-
-        if (aValue < bValue) {
-          return config.direction === 'ascending' ? -1 : 1;
-        }
-        if (aValue > bValue) {
-          return config.direction === 'ascending' ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-    return sorted;
   };
 
   const handleSort = (key) => {

@@ -161,7 +161,7 @@ const NewCorrespondenceForm = () => {
       } else { // Else, add it to the list
         setSelectedInhabitantsEmail([...selectedInhabitantsEmail, inhabitantId]);
       }
-    };
+  };
 
   return (
     <div id="change" className="container">
