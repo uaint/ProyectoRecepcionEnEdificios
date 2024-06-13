@@ -121,4 +121,5 @@ test('user interaction with the form', async () => {
   fireEvent.change(screen.getByLabelText('Default select example'), { target: { value: 'Packages' } });
   fireEvent.change(screen.getByLabelText('correspondenceForm.timeOfArrival'), { target: { value: '2024-06-20T12:00' } });
   fireEvent.click(screen.getByText('correspondenceForm.addCorrespondence'));
+  expect(screen.getByText('✔ correspondenceForm.MsgSuccessAlert')).toBeInTheDocument();
 });
