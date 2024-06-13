@@ -100,3 +100,25 @@ test('handle checkbox for WhatsApp and Email', async () => {
   expect(screen.getAllByRole('checkbox')[0].checked).toBe(true);
   expect(screen.getAllByRole('checkbox')[1].checked).toBe(true);
 });
+
+// TEST 4: User interaction with the form
+test('user interaction with the form', async () => {
+  sessionStorage.setItem('user_role', '2');
+  sessionStorage.setItem('tower_id_associated', '1');
+  sessionStorage.setItem('apartment_id_associated', 'null');
+
+  render(
+    <Router>
+      <NewCorrespondenceForm />
+    </Router>
+  );
+
+  fireEvent.change(screen.getByPlaceholderText('correspondenceForm.selectApartment'), { target: { value: '101' } });
+  fireEvent.click(screen.getByText('correspondenceForm.searchresident'));
+
+  // Wait for the form to render and inhabitants to load
+  await waitFor(() => screen.getByText('correspondenceForm.selectMsg'));
+  fireEvent.change(screen.getByLabelText('Default select example'), { target: { value: 'Packages' } });
+  fireEvent.change(screen.getByLabelText('correspondenceForm.timeOfArrival'), { target: { value: '2024-06-20T12:00' } });
+  fireEvent.click(screen.getByText('correspondenceForm.addCorrespondence'));
+});
