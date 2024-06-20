@@ -100,6 +100,7 @@ const AdminVehicles = () => {
       {user_role !== '3' && (
       <div>
         <h1 className="text-center mb-4">{t('adminVehicles.adminVehiclesTitle')}</h1>
+        <hr className="mb-4" />
         <div className="mb-3">
           <input
             type="text"
@@ -109,7 +110,6 @@ const AdminVehicles = () => {
             onChange={(e) => setFilterOption(e.target.value)}
           />
         </div>
-        <hr className="mb-4"/>
         <div>
           <div className="table-responsive">
             <table className="table table-striped table-bordered text-center">

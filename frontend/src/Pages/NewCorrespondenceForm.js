@@ -79,7 +79,7 @@ const NewCorrespondenceForm = () => {
   const handleSubmit = (e) => {
     
     // If sent to one or more people = 1, otherwise = 0
-    const notifiedWhatsApp = selectedInhabitantsWhatsApp.length !== 0 ? 1 : 0
+    const notifiedWhatsApp = selectedInhabitantsWhatsApp.length !== 0 || selectedInhabitantsEmail.length !== 0 ? 1 : 0;
 
     // Filtered array with whatever we want them to receive on the message
     const filteredArrayWhatsApp = inhabitants.filter(obj => selectedInhabitantsWhatsApp.includes(obj.person_id));
@@ -199,21 +199,19 @@ const NewCorrespondenceForm = () => {
                 <div>
                   <h4 className="mt-2">{t('correspondenceForm.selectMsg')}</h4>
                   <div className="mb-3">
-                    <ul className="form-check">
                       {inhabitants.map(inhabitant => (
-                        <li key={inhabitant.id}>
-                          <div class="form-check form-check-inline">
-                            <label className="form-check-label" htmlFor="flexCheckDefault"></label>
+                        <div key={inhabitant.id}>
+                          <div className="form-check form-check-inline">
+                            <label className="form-check-label" htmlFor="flexCheckDefault">&#128242;</label>
                             <input className="form-check-input" type="checkbox" id={`flexCheckDefault-${inhabitant.person_id}`} checked={selectedInhabitantsWhatsApp.includes(inhabitant.person_id)} onChange={() => handleSelectInhabitantWhatsApp(inhabitant.person_id)}/>
                           </div>
-                          <div class="form-check form-check-inline">
-                            <label className="form-check-label" htmlFor="flexCheckDefault"></label>
+                          <div className="form-check form-check-inline">
+                            <label className="form-check-label" htmlFor="flexCheckDefault">&#128233;</label>
                             <input className="form-check-input" type="checkbox" id={`flexCheckDefault-2-${inhabitant.person_id}`} checked={selectedInhabitantsEmail.includes(inhabitant.person_id)} onChange={() => handleSelectInhabitantEmail(inhabitant.person_id)}/>
                           </div>
-                          <div class="form-check form-check-inline">{inhabitant.first_name} {inhabitant.last_name}</div>
-                        </li>
+                          <div className="form-check form-check-inline">{inhabitant.first_name} {inhabitant.last_name}</div>
+                        </div>
                       ))}
-                    </ul>
                   </div>
                 </div>
                 )}

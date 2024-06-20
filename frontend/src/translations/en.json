@@ -144,8 +144,8 @@
     "addCorrespondence": "Add Correspondence",
     "selectMsg": "Select resident to send message:",
     "searchresident": "Search Residents",
-    "MsgSuccessAlert": "WhatsApp message sent successfully!",
-    "MsgFailAlert": "An error occurred trying to send the WhatsApp message.",
+    "MsgSuccessAlert": "Message sent successfully!",
+    "MsgFailAlert": "An error occurred trying to send the message.",
     "inhabitantsFailAlert": "Error searching inhabitants",
     "NoinhabitantsAlert": "Alert: Inhabitants not found."
   },

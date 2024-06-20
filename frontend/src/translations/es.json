@@ -144,8 +144,8 @@
     "addCorrespondence": "Agregar Correspondencia",
     "selectMsg": "Seleccione residente para enviar mensaje:",
     "searchresident": "Buscar Habitantes",
-    "MsgSuccessAlert": "¡Mensaje de WhatsApp enviado correctamente!",
-    "MsgFailAlert": "Ocurrió un error al enviar mensaje de WhatsApp.",
+    "MsgSuccessAlert": "¡Mensaje enviado correctamente!",
+    "MsgFailAlert": "Ocurrió un error al enviar mensaje.",
     "inhabitantsFailAlert": "Ocurrió un error buscando a residentes.",
     "NoinhabitantsAlert": "Alerta: Residentes no encontrados."
   },

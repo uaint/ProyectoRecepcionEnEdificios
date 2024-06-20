@@ -10,6 +10,8 @@ const AdminParking = () => {
 
   // General configuration
   const { t } = useTranslation();
+  const parking_spot_ammount = sessionStorage.getItem('parking_spot_ammount');
+  const storedTowerId = sessionStorage.getItem('tower_id_associated');
 
   // Variables
   const [parking, setParking] = useState([]);
@@ -26,7 +28,8 @@ const AdminParking = () => {
     try {
       const response = await fetch('https://dduhalde.online/.netlify/functions/api/parked');
       const data = await response.json();
-      setParking(data);
+      const filteredData = data.filter(item => item.tower_id == storedTowerId);
+      setParking(filteredData);
     } catch (error) {
       console.error('Error fetching visitors:', error);
     }
@@ -103,16 +106,19 @@ const AdminParking = () => {
     }
   };
 
+  const firstList = Array.from({ length: Math.ceil(parking_spot_ammount / 2) }, (_, i) => i + 1);
+  const secondList = Array.from({ length: Math.floor(parking_spot_ammount / 2) }, (_, i) => i + Math.ceil(parking_spot_ammount / 2) + 1);
+
   return (
     <div id="change" className="container">
-      {user_role !== '3' && (
+      {user_role === '2' && (
         <div>
       <h1 className="text-center mb-4">{t('adminParking.adminParking')}</h1>
       <hr className="mb-5"/>
       <div className="container text-center mt-3">
         <div className="btn-group-vertical p-0 my-5" role="group" aria-label="Vertical button group">
           <div className="btn-group p-0 m-0" role="group" aria-label="First group">
-            {[1, 2, 3, 4].map(id => (
+            {firstList.map(id => (
               <button 
                 key={id} 
                 id={id} 
@@ -127,7 +133,7 @@ const AdminParking = () => {
             ))}
           </div>
           <div className="btn-group p-0 m-0" role="group" aria-label="Second group">
-            {[5, 6, 7, 8].map(id => (
+            {secondList.map(id => (
               <button 
                 key={id} 
                 id={id} 

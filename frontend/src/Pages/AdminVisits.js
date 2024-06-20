@@ -114,6 +114,7 @@ const AdminVisits = () => {
   return (
     <div id="change" className="container">
       <h1 className="text-center mb-4">{t('adminVisits.adminVisits')}</h1>
+      <hr className="mb-4" />
       <div className="mb-3">
         <input
           type="text"
@@ -123,7 +124,6 @@ const AdminVisits = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-      <hr className="mb-4" />
       <div className="table-responsive">
         <table className="table table-striped table-bordered text-center">
           <thead>
