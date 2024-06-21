@@ -20,9 +20,9 @@ const AdminVehicles = () => {
   const [showVehiclesFailAlert, setShowVehiclesFailAlert] = useState(false);
 
   // Get user role from sessionStorage
-  const user_role = sessionStorage.getItem('user_role');
+  const user_role = localStorage.getItem('user_role');
 
-  const storedTowerId = sessionStorage.getItem('tower_id_associated');
+  const storedTowerId = localStorage.getItem('tower_id_associated');
 
   // Define the API call to the vehicles
   const fetchVehicles = () => {

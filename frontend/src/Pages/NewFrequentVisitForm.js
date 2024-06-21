@@ -10,8 +10,8 @@ const NewFrequentVisitForm = () => {
   const { t } = useTranslation();
   
   // Read variables from sessionStorage
-  const storedTowerId = sessionStorage.getItem('tower_id_associated');
-  const storedApartmentId = sessionStorage.getItem('apartment_id_associated');
+  const storedTowerId = localStorage.getItem('tower_id_associated');
+  const storedApartmentId = localStorage.getItem('apartment_id_associated');
   
   // Initiate formData empty except for the stored values
   const [formData, setFormData] = useState({

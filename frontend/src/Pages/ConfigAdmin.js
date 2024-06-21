@@ -51,11 +51,11 @@ const ConfigAdmin = () => {
     return localStorage.getItem('token');
   };
 
-  const parking_spot_ammount = sessionStorage.getItem('parking_spot_ammount');
-  const parking_limit_time = sessionStorage.getItem('parking_limit_time');
-  const parking_time_window = sessionStorage.getItem('parking_time_window');
-  const storedTowerId = sessionStorage.getItem('tower_id_associated');
-  const user_role = sessionStorage.getItem('user_role');
+  const parking_spot_ammount = localStorage.getItem('parking_spot_ammount');
+  const parking_limit_time = localStorage.getItem('parking_limit_time');
+  const parking_time_window = localStorage.getItem('parking_time_window');
+  const storedTowerId = localStorage.getItem('tower_id_associated');
+  const user_role = localStorage.getItem('user_role');
   
   const handleParkingTimeSubmit = (event) => {
     event.preventDefault();
@@ -64,7 +64,7 @@ const ConfigAdmin = () => {
       if (!response.ok) {
         throw new Error('An error occurred when trying to update.');
       }
-      sessionStorage.setItem('parking_limit_time', newParkingTime);
+      localStorage.setItem('parking_limit_time', newParkingTime);
       setNewParkingTime('');
     })
     .catch(error => {
@@ -78,7 +78,7 @@ const ConfigAdmin = () => {
       if (!response.ok) {
         throw new Error('An error occurred when trying to update.');
       }
-      sessionStorage.setItem('parking_time_window', newParkingLimitTime);
+      localStorage.setItem('parking_time_window', newParkingLimitTime);
       setNewParkingLimitTime('');
     })
     .catch(error => {
@@ -92,7 +92,7 @@ const ConfigAdmin = () => {
       if (!response.ok) {
         throw new Error('An error occurred when trying to update.');
       }
-      sessionStorage.setItem('parking_spot_ammount', newParkingAmmount);
+      localStorage.setItem('parking_spot_ammount', newParkingAmmount);
       setNewParkingAmmount('');
     })
     .catch(error => {

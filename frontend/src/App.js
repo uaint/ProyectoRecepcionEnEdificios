@@ -82,7 +82,7 @@ function App() {
   });
 
   const getNotificationsFromSessionStorage = () => {
-    const data = sessionStorage.getItem('notifications');
+    const data = localStorage.getItem('notifications');
     return data ? JSON.parse(data) : [];
   };
   

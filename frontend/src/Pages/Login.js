@@ -103,18 +103,18 @@ const Login = (props) => {
                                 // If login is successful, save token into the localStorage of the browser
                                 localStorage.setItem('token', data2.token)
 
-                                sessionStorage.setItem('tower_id_associated', tower_id_associated);
-                                sessionStorage.setItem('apartment_id_associated', apartment_id_associated);
-                                sessionStorage.setItem('user_role', user_role);
-                                sessionStorage.setItem('person_id', person_id);
+                                localStorage.setItem('tower_id_associated', tower_id_associated);
+                                localStorage.setItem('apartment_id_associated', apartment_id_associated);
+                                localStorage.setItem('user_role', user_role);
+                                localStorage.setItem('person_id', person_id);
                                 console.log(user_role)
                                 if (user_role === 2) {
                                     fetch(`https://dduhalde.online/.netlify/functions/api/gettowerinfo/${tower_id_associated}`)
                                     .then(response => response.json())
                                     .then(data3 => {
-                                        sessionStorage.setItem('parking_spot_ammount', data3[0].parking_spot_ammount);
-                                        sessionStorage.setItem('parking_limit_time', data3[0].parking_limit_time);
-                                        sessionStorage.setItem('parking_time_window', data3[0].parking_time_window);
+                                        localStorage.setItem('parking_spot_ammount', data3[0].parking_spot_ammount);
+                                        localStorage.setItem('parking_limit_time', data3[0].parking_limit_time);
+                                        localStorage.setItem('parking_time_window', data3[0].parking_time_window);
                                     })
                                 }
                             })
