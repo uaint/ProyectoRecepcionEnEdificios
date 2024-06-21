@@ -10,8 +10,8 @@ const NewMessage = () => {
   const { t } = useTranslation();
 
   // Get the tower_id_associated and person_id from the sessionStorage
-  const tower_id_associated = sessionStorage.getItem('tower_id_associated');
-  const person_id = sessionStorage.getItem('person_id');
+  const tower_id_associated = localStorage.getItem('tower_id_associated');
+  const person_id = localStorage.getItem('person_id');
 
   // Show alerts
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);

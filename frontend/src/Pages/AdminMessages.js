@@ -9,8 +9,8 @@ const AdminMessages = () => {
   const { t } = useTranslation();
 
   // Get user role and tower id from sessionStorage
-  const user_role = sessionStorage.getItem('user_role');
-  const tower_id_associated = sessionStorage.getItem('tower_id_associated');
+  const user_role = localStorage.getItem('user_role');
+  const tower_id_associated = localStorage.getItem('tower_id_associated');
 
   // Create messages
   const [messages, setMessages] = useState([]);

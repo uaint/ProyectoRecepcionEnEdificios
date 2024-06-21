@@ -10,8 +10,8 @@ const AdminParking = () => {
 
   // General configuration
   const { t } = useTranslation();
-  const parking_spot_ammount = sessionStorage.getItem('parking_spot_ammount');
-  const storedTowerId = sessionStorage.getItem('tower_id_associated');
+  const parking_spot_ammount = localStorage.getItem('parking_spot_ammount');
+  const storedTowerId = localStorage.getItem('tower_id_associated');
 
   // Variables
   const [parking, setParking] = useState([]);
@@ -21,7 +21,7 @@ const AdminParking = () => {
   const [selectedParkingData, setSelectedParkingData] = useState(null);
 
   // Get user role from sessionStorage
-  const user_role = sessionStorage.getItem('user_role');
+  const user_role = localStorage.getItem('user_role');
 
   // Fetch parking data through the API
   const fetchParkingData = async () => {
@@ -75,8 +75,8 @@ const AdminParking = () => {
       HandleShowInfo(parkingData);
 
       // Conseguir parametros globales
-      const parking_limit_time = sessionStorage.getItem('parking_limit_time');
-      const parking_time_window = sessionStorage.getItem('parking_time_window');
+      const parking_limit_time = localStorage.getItem('parking_limit_time');
+      const parking_time_window = localStorage.getItem('parking_time_window');
 
       const time1 = timeToMilliseconds(parking_limit_time);
       const time2 = timeToMilliseconds(parking_time_window);
@@ -89,7 +89,7 @@ const AdminParking = () => {
       const futureTime = new Date(now.getTime() + interval);
 
       // Ver si existen notificaciones en cola
-      let savedNotificationsString = sessionStorage.getItem('notifications');
+      let savedNotificationsString = localStorage.getItem('notifications');
       let savedNotifications = savedNotificationsString ? JSON.parse(savedNotificationsString) : [];
 
       // Crear nueva notificación
@@ -101,7 +101,7 @@ const AdminParking = () => {
       savedNotifications.push(notification);
 
       // Guardarlo en sessionStorage
-      sessionStorage.setItem("notifications", JSON.stringify(savedNotifications));
+      localStorage.setItem("notifications", JSON.stringify(savedNotifications));
 
     } catch (error) {
       console.error('An error occurred trying to assign parking:', error);

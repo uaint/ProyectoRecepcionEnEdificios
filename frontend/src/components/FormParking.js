@@ -8,7 +8,7 @@ const FormParking = ({ parkingId, onAddParking }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const storedTowerId = sessionStorage.getItem('tower_id_associated');
+        const storedTowerId = localStorage.getItem('tower_id_associated');
         onAddParking(formData.run, formData.license_plate, parkingId, storedTowerId);
     };
 

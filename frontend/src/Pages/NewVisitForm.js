@@ -13,8 +13,8 @@ const NewVisitForm = () => {
   const queryParams = new URLSearchParams(location.search);
 
   // Read variables from sessionStorage
-  const storedTowerId = sessionStorage.getItem('tower_id_associated');
-  const user_role = sessionStorage.getItem('user_role');
+  const storedTowerId = localStorage.getItem('tower_id_associated');
+  const user_role = localStorage.getItem('user_role');
   
   // Obtain data from the URL
   const scannedData = {

@@ -43,9 +43,9 @@ beforeEach(() => {
 
 // TEST 1: Page Render
 test('renders NewCorrespondenceForm component correctly', () => {
-    sessionStorage.setItem('user_role', '2');
-    sessionStorage.setItem('tower_id_associated', '1');
-    sessionStorage.setItem('apartment_id_associated', 'null');
+    localStorage.setItem('user_role', '2');
+    localStorage.setItem('tower_id_associated', '1');
+    localStorage.setItem('apartment_id_associated', 'null');
     
     render(
       <Router>
@@ -58,9 +58,9 @@ test('renders NewCorrespondenceForm component correctly', () => {
 
 // TEST 2: Form Continue
 test('continue to the next step of the form', async () => {
-  sessionStorage.setItem('user_role', '2');
-  sessionStorage.setItem('tower_id_associated', '1');
-  sessionStorage.setItem('apartment_id_associated', 'null');
+  localStorage.setItem('user_role', '2');
+  localStorage.setItem('tower_id_associated', '1');
+  localStorage.setItem('apartment_id_associated', 'null');
   
   render(
     <Router>
@@ -78,9 +78,9 @@ test('continue to the next step of the form', async () => {
 
 // TEST 3: Handle checkboxes
 test('handle checkbox for WhatsApp and Email', async () => {
-  sessionStorage.setItem('user_role', '2');
-  sessionStorage.setItem('tower_id_associated', '1');
-  sessionStorage.setItem('apartment_id_associated', 'null');
+  localStorage.setItem('user_role', '2');
+  localStorage.setItem('tower_id_associated', '1');
+  localStorage.setItem('apartment_id_associated', 'null');
 
   render(
     <Router>
@@ -103,9 +103,9 @@ test('handle checkbox for WhatsApp and Email', async () => {
 
 // TEST 4: User interaction with the form
 test('user interaction with the form', async () => {
-  sessionStorage.setItem('user_role', '2');
-  sessionStorage.setItem('tower_id_associated', '1');
-  sessionStorage.setItem('apartment_id_associated', 'null');
+  localStorage.setItem('user_role', '2');
+  localStorage.setItem('tower_id_associated', '1');
+  localStorage.setItem('apartment_id_associated', 'null');
 
   render(
     <Router>

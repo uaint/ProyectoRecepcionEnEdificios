@@ -18,7 +18,7 @@ const NewVehicleForm = () => {
   });
 
   // Get the user_role from the sessionStorage
-  const user_role = sessionStorage.getItem('user_role');
+  const user_role = localStorage.getItem('user_role');
 
   // Create alerts
   const [showAddedVehicleAlert, setShowAddedVehicleAlert] = useState(false);

@@ -10,8 +10,8 @@ const NewCorrespondenceForm = () => {
   const { t } = useTranslation();
 
   // Read variables from sessionStorage
-  const storedTowerId = sessionStorage.getItem('tower_id_associated');
-  const user_role = sessionStorage.getItem('user_role');
+  const storedTowerId = localStorage.getItem('tower_id_associated');
+  const user_role = localStorage.getItem('user_role');
 
    // Initiate formData with some 'default' values
    const [formData, setFormData] = useState({
