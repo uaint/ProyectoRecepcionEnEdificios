@@ -38,6 +38,9 @@ CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`tower` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `located_at` VARCHAR(127) NOT NULL,
   `name_identifier` VARCHAR(45) NOT NULL,
+  `parking_spot_ammount` SMALLINT NULL DEFAULT 0,
+  `parking_limit_time` TIME NULL DEFAULT NULL,
+  `parking_time_window` TIME NULL DEFAULT 3000,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -145,25 +148,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `roentgenium_new_eer`.`vehicle_visitors`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`vehicle_visitors` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `visitor_id` INT NOT NULL,
-  `license_plate` VARCHAR(8) NOT NULL,
-  `parking_spot` TINYINT NULL,
-  `parking_date` DATETIME NULL,
-  PRIMARY KEY (`id`, `visitor_id`),
-  INDEX `fk_vehicles_visitors_visitor1_idx` (`visitor_id` ASC) VISIBLE,
-  CONSTRAINT `fk_vehicles_visitors_visitor1`
-    FOREIGN KEY (`visitor_id`)
-    REFERENCES `roentgenium_new_eer`.`visitor` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `roentgenium_new_eer`.`login_sys`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`login_sys` (
@@ -247,6 +231,33 @@ CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`messaging` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `roentgenium_new_eer`.`vehicle_log`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`vehicle_log` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `visitor_id` INT NOT NULL,
+  `tower_id` INT NOT NULL,
+  `license_plate` VARCHAR(8) NOT NULL,
+  `parking_time_entry` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `parking_spot` SMALLINT NOT NULL,
+  `parking_time_exit` DATETIME NULL DEFAULT NULL,
+  PRIMARY KEY (`id`, `visitor_id`, `tower_id`),
+  INDEX `fk_vehicle_log_visitor1_idx` (`visitor_id` ASC) VISIBLE,
+  INDEX `fk_vehicle_log_tower1_idx` (`tower_id` ASC) VISIBLE,
+  CONSTRAINT `fk_vehicle_log_visitor1`
+    FOREIGN KEY (`visitor_id`)
+    REFERENCES `roentgenium_new_eer`.`visitor` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_vehicle_log_tower1`
+    FOREIGN KEY (`tower_id`)
+    REFERENCES `roentgenium_new_eer`.`tower` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 USE `roentgenium_new_eer` ;
 
 -- -----------------------------------------------------
@@ -260,24 +271,24 @@ CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`visitors_information` (`visito
 CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`unclaimed_correspondence` (`id` INT, `apartment_identifier` INT, `tower` INT, `mail_type` INT, `arrival_time` INT, `is_notified` INT, `is_claimed` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `roentgenium_new_eer`.`currently_parked_vehicles`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`currently_parked_vehicles` (`visitor_id` INT, `full_name` INT, `license_plate` INT, `parked_at` INT, `parked_since` INT);
-
--- -----------------------------------------------------
 -- Placeholder table for view `roentgenium_new_eer`.`all_correspondence`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`all_correspondence` (`id` INT, `apartment_identifier` INT, `tower` INT, `mail_type` INT, `arrival_time` INT, `is_notified` INT, `is_claimed` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `roentgenium_new_eer`.`all_vehicles`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`all_vehicles` (`visitor_id` INT, `full_name` INT, `license_plates` INT);
-
--- -----------------------------------------------------
 -- Placeholder table for view `roentgenium_new_eer`.`message_view`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`message_view` (`message_id` INT, `sender_id` INT, `sender_full_name` INT, `message` INT, `sent_at` INT, `apartment_number` INT, `tower_number` INT);
+
+-- -----------------------------------------------------
+-- Placeholder table for view `roentgenium_new_eer`.`currently_parked_vehicles`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`currently_parked_vehicles` (`visitor_id` INT, `full_name` INT, `license_plate` INT, `tower_parked_at` INT, `parking_spot` INT, `parked_since` INT);
+
+-- -----------------------------------------------------
+-- Placeholder table for view `roentgenium_new_eer`.`particular_vehicle_log`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`particular_vehicle_log` (`log_id` INT, `visitor_id` INT, `full_name` INT, `license_plate` INT, `tower_parked_at` INT, `parked_at` INT, `parking_time` INT);
 
 -- -----------------------------------------------------
 -- procedure add_inhabitant
@@ -324,27 +335,16 @@ END$$
 DELIMITER ;
 
 -- -----------------------------------------------------
--- procedure add_visitor_vehicle
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium_new_eer`$$
-CREATE PROCEDURE add_visitor_vehicle(IN v_id INT, IN l_plate VARCHAR(8))
-BEGIN
-	INSERT INTO vehicle_visitors (visitor_id, license_plate) VALUES (v_id, l_plate);
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
 -- procedure assign_parking_spot
 -- -----------------------------------------------------
 
 DELIMITER $$
 USE `roentgenium_new_eer`$$
-CREATE PROCEDURE assign_parking_spot(IN l_plate VARCHAR(8), IN p_spot SMALLINT)
+CREATE PROCEDURE assign_parking_spot(IN visitor_run INT, IN t_id INT, IN l_plate VARCHAR(8), IN p_spot SMALLINT)
 BEGIN
-	UPDATE vehicle_visitors SET parking_spot = p_spot, parking_date = NOW() WHERE (license_plate = l_plate AND (p_spot BETWEEN 1 AND 8) AND id > 0);
+	DECLARE v_id INT;
+    SET v_id = obtain_visitor_id_by_run(visitor_run);
+	INSERT INTO vehicle_log(visitor_id, tower_id, license_plate, parking_spot) VALUES (v_id, t_id, l_plate, p_spot);
 END$$
 
 DELIMITER ;
@@ -355,22 +355,9 @@ DELIMITER ;
 
 DELIMITER $$
 USE `roentgenium_new_eer`$$
-CREATE PROCEDURE free_parking_spot(IN l_plate VARCHAR(8))
+CREATE PROCEDURE free_parking_spot(IN log_id INT)
 BEGIN
-	UPDATE vehicle_visitors SET parking_spot = NULL, parking_date = NULL WHERE license_plate = l_plate AND id > 0;
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- procedure delete_vehicle
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `roentgenium_new_eer`$$
-CREATE PROCEDURE delete_vehicle(IN l_plate VARCHAR(8))
-BEGIN
-	DELETE FROM vehicle_visitors WHERE (license_plate = l_plate AND id > 0);
+	UPDATE vehicle_log SET parking_time_exit = NOW() WHERE id = log_id;
 END$$
 
 DELIMITER ;
@@ -809,6 +796,32 @@ END$$
 DELIMITER ;
 
 -- -----------------------------------------------------
+-- procedure set_tower_parking_spots
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium_new_eer`$$
+CREATE PROCEDURE set_tower_parking_spots(IN t_id INT, IN ammount_spots SMALLINT)
+BEGIN
+	UPDATE tower SET parking_spot_ammount = ammount_spots WHERE id = t_id;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure set_tower_parking_parameters
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `roentgenium_new_eer`$$
+CREATE PROCEDURE set_tower_parking_parameters(IN t_id INT, IN ammount_spots SMALLINT, IN park_limit TIME, IN park_window TIME)
+BEGIN
+	UPDATE tower SET parking_spot_ammount = ammount_spots, parking_limit_time = park_limit, parking_time_windows = park_window WHERE id = t_id;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
 -- View `roentgenium_new_eer`.`visitors_information`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `roentgenium_new_eer`.`visitors_information`;
@@ -861,27 +874,6 @@ CREATE  OR REPLACE VIEW `unclaimed_correspondence` AS
         m.is_claimed = 0;
 
 -- -----------------------------------------------------
--- View `roentgenium_new_eer`.`currently_parked_vehicles`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `roentgenium_new_eer`.`currently_parked_vehicles`;
-USE `roentgenium_new_eer`;
-CREATE  OR REPLACE VIEW `currently_parked_vehicles` AS
-    SELECT 
-        v.id AS visitor_id,
-        CONCAT(p.first_name, ' ', p.last_name) AS full_name,
-        vv.license_plate,
-        vv.parking_spot AS parked_at,
-        vv.parking_date AS parked_since
-    FROM
-        vehicle_visitors vv
-	LEFT JOIN
-		visitor v ON v.id = vv.visitor_id
-	LEFT JOIN
-		person p ON p.id = v.person_id
-    WHERE
-        vv.parking_spot IS NOT NULL;
-
--- -----------------------------------------------------
 -- View `roentgenium_new_eer`.`all_correspondence`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `roentgenium_new_eer`.`all_correspondence`;
@@ -899,25 +891,6 @@ SELECT
         mail m
 	LEFT JOIN
 		apartment apt ON m.apartment_id = apt.id;
-
--- -----------------------------------------------------
--- View `roentgenium_new_eer`.`all_vehicles`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `roentgenium_new_eer`.`all_vehicles`;
-USE `roentgenium_new_eer`;
-CREATE  OR REPLACE VIEW `all_vehicles` AS
-	SELECT 
-        v.id AS visitor_id,
-        CONCAT(p.first_name, ' ', p.last_name) AS full_name,
-        GROUP_CONCAT(vv.license_plate SEPARATOR ', ') AS license_plates
-    FROM
-        vehicle_visitors vv
-	LEFT JOIN
-		visitor v ON v.id = vv.visitor_id
-	LEFT JOIN
-		person p ON p.id = v.person_id
-	GROUP BY
-        v.id, p.first_name, p.last_name;
 
 -- -----------------------------------------------------
 -- View `roentgenium_new_eer`.`message_view`
@@ -944,6 +917,51 @@ CREATE  OR REPLACE VIEW `message_view` AS
     LEFT JOIN
         tower t ON apt.tower_id = t.id
 	ORDER BY msg.message_timestamp DESC;
+
+-- -----------------------------------------------------
+-- View `roentgenium_new_eer`.`currently_parked_vehicles`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `roentgenium_new_eer`.`currently_parked_vehicles`;
+USE `roentgenium_new_eer`;
+CREATE  OR REPLACE VIEW `currently_parked_vehicles` AS
+    SELECT 
+        v.id AS visitor_id,
+        CONCAT(p.first_name, ' ', p.last_name) AS full_name,
+        vl.license_plate,
+        vl.tower_id AS tower_parked_at,
+        vl.parking_spot,
+        vl.parking_time_entry AS parked_since
+    FROM
+        vehicle_log vl
+    LEFT JOIN
+        visitor v ON v.id = vl.visitor_id
+    LEFT JOIN
+        person p ON p.id = v.person_id
+    WHERE
+        vl.parking_time_exit IS NULL;
+
+-- -----------------------------------------------------
+-- View `roentgenium_new_eer`.`particular_vehicle_log`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `roentgenium_new_eer`.`particular_vehicle_log`;
+USE `roentgenium_new_eer`;
+CREATE  OR REPLACE VIEW `particular_vehicle_log` AS
+    SELECT
+		vl.id AS log_id,
+        v.id AS visitor_id,
+        CONCAT(p.first_name, ' ', p.last_name) AS full_name,
+        vl.license_plate,
+        vl.tower_id AS tower_parked_at,
+        vl.parking_spot AS parked_at,
+        CONCAT(vl.parking_time_entry, '-', vl.parking_time_exit) AS parking_time
+    FROM
+        vehicle_log vl
+    LEFT JOIN
+        visitor v ON v.id = vl.visitor_id
+    LEFT JOIN
+        person p ON p.id = v.person_id
+    WHERE
+        vl.parking_time_exit IS NOT NULL;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
