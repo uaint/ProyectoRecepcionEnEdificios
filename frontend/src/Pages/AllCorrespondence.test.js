@@ -38,9 +38,9 @@ beforeEach(() => {
 
 // TEST 1: Page render
 test('renders AllCorrespondence component correctly', () => {
-    sessionStorage.setItem('user_role', '1');
-    sessionStorage.setItem('tower_id_associated', 'null');
-    sessionStorage.setItem('apartment_id_associated', 'null');
+    localStorage.setItem('user_role', '1');
+    localStorage.setItem('tower_id_associated', 'null');
+    localStorage.setItem('apartment_id_associated', 'null');
 
     render(
         <Router>

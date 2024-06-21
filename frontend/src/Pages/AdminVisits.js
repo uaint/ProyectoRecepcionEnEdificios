@@ -16,9 +16,9 @@ const AdminVisits = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   // Read variables from sessionStorage
-  const storedTowerId = sessionStorage.getItem('tower_id_associated');
-  const storedApartmentId = sessionStorage.getItem('apartment_id_associated');
-  const user_role = sessionStorage.getItem('user_role');
+  const storedTowerId = localStorage.getItem('tower_id_associated');
+  const storedApartmentId = localStorage.getItem('apartment_id_associated');
+  const user_role = localStorage.getItem('user_role');
 
   // Fetch unclaimed correspondence data through the API
   useEffect(() => {

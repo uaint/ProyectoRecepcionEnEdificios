@@ -39,9 +39,9 @@ beforeEach(() => {
 
 // TEST 1: Page Render
 test('renders AdminCorrespondence component correctly', () => {
-  sessionStorage.setItem('user_role', '2');
-  sessionStorage.setItem('tower_id_associated', '1');
-  sessionStorage.setItem('apartment_id_associated', '101');
+  localStorage.setItem('user_role', '2');
+  localStorage.setItem('tower_id_associated', '1');
+  localStorage.setItem('apartment_id_associated', '101');
   
   render(
     <Router>
@@ -54,9 +54,9 @@ test('renders AdminCorrespondence component correctly', () => {
 
 // TEST 2: Redirect /newcorrespondenceform
 test('redirects to new correspondence form', async () => {
-  sessionStorage.setItem('user_role', '2');
-  sessionStorage.setItem('tower_id_associated', '1');
-  sessionStorage.setItem('apartment_id_associated', 'null');
+  localStorage.setItem('user_role', '2');
+  localStorage.setItem('tower_id_associated', '1');
+  localStorage.setItem('apartment_id_associated', 'null');
   
   render(
     <Router>
@@ -73,9 +73,9 @@ test('redirects to new correspondence form', async () => {
 
 // TEST 3: Redirect /allcorrespondence
 test('redirects to all correspondence', async () => {
-  sessionStorage.setItem('user_role', '2');
-  sessionStorage.setItem('tower_id_associated', '1');
-  sessionStorage.setItem('apartment_id_associated', 'null');
+  localStorage.setItem('user_role', '2');
+  localStorage.setItem('tower_id_associated', '1');
+  localStorage.setItem('apartment_id_associated', 'null');
   
   render(
     <Router>
@@ -154,9 +154,9 @@ test('Sorting test', async () => {
   const sortConfig2 = { key: 'arrival_time', direction: 'descending' };
   const sortConfig3 = { key: 'apartment', direction: 'descending' };
 
-  sessionStorage.setItem('user_role', '2');
-  sessionStorage.setItem('tower_id_associated', '1');
-  sessionStorage.setItem('apartment_id_associated', 'null');
+  localStorage.setItem('user_role', '2');
+  localStorage.setItem('tower_id_associated', '1');
+  localStorage.setItem('apartment_id_associated', 'null');
   global.fetch = jest.fn().mockResolvedValueOnce({
     json: () => Promise.resolve([
       {
