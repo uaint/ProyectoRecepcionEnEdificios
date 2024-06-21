@@ -75,7 +75,7 @@
     "bodyNotification": "Parking soon to reach time limit"
   },
   "adminVehicles": {
-    "adminVehiclesTitle": "Manage Log Parking",
+    "adminVehiclesTitle": "Manage Parking Log",
     "visitor_id": "Visitor ID",
     "full_name":"Full Name",
     "license_plate": "License Plate",
@@ -88,8 +88,8 @@
     "searchPlaceholder": "Search by name",
     "log_id": "ID",
     "parked_at": "Parking Spot N°",
-    "startTime": "Arriving Time",
-    "endTime": "Departure Time",
+    "startTime": "Arrival",
+    "endTime": "Departure",
     "tower": "Tower"
   },
   "configAdmin": {
