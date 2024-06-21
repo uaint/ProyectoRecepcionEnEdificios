@@ -13,7 +13,7 @@
     "scanID":"Escanear Carnet",
     "admin": "Administrador",
     "new": "Agregar",
-    "adminVehicles": "Log Estacionamientos"
+    "adminVehicles": "Historial Estacionamientos"
   },
   "navbarResident": {
     "adminvisits": "Gestionar visitas",
@@ -88,8 +88,8 @@
     "searchPlaceholder": "Buscar por nombre",
     "log_id": "ID",
     "parked_at": "N° Estacionamiento",
-    "startTime": "Hora de llegada",
-    "endTime": "Hora de salida",
+    "startTime": "Llegada",
+    "endTime": "Salida",
     "tower": "Torre"
   },
   "configAdmin": {
