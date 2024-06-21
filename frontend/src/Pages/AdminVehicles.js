@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { timeAlerts } from '../Utils.js';
+import { timeAlerts, formatDateLarge } from '../Utils.js';
 
 const AdminVehicles = () => {
   // General configurations
@@ -22,11 +22,19 @@ const AdminVehicles = () => {
   // Get user role from sessionStorage
   const user_role = sessionStorage.getItem('user_role');
 
+  const storedTowerId = sessionStorage.getItem('tower_id_associated');
+
   // Define the API call to the vehicles
   const fetchVehicles = () => {
-    fetch('https://dduhalde.online/.netlify/functions/api/vehicles')
+    fetch('https://dduhalde.online/.netlify/functions/api/parking_log')
       .then(response => response.json())
-      .then(data => setVehicles(data))
+      .then(data => {
+        let filteredData = data;
+        if (user_role !== '1') {
+          filteredData = data.filter(vehicle => vehicle.tower_parked_at == storedTowerId);
+        }
+        setVehicles(filteredData);
+      })
       .catch(error => {
         console.error('An error occurred while trying to fetch the vehicles:', error);
         setShowVehiclesFailAlert(true);
@@ -39,9 +47,9 @@ const AdminVehicles = () => {
     fetchVehicles();
   }, []);
 
-  const handleDelete = (plate) => {
+  const handleDelete = (id) => {
     // Do the UPDATE request to the server
-    fetch(`https://dduhalde.online/.netlify/functions/api/delete_vehicle/${plate}`)
+    fetch(`https://dduhalde.online/.netlify/functions/api/delete_vehicle_log/${id}`)
     .then(response => {
       if (!response.ok) {
         throw new Error('An error occurred when trying to delete the vehicle.');
@@ -58,19 +66,19 @@ const AdminVehicles = () => {
 
   // Button to redirect to the add new correspondence form
   const handleButtonClick = () => {
-    navigate('/newvehicleform');
+    navigate('/adminparking');
   };
 
   // Sorting and filtering functions
   const sortAndFilterVehicles = (vehicles, sortOption, filterOption) => {
     let sortedVehicles = [...vehicles];
 
-    if (sortOption === 'visitor_id') {
-      sortedVehicles.sort((a, b) => a.visitor_id - b.visitor_id);
+    if (sortOption === 'log_id') {
+      sortedVehicles.sort((a, b) => a.log_id - b.log_id);
     } else if (sortOption === 'full_name') {
       sortedVehicles.sort((a, b) => a.full_name.localeCompare(b.full_name));
-    } else if (sortOption === 'license_plates') {
-      sortedVehicles.sort((a, b) => a.license_plates.localeCompare(b.license_plates));
+    } else if (sortOption === 'license_plate') {
+      sortedVehicles.sort((a, b) => a.license_plate.localeCompare(b.license_plate));
     }
 
     if (sortDirection === 'descending') {
@@ -117,11 +125,11 @@ const AdminVehicles = () => {
                 <tr>
                   <th 
                     scope="col" 
-                    onClick={() => handleSort('visitor_id')}
-                    style={{ fontWeight: sortOption === 'visitor_id' ? 'bold' : 'normal' }}
+                    onClick={() => handleSort('log_id')}
+                    style={{ fontWeight: sortOption === 'log_id' ? 'bold' : 'normal' }}
                   >
-                    {t('adminVehicles.visitor_id')}
-                    {sortOption === 'visitor_id' && (sortDirection === 'ascending' ? <span>&#9650;</span> : <span>&#9660;</span>)}
+                    {t('adminVehicles.log_id')}
+                    {sortOption === 'log_id' && (sortDirection === 'ascending' ? <span>&#9650;</span> : <span>&#9660;</span>)}
                   </th>
                   <th 
                     scope="col" 
@@ -133,40 +141,54 @@ const AdminVehicles = () => {
                   </th>
                   <th 
                     scope="col" 
-                    onClick={() => handleSort('license_plates')}
-                    style={{ fontWeight: sortOption === 'license_plates' ? 'bold' : 'normal' }}
+                    onClick={() => handleSort('license_plate')}
+                    style={{ fontWeight: sortOption === 'license_plate' ? 'bold' : 'normal' }}
                   >
                     {t('adminVehicles.license_plate')}
-                    {sortOption === 'license_plates' && (sortDirection === 'ascending' ? <span>&#9650;</span> : <span>&#9660;</span>)}
+                    {sortOption === 'license_plate' && (sortDirection === 'ascending' ? <span>&#9650;</span> : <span>&#9660;</span>)}
                   </th>
+                  <th scope="col">{t('adminVehicles.parked_at')}</th>
+                  <th scope="col">{t('adminVehicles.startTime')}</th>
+                  <th scope="col">{t('adminVehicles.endTime')}</th>
+                  {user_role === '1' && (
+                    <th scope="col">{t('adminVehicles.tower')}</th>
+                  )}
                   <th scope="col">{t('adminVehicles.deleteButton')}</th>
                 </tr>
               </thead>
               <tbody>
-                {sortedAndFilteredVehicles.map((vehicle, index) => {
-                  const { visitor_id, full_name, license_plates } = vehicle;
-                  const platesArray = license_plates.split(',').map(plate => plate.trim());
-
-                  return platesArray.map((plate, plateIndex) => (
-                    <tr key={`${index}-${plateIndex}`}>
-                      <td>{visitor_id}</td>
-                      <td>{full_name}</td>
-                      <td>{plate}</td>
+                {sortedAndFilteredVehicles.map((log, index) => {
+                  const parkingTimes = log.parking_time.split(" | ");
+                  const startTime = parkingTimes[0];
+                  const endTime = parkingTimes[1];
+                  return (
+                    <tr key={`${index}`}>
+                      <td>{log.log_id}</td>
+                      <td>{log.full_name}</td>
+                      <td>{log.license_plate}</td>
+                      <td>{log.parked_at}</td>
+                      <td>{formatDateLarge(startTime)}</td>
+                      <td>{formatDateLarge(endTime)}</td>
+                      {user_role === '1' && (
+                      <td>{log.tower_parked_at}</td>
+                      )}
                       <td>
-                        <button className="btn btn-danger btn-sm" onClick={() => handleDelete(plate)}>
+                        <button className="btn btn-danger btn-sm" onClick={() => handleDelete(log.log_id)}>
                           {t('adminVehicles.deleteVehicle')}
                         </button>
                       </td>
                     </tr>
-                  ));
+                  );
                 })}
               </tbody>
             </table>
           </div>
         </div>
+        {user_role == '2' && (
         <div className="text-center mt-4 mb-5">
           <button className="btn btn-primary" onClick={handleButtonClick}>{t('adminVehicles.addNewVehicles')}</button>
         </div>
+        )}
         <div className='row'>
           <div className='col-md-3 order-md-3 rounded-5'>
             {showVehicleAlert && (

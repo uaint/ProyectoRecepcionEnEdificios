@@ -12,7 +12,7 @@ const navbarStyle = {
 }
 
 // Button to change language (i18n package)
-const NavbarConcierge = () => {
+const NavbarAdmin = () => {
   const { t } = useTranslation();
   const handleLanguageChange = (newLanguage) => {
     i18n.changeLanguage(newLanguage);
@@ -91,7 +91,6 @@ const NavbarConcierge = () => {
               <ul className="dropdown-menu" style={navbarStyle}>
               <Link className="nav-link" to="/admincorrespondence">{t('navbarConcierge.adminCorrespondence')}</Link>
               <Link className="nav-link" to="/adminvisits">{t('navbarConcierge.adminVisits')}</Link>
-              <Link className="nav-link" to="/adminparking">{t('navbarConcierge.adminParking')}</Link>
               <Link className="nav-link" to="/adminvehicles">{t('navbarConcierge.adminVehicles')}</Link>
               </ul>
             </li>
@@ -132,4 +131,4 @@ const NavbarConcierge = () => {
   );
 };
 
-export default NavbarConcierge;
+export default NavbarAdmin;

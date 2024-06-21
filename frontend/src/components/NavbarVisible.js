@@ -1,5 +1,6 @@
 import NavbarConcierge from './NavbarConcierge';
 import NavbarResident from './NavbarResident';
+import NavbarAdmin from './NavbarAdmin';
 import { Outlet } from 'react-router';
 import React from 'react';
 
@@ -10,7 +11,7 @@ export default () => {
 
   return (
     <>  
-    {user_role === '3' ? <NavbarResident /> : <NavbarConcierge />}
+    {user_role === '1' ? <NavbarAdmin /> : user_role === '2' ? <NavbarConcierge /> : <NavbarResident />}
       <Outlet />
     </>
   );

@@ -26,9 +26,11 @@ const AdminParking = () => {
   // Fetch parking data through the API
   const fetchParkingData = async () => {
     try {
-      const response = await fetch('https://dduhalde.online/.netlify/functions/api/parked');
+      const response = await fetch('https://dduhalde.online/.netlify/functions/api/parked_vehicles');
       const data = await response.json();
-      const filteredData = data.filter(item => item.tower_id == storedTowerId);
+      const filteredData = data.filter(item => item.tower_parked_at == storedTowerId);
+      console.log(storedTowerId)
+      console.log(filteredData)
       setParking(filteredData);
     } catch (error) {
       console.error('Error fetching visitors:', error);
@@ -52,9 +54,9 @@ const AdminParking = () => {
   };
 
   // Handle parking release
-  const handleFreeParking = async (license_plate, parkingId) => {
+  const handleFreeParking = async (log_id, parkingId) => {
     try {
-      await fetch(`https://dduhalde.online/.netlify/functions/api/free_parking/${license_plate}`);
+      await fetch(`https://dduhalde.online/.netlify/functions/api/free_parking_spot/${log_id}`);
       fetchParkingData(); // Update the parking data after freeing a spot
       HandleShowForm(parkingId);
     } catch (error) {
@@ -63,13 +65,13 @@ const AdminParking = () => {
   };
 
   // Handle parking assignment
-  const handleAddParking = async (licensePlate, parkingId) => {
+  const handleAddParking = async (visitor_run, l_plate, p_spot, tower) => {
     try {
-      await fetch(`https://dduhalde.online/.netlify/functions/api/assign_parking/${licensePlate}/${parkingId}`);
+      await fetch(`https://dduhalde.online/.netlify/functions/api/assign_parking_spot/${visitor_run}/${tower}/${l_plate}/${p_spot}`);
       fetchParkingData(); // Update the parking data after freeing a spot
-      const response = await fetch('https://dduhalde.online/.netlify/functions/api/parked');
+      const response = await fetch('https://dduhalde.online/.netlify/functions/api/parked_vehicles');
       const data = await response.json();
-      const parkingData = data.find(p => p.parked_at === parkingId);
+      const parkingData = data.find(p => p.parking_spot === p_spot);
       HandleShowInfo(parkingData);
 
       // Conseguir parametros globales
@@ -92,7 +94,7 @@ const AdminParking = () => {
 
       // Crear nueva notificación
       const notification = {
-        parking_limit_time: parking_limit_time, parking_time_window: parking_time_window, notificationTime: futureTime, parking_id: parkingId, license_plate: licensePlate 
+        parking_limit_time: parking_limit_time, parking_time_window: parking_time_window, notificationTime: futureTime, parking_id: p_spot, license_plate: l_plate 
       };
 
       // Agregar nueva notificación a las ya existentes
@@ -123,9 +125,9 @@ const AdminParking = () => {
                 key={id} 
                 id={id} 
                 type="button" 
-                className={`btn ${parking.some(p => p.parked_at === id) ? 'btn-danger' : 'btn-success'} p-5 fs-1 m-0 border-4 border-warning`} 
+                className={`btn ${parking.some(p => p.parking_spot === id) ? 'btn-danger' : 'btn-success'} p-5 fs-1 m-0 border-4 border-warning`} 
                 onClick={() => {
-                  const parkingData = parking.find(p => p.parked_at === id);
+                  const parkingData = parking.find(p => p.parking_spot === id);
                   parkingData ? HandleShowInfo(parkingData) : HandleShowForm(id);
                 }}>
                 {id}
@@ -138,9 +140,9 @@ const AdminParking = () => {
                 key={id} 
                 id={id} 
                 type="button" 
-                className={`btn ${parking.some(p => p.parked_at === id) ? 'btn-danger' : 'btn-success'} p-5 fs-1 m-0 border-4 border-warning`} 
+                className={`btn ${parking.some(p => p.parking_spot === id) ? 'btn-danger' : 'btn-success'} p-5 fs-1 m-0 border-4 border-warning`} 
                 onClick={() => {
-                  const parkingData = parking.find(p => p.parked_at === id);
+                  const parkingData = parking.find(p => p.parking_spot === id);
                   parkingData ? HandleShowInfo(parkingData) : HandleShowForm(id);
                 }}>
                 {id}

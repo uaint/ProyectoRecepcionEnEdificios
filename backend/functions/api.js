@@ -663,7 +663,7 @@ router.get('/parked_vehicles', (req, res) => {
 });
 
 // Route: View particular vehicle log
-router.post('/parking_log', (req, res) => {
+router.get('/parking_log', (req, res) => {
   // Create the query to insert data into particular_vehicle_log table
   const query = 'SELECT * FROM particular_vehicle_log';
 
@@ -679,12 +679,12 @@ router.post('/parking_log', (req, res) => {
 });
 
 // Route: Assign parking spot
-router.post('/assign_parking_spot/:visitor_run/:t_id/:l_plate/:p_spot', (req, res) => {
+router.get('/assign_parking_spot/:visitor_run/:t_id/:l_plate/:p_spot', (req, res) => {
   // Fetch parameters from the request body
-  const { visitor_run, t_id, l_plate, p_spot } = req.body;
+  const { visitor_run, t_id, l_plate, p_spot } = req.params;
 
   // Create the query to call the assign_parking_spot stored procedure
-  const query = 'CALL assign_parking_spot(?, ?, ?, ?)';
+  const query = `CALL assign_parking_spot(?, ?, ?, ?);`;
 
   // Execute the query (call to the database)
   connection.query(query, [visitor_run, t_id, l_plate, p_spot], (err, rows) => {
@@ -703,7 +703,7 @@ router.get('/free_parking_spot/:log_id', (req, res) => {
   const { log_id } = req.params;
 
   // Create the query to call the free_parking_spot stored procedure
-  const query = 'CALL free_parking_spot(?)';
+  const query = `CALL free_parking_spot(?)`;
 
   // Execute the query (call to the database)
   connection.query(query, [log_id], (err, rows) => {
@@ -712,6 +712,23 @@ router.get('/free_parking_spot/:log_id', (req, res) => {
       res.status(500).send('Internal Server Error');
     } else {
       res.status(200).send('Parking spot free successfully');
+    }
+  });
+});
+
+// Route: Delete vehicle log by ID
+router.get('/delete_vehicle_log/:id', (req, res) => {
+  // Fetch the id parameter
+  const { id } = req.params;
+  // Create the query to delete the vehicle log
+  const query = 'DELETE FROM vehicle_log WHERE id = ?';
+
+  // Execute the query (call to the database)
+  connection.query(query, [id], (err, result) => {
+    if (err) {
+      res.status(500).send('Error deleting vehicle log');
+    } else {
+      res.status(200).send('Vehicle log deleted successfully');
     }
   });
 });

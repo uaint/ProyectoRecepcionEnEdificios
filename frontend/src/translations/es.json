@@ -13,7 +13,7 @@
     "scanID":"Escanear Carnet",
     "admin": "Administrador",
     "new": "Agregar",
-    "adminVehicles": "Vehículos"
+    "adminVehicles": "Log Estacionamientos"
   },
   "navbarResident": {
     "adminvisits": "Gestionar visitas",
@@ -75,7 +75,7 @@
     "bodyNotification": "Estacionamiento pronto a cumplir tiempo limite"
   },
   "adminVehicles": {
-    "adminVehiclesTitle": "Administrar Vehículos",
+    "adminVehiclesTitle": "Administrar Registro Estacionamientos",
     "visitor_id": "ID Visitante",
     "full_name":"Nombre del visitante",
     "license_plate": "Patente",
@@ -85,7 +85,12 @@
     "SuccessAlert": "¡Vehículo eliminado exitosamente!",
     "FailAlert": "Ocurrió un error al intentar eliminar el vehículo.",
     "vehiclesAlert": "Ocurrió un error al intentar cargar los datos relacionados a vehículos.",
-    "searchPlaceholder": "Buscar por nombre"
+    "searchPlaceholder": "Buscar por nombre",
+    "log_id": "ID",
+    "parked_at": "N° Estacionamiento",
+    "startTime": "Hora de llegada",
+    "endTime": "Hora de salida",
+    "tower": "Torre"
   },
   "configAdmin": {
     "configuration": "Configuración",
