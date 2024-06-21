@@ -283,7 +283,7 @@ CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`message_view` (`message_id` IN
 -- -----------------------------------------------------
 -- Placeholder table for view `roentgenium_new_eer`.`currently_parked_vehicles`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`currently_parked_vehicles` (`visitor_id` INT, `full_name` INT, `license_plate` INT, `tower_parked_at` INT, `parking_spot` INT, `parked_since` INT);
+CREATE TABLE IF NOT EXISTS `roentgenium_new_eer`.`currently_parked_vehicles` (`log_id` INT, `visitor_id` INT, `full_name` INT, `license_plate` INT, `tower_parked_at` INT, `parking_spot` INT, `parked_since` INT);
 
 -- -----------------------------------------------------
 -- Placeholder table for view `roentgenium_new_eer`.`particular_vehicle_log`
@@ -924,7 +924,8 @@ CREATE  OR REPLACE VIEW `message_view` AS
 DROP TABLE IF EXISTS `roentgenium_new_eer`.`currently_parked_vehicles`;
 USE `roentgenium_new_eer`;
 CREATE  OR REPLACE VIEW `currently_parked_vehicles` AS
-    SELECT 
+    SELECT
+		vl.id AS log_id,
         v.id AS visitor_id,
         CONCAT(p.first_name, ' ', p.last_name) AS full_name,
         vl.license_plate,
