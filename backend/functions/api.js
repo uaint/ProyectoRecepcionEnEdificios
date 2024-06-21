@@ -168,195 +168,6 @@ router.get('/delete_visit/:visit_id_log', (req, res) => {
   });
 });
 
-// Route: Delete vehicle + visitor
-// Example: /delete_visitor/1
-router.get('/delete_visitor/:id', (req, res) => {
-
-  // Fetch the ID of the visitor that's going to be deleted
-  const visitorId = req.params.id;
-
-  // Create the query
-  const query = `DELETE FROM vehicle_visitors WHERE visitor_id = ?;`;
-
-  // Execute the query (call to the database to first delete associated vehicles to the visitor ID, and then the visitor)
-  connection.query(query, [visitorId], (err, rows) => {
-    // Query failed
-    if (err) {
-      console.error('There was an error executing the query:', err);
-      console.log(err);
-      res.status(500).send('There was an error trying to delete data related to vehicles from the database.');
-      return;
-    }
-    // Query success
-    else {
-      res.status(200).json({ message: `Vehicle(s) under visitor ID ${visitorId} deleted successfully.`});
-
-      // Create and execute the query to finally delete the visitor
-      const query = `DELETE FROM visitor WHERE id = ?;`;
-      connection.query(query, [visitorId], (err, rows) => {
-        // Query failed
-        if (err) {
-          console.error('There was an error executing the query:', err);
-          console.log(err);
-          res.status(500).send('There was an error trying to delete data related to visitors from the database.');
-          return;
-        }
-        // Query success
-        else {
-          res.status(200).json({ message: `The data from this visitor (ID ${visitorId}) has been deleted succesfully.`});
-          return;
-        }
-      });
-    }
-  });
-});
-
-// Route: Assign Parking
-// Example: assign_parking/AABB12/1/
-router.get('/assign_parking/:license_plate/:parket_at/', (req, res) => {
-
-  // Fetch license plate and parking spot
-  const { license_plate, parket_at } = req.params;
-
-  // Create query with the delete_vehicle stored procedure
-  const query = `CALL assign_parking_spot (?, ?)`;
-
-  // Execute the query (call to the database)
-  connection.query(query, [license_plate, parket_at], (err, rows) => {
-    // Query failed
-    if (err) {
-      console.error('An error occurred while trying to execute the query:', err);
-      res.status(500).send('An error occurred while trying to manipulate data related to vehicles from the database.');
-      return;
-    }
-    // Query success
-    else {
-      res.status(200).json({ message: `The parking spot ${parket_at} has been successfully assigned to the vehicle with the license plate ${license_plate}.`});
-      return;
-    }
-  });
-});
-
-// Route: Parked vehicles
-router.get('/parked', (req, res) => {
-
-  // Create query with the currently_parked_vehicles view
-  const query = 'SELECT * FROM currently_parked_vehicles;';
-
-  // Execute the query (call to the database)
-  connection.query(query, (err, rows) => {
-    // Query failed
-    if (err) {
-      console.error('An error occurred while trying to execute the query:', err);
-      res.status(500).send('An error occurred while trying to fetch data related to vehicles from the database.');
-      return;
-    }
-    // Query success
-    else {
-      res.json(rows); // Send data as .json to the client
-      return;
-    }
-  });
-});
-
-// Route: vehicles
-router.get('/vehicles', (req, res) => {
-
-  // Create query with the mail table
-  const query = 'SELECT * FROM all_vehicles;';
-
-  // Execute the query (call to the database)
-  connection.query(query, (err, rows) => {
-    // Query failed
-    if (err) {
-      console.error('An error occurred while trying to execute the query:', err);
-      res.status(500).send('An error occurred while trying to fetch data related to vehicles from the database.');
-      return;
-    }
-    // Query success
-    else {
-      res.json(rows); // Send data as .json to the client
-      return;
-    }
-  });
-});
-
-// Route: Free parking spot
-router.get('/free_parking/:plate', (req, res) => {
-
-  // Fetch license plate
-  const plate = req.params.plate;
-
-  // Create query with the free_parking_spot stored procedure
-  const query = `CALL free_parking_spot(?)`;
-
-  // Execute the query (call to the database)
-  connection.query(query, [plate], (err, rows) => {
-    // Query failed
-    if (err) {
-      console.error('An error occurred while trying to execute the query:', err);
-      res.status(500).send('An error occurred while trying to manipulate data related to vehicles from the database.');
-      return;
-    }
-    // Query success
-    else {
-      res.status(200).json({ message: `The parking spot occupied by the vehicle ${plate} has been freed.`});
-      return;
-    }
-  });
-});
-
-// Route: Add a new vehicle
-// Example: /add_vehicle/11222333/AABB12
-router.get('/add_vehicle/:rut/:license_plate', (req, res) => {
-
-  // Fetch the parameters from the previous link
-  const { rut, license_plate } = req.params;
-
-  // Create query for searching the visitor's RUN with the help of add_visitor_vehicle stored procedure + obtain_visitor_id_by_run function
-  const query = `CALL add_visitor_vehicle(obtain_visitor_id_by_run(?), ?)`;
-
-  // Execute the query (call to the database)
-  connection.query(query, [rut, license_plate], (err, rows) => {
-    // Query failed
-    if (err) {
-      console.error('An error occurred while trying to execute the query:', err);
-      res.status(500).send('An error occurred while trying to manipulate data related to vehicles from the database.');
-      return;
-    }
-    // Query success
-    else {
-      res.status(200).json({ message: `Vehicle ${license_plate} owned by the person under RUN ${rut} added successfully.`});
-      return;
-    }
-  });
-});
-
-// Route: Delete a vehicle
-// Example: /delete_vehicle/ABC123
-router.get('/delete_vehicle/:plate', (req, res) => {
-
-  // Fetch license plate
-  const plate = req.params.plate;
-
-  // Create query with the delete_vehicle stored procedure
-  const query = `CALL delete_vehicle(?)`;
-
-  // Execute the query (call to the database)
-  connection.query(query, [plate], (err, rows) => {
-    // Query failed
-    if (err) {
-      console.error('An error occurred while trying to execute the query:', err);
-      res.status(500).send('An error occurred while trying to manipulate data related to vehicles from the database.');
-      return;
-    }
-    // Query success
-    else {
-      res.status(200).json({ message: `Vehicle ${plate} deleted successfully.`});
-      return;
-    }
-  });
-});
 
 // Route: Add correspondence or mail
 // Example: /add_mail/101/1/Letters/YYYY-MM-DD HH:MM:SS/0
@@ -833,6 +644,93 @@ router.get('/gettowerinfo/:id', (req, res) => {
     }
     }
   );
+});
+
+// Route: View currently parked vehicles
+router.get('/parked_vehicles', (req, res) => {
+  // Create the query to fetch data from the currently_parked_vehicles table
+  const query = 'SELECT * FROM currently_parked_vehicles';
+
+  // Execute the query (call to the database)
+  connection.query(query, (err, rows) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      res.status(200).json(rows);
+    }
+  });
+});
+
+// Route: View particular vehicle log
+router.get('/parking_log', (req, res) => {
+  // Create the query to insert data into particular_vehicle_log table
+  const query = 'SELECT * FROM particular_vehicle_log';
+
+  // Execute the query (call to the database)
+  connection.query(query, (err, rows) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      res.status(200).json(rows);
+    }
+  });
+});
+
+// Route: Assign parking spot
+router.get('/assign_parking_spot/:visitor_run/:t_id/:l_plate/:p_spot', (req, res) => {
+  // Fetch parameters from the request body
+  const { visitor_run, t_id, l_plate, p_spot } = req.params;
+
+  // Create the query to call the assign_parking_spot stored procedure
+  const query = `CALL assign_parking_spot(?, ?, ?, ?);`;
+
+  // Execute the query (call to the database)
+  connection.query(query, [visitor_run, t_id, l_plate, p_spot], (err, rows) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      res.status(200).send('Parking spot assigned successfully');
+    }
+  });
+});
+
+// Route: Free parking spot
+router.get('/free_parking_spot/:log_id', (req, res) => {
+  // Fetch the log_id parameter
+  const { log_id } = req.params;
+
+  // Create the query to call the free_parking_spot stored procedure
+  const query = `CALL free_parking_spot(?)`;
+
+  // Execute the query (call to the database)
+  connection.query(query, [log_id], (err, rows) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      res.status(200).send('Parking spot free successfully');
+    }
+  });
+});
+
+// Route: Delete vehicle log by ID
+router.get('/delete_vehicle_log/:id', (req, res) => {
+  // Fetch the id parameter
+  const { id } = req.params;
+  // Create the query to delete the vehicle log
+  const query = 'DELETE FROM vehicle_log WHERE id = ?';
+
+  // Execute the query (call to the database)
+  connection.query(query, [id], (err, result) => {
+    if (err) {
+      res.status(500).send('Error deleting vehicle log');
+    } else {
+      res.status(200).send('Vehicle log deleted successfully');
+    }
+  });
 });
 
 // Start the server

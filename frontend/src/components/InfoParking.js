@@ -13,7 +13,7 @@ const InfoParking = ({ data, onFreeParking }) => {
         <div className="col-md-4">
           <div className="card">
             <div className="card-body">
-              <h2 className="card-title mb-2">{t('adminParking.parkedNumber')}{data.parked_at}</h2>
+              <h2 className="card-title mb-2">{t('adminParking.parkedNumber')}{data.parking_spot}</h2>
               <h5 className="card-title">{data.full_name}</h5>
               <p className="card-text mb-2">{t('adminParking.licensePlate')}: {data.license_plate}</p>
               <p className="card-text">{t('adminParking.arrivingTime')}: {formatDateLarge(data.parked_since)}</p>
@@ -21,7 +21,7 @@ const InfoParking = ({ data, onFreeParking }) => {
                 <button
                   type="button"
                   className="btn btn-warning"
-                  onClick={() => onFreeParking(data.license_plate, data.parked_at)}
+                  onClick={() => onFreeParking(data.log_id, data.parking_spot)}
                 >
                   {t('adminParking.freeParking')}
                 </button>

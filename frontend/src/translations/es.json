@@ -13,7 +13,7 @@
     "scanID":"Escanear Carnet",
     "admin": "Administrador",
     "new": "Agregar",
-    "adminVehicles": "Vehículos"
+    "adminVehicles": "Log Estacionamientos"
   },
   "navbarResident": {
     "adminvisits": "Gestionar visitas",
@@ -75,7 +75,7 @@
     "bodyNotification": "Estacionamiento pronto a cumplir tiempo limite"
   },
   "adminVehicles": {
-    "adminVehiclesTitle": "Administrar Vehículos",
+    "adminVehiclesTitle": "Administrar Registro Estacionamientos",
     "visitor_id": "ID Visitante",
     "full_name":"Nombre del visitante",
     "license_plate": "Patente",
@@ -85,7 +85,12 @@
     "SuccessAlert": "¡Vehículo eliminado exitosamente!",
     "FailAlert": "Ocurrió un error al intentar eliminar el vehículo.",
     "vehiclesAlert": "Ocurrió un error al intentar cargar los datos relacionados a vehículos.",
-    "searchPlaceholder": "Buscar por nombre"
+    "searchPlaceholder": "Buscar por nombre",
+    "log_id": "ID",
+    "parked_at": "N° Estacionamiento",
+    "startTime": "Hora de llegada",
+    "endTime": "Hora de salida",
+    "tower": "Torre"
   },
   "configAdmin": {
     "configuration": "Configuración",
@@ -144,8 +149,8 @@
     "addCorrespondence": "Agregar Correspondencia",
     "selectMsg": "Seleccione residente para enviar mensaje:",
     "searchresident": "Buscar Habitantes",
-    "MsgSuccessAlert": "¡Mensaje de WhatsApp enviado correctamente!",
-    "MsgFailAlert": "Ocurrió un error al enviar mensaje de WhatsApp.",
+    "MsgSuccessAlert": "¡Mensaje enviado correctamente!",
+    "MsgFailAlert": "Ocurrió un error al enviar mensaje.",
     "inhabitantsFailAlert": "Ocurrió un error buscando a residentes.",
     "NoinhabitantsAlert": "Alerta: Residentes no encontrados."
   },

@@ -13,7 +13,7 @@
     "scanID":"Scan ID",
     "admin": "Manage",
     "new": "Add New",
-    "adminVehicles": "Vehicles"
+    "adminVehicles": "Parking Log"
   },
   "navbarResident": {
     "adminvisits": "Visits",
@@ -75,7 +75,7 @@
     "bodyNotification": "Parking soon to reach time limit"
   },
   "adminVehicles": {
-    "adminVehiclesTitle": "Manage Vehicles",
+    "adminVehiclesTitle": "Manage Log Parking",
     "visitor_id": "Visitor ID",
     "full_name":"Full Name",
     "license_plate": "License Plate",
@@ -85,7 +85,12 @@
     "SuccessAlert": "Vehicle deleted succesfully!",
     "FailAlert": "An error occurred while trying to delete the vehicle.",
     "vehiclesAlert": "An error occurred when trying to load the data related to vehicles.",
-    "searchPlaceholder": "Search by name"
+    "searchPlaceholder": "Search by name",
+    "log_id": "ID",
+    "parked_at": "Parking Spot N°",
+    "startTime": "Arriving Time",
+    "endTime": "Departure Time",
+    "tower": "Tower"
   },
   "configAdmin": {
     "configuration": "Configuration",
@@ -144,8 +149,8 @@
     "addCorrespondence": "Add Correspondence",
     "selectMsg": "Select resident to send message:",
     "searchresident": "Search Residents",
-    "MsgSuccessAlert": "WhatsApp message sent successfully!",
-    "MsgFailAlert": "An error occurred trying to send the WhatsApp message.",
+    "MsgSuccessAlert": "Message sent successfully!",
+    "MsgFailAlert": "An error occurred trying to send the message.",
     "inhabitantsFailAlert": "Error searching inhabitants",
     "NoinhabitantsAlert": "Alert: Inhabitants not found."
   },

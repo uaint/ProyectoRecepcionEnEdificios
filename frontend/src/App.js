@@ -5,6 +5,7 @@ import i18n from './i18n';
 import './App.css';
 import Swal from 'sweetalert2'
 import { useTranslation } from 'react-i18next';
+import ScrollToTop from "react-scroll-to-top";
 
 // Importa los componentes
 import NavbarVisible from './components/NavbarVisible'; // Considera NavbarConcierge
@@ -107,6 +108,7 @@ function App() {
 
   return (
     <div className="App">
+      <ScrollToTop smooth/>
       <I18nextProvider i18n={i18n}> {/* Usa I18nextProvider para traducir el sistema */}
         <BrowserRouter>
         <Routes>
