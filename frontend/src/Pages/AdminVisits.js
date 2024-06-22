@@ -131,42 +131,36 @@ const AdminVisits = () => {
               <th 
                 scope="col" 
                 onClick={() => handleSort('full_name')}
-                style={{ fontWeight: sortConfig.key === 'full_name' ? 'bold' : 'normal' }}
               >
                 {t('adminVisits.name')}{getSortIndicator('full_name')}
               </th>
               <th 
                 scope="col" 
                 onClick={() => handleSort('run')}
-                style={{ fontWeight: sortConfig.key === 'run' ? 'bold' : 'normal' }}
               >
                 {t('adminVisits.rut')}{getSortIndicator('run')}
               </th>
               <th 
                 scope="col" 
                 onClick={() => handleSort('birth_date')}
-                style={{ fontWeight: sortConfig.key === 'birth_date' ? 'bold' : 'normal' }}
               >
                 {t('adminVisits.birthDate')}{getSortIndicator('birth_date')}
               </th>
               <th 
                 scope="col" 
                 onClick={() => handleSort('apartment')}
-                style={{ fontWeight: sortConfig.key === 'apartment' ? 'bold' : 'normal' }}
               >
                 {t('adminVisits.apartment')}{getSortIndicator('apartment')}
               </th>
               <th 
                 scope="col" 
                 onClick={() => handleSort('visit_motive')}
-                style={{ fontWeight: sortConfig.key === 'visit_motive' ? 'bold' : 'normal' }}
               >
                 {t('adminVisits.visitType')}{getSortIndicator('visit_motive')}
               </th>
               <th 
                 scope="col" 
                 onClick={() => handleSort('visit_date')}
-                style={{ fontWeight: sortConfig.key === 'visit_date' ? 'bold' : 'normal' }}
               >
                 {t('adminVisits.lastVisit')}{getSortIndicator('visit_date')}
               </th>

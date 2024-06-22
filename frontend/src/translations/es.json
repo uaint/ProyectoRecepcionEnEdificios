@@ -16,15 +16,15 @@
     "adminVehicles": "Historial Estacionamientos"
   },
   "navbarResident": {
-    "adminvisits": "Gestionar visitas",
-    "adminCorrespondence": "Gestionar correspondencia",
-    "newfrequentvisitform": "Añadir visita frecuente",
-    "newmessage": "Contactar conserje",
+    "adminvisits": "Visitas",
+    "adminCorrespondence": "Correspondencia",
+    "newfrequentvisitform": "Añadir Visita Frecuente",
+    "newmessage": "Contactar Conserje",
     "config": "Configuración",
     "signOut":"Cerrar Sesión"
   },
   "adminCorrespondence": {
-    "adminCorrespondence": "Administrar correspondencia",
+    "adminCorrespondence": "Administrar Correspondencia",
     "id": "ID",
     "building": "Edificio",
     "apartment": "Departamento",
@@ -41,19 +41,19 @@
     "allCorrespondence": "Mostrar toda la correspondencia"
   },
   "adminVisits": {
-    "adminVisits": "Administrar visitas",
+    "adminVisits": "Administrar Visitas",
     "name": "Nombre",
     "birthDate": "Fecha de nacimiento",
     "rut": "RUN",
     "apartment": "Departamento",
     "visitType": "Tipo de visita",
-    "lastVisit": "Fecha de la visita",
+    "lastVisit": "Fecha de Visita",
     "delete": "Eliminar",
     "addVisit": "Agregar nueva visita",
     "deleteSuccessAlert": "¡Registro eliminado correctamente!",
     "deleteFailAlert": "Ocurrió un error al eliminar el registro.",
     "visitAlert": "Ocurrió un problema al cargar los datos.",
-    "searchPlaceholder": "Buscar visita por nombre"
+    "searchPlaceholder": "Buscar visita (Nombre)"
   },
   "adminMessages": {
     "adminCorrespondence": "Gestionar Mensajes",

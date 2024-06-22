@@ -126,7 +126,6 @@ const AdminVehicles = () => {
                   <th 
                     scope="col" 
                     onClick={() => handleSort('log_id')}
-                    style={{ fontWeight: sortOption === 'log_id' ? 'bold' : 'normal' }}
                   >
                     {t('adminVehicles.log_id')}
                     {sortOption === 'log_id' && (sortDirection === 'ascending' ? <span>&#9650;</span> : <span>&#9660;</span>)}
@@ -134,7 +133,6 @@ const AdminVehicles = () => {
                   <th 
                     scope="col" 
                     onClick={() => handleSort('full_name')}
-                    style={{ fontWeight: sortOption === 'full_name' ? 'bold' : 'normal' }}
                   >
                     {t('adminVehicles.full_name')}
                     {sortOption === 'full_name' && (sortDirection === 'ascending' ? <span>&#9650;</span> : <span>&#9660;</span>)}
@@ -142,7 +140,6 @@ const AdminVehicles = () => {
                   <th 
                     scope="col" 
                     onClick={() => handleSort('license_plate')}
-                    style={{ fontWeight: sortOption === 'license_plate' ? 'bold' : 'normal' }}
                   >
                     {t('adminVehicles.license_plate')}
                     {sortOption === 'license_plate' && (sortDirection === 'ascending' ? <span>&#9650;</span> : <span>&#9660;</span>)}

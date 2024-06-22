@@ -138,35 +138,30 @@ const AdminCorrespondence = () => {
                 <th 
                   scope="col" 
                   onClick={() => handleSort('id')}
-                  style={{ fontWeight: sortConfig.key === 'id' ? 'bold' : 'normal' }}
                 >
                   {t('adminCorrespondence.id')}{getSortIndicator('id')}
                 </th>
                 <th 
                   scope="col" 
                   onClick={() => handleSort('apartment')}
-                  style={{ fontWeight: sortConfig.key === 'apartment' ? 'bold' : 'normal' }}
                 >
                   {t('adminCorrespondence.apartment')}{getSortIndicator('apartment')}
                 </th>
                 <th 
                   scope="col" 
                   onClick={() => handleSort('mail_type')}
-                  style={{ fontWeight: sortConfig.key === 'mail_type' ? 'bold' : 'normal' }}
                 >
                   {t('adminCorrespondence.type')}{getSortIndicator('mail_type')}
                 </th>
                 <th 
                   scope="col" 
                   onClick={() => handleSort('arrival_time')}
-                  style={{ fontWeight: sortConfig.key === 'arrival_time' ? 'bold' : 'normal' }}
                 >
                   {t('adminCorrespondence.date')}{getSortIndicator('arrival_time')}
                 </th>
                 <th 
                   scope="col" 
                   onClick={() => handleSort('is_notified')}
-                  style={{ fontWeight: sortConfig.key === 'is_notified' ? 'bold' : 'normal' }}
                 >
                   {t('adminCorrespondence.notified')}{getSortIndicator('is_notified')}
                 </th>
