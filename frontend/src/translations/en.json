@@ -53,7 +53,7 @@
     "deleteSuccessAlert": "Record deleted successfully!",
     "deleteFailAlert": "An error occurred while trying to delete the visit record",
     "visitAlert": "An error occurred while trying to load the visit data.",
-    "searchPlaceholder": "Search visit by name"
+    "searchPlaceholder": "Search visit (Name)"
   },
   "adminMessages": {
     "adminCorrespondence": "Manage Messages",
@@ -133,7 +133,9 @@
   "newMessage": {
     "contactConcierge": "Contact Concierge",
     "writeMessage": "Write your message here.",
-    "sendMessage": "Send Message"
+    "sendMessage": "Send Message",
+    "FailAlert": "An error occurred while trying to send the message. Try again.",
+    "SucessAlert": "Message sent succesfully to the concierge!"
   },
   "correspondenceForm": {
     "addNewCorrespondence": "Add New Correspondence",
