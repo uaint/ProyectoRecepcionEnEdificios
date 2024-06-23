@@ -135,7 +135,7 @@
     "writeMessage": "Write your message here.",
     "sendMessage": "Send Message",
     "FailAlert": "An error occurred while trying to send the message. Try again.",
-    "SucessAlert": "Message sent succesfully to the concierge!"
+    "SuccessAlert": "Message sent succesfully to the concierge!"
   },
   "correspondenceForm": {
     "addNewCorrespondence": "Add New Correspondence",

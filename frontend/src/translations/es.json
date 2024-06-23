@@ -135,7 +135,7 @@
     "writeMessage": "Escribe tu mensaje aquí.",
     "sendMessage": "Enviar Mensaje",
     "FailAlert": "Ocurrió un error al intentar enviar el mensaje. Inténtalo de nuevo.",
-    "SucessAlert": "¡Mensaje enviado exitosamente al conserje!"
+    "SuccessAlert": "¡Mensaje enviado exitosamente al conserje!"
   },
   "correspondenceForm": {
     "addNewCorrespondence": "Agregar Nueva Correspondencia",
