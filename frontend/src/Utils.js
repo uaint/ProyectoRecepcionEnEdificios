@@ -223,10 +223,12 @@ function updateTheme() {
     document.body.style.backgroundColor = '#343a40'; // Cambia el color de fondo a un gris oscuro (#343a40)
     localStorage.setItem('text_color', "#f8f9fa");
     localStorage.setItem('background_color', "#2b3035");
+    localStorage.setItem('icon_color', '#b5b7b8');
   } else {
     document.body.style.backgroundColor = '#FFFFFF';
     localStorage.setItem('background_color', "#f8f9fa");
     localStorage.setItem('text_color', "#2b3035");
+    localStorage.setItem('icon_color', '#575757');
   }
 }
 
