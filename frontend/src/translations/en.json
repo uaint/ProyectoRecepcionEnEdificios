@@ -192,7 +192,7 @@
   },
   "ScanID": {
     "title": "Scan ID",
-    "scanimg": "ID Scanned",
+    "scanimg": "Start ID Scan",
     "uploadimg": "Upload ID Image"
   },
   "frequentVisitForm": {
